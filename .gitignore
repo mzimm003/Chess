@@ -1,4 +1,4 @@
 results/
 .vscode/
 junk.py
-
+__pycache__

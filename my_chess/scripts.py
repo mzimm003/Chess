@@ -4,12 +4,44 @@ import inspect
 import abc
 import os
 import sys
+import math
 from typing import (
-    Dict
+    Dict,
+    Union,
+    Literal
 )
 
 import ray
 from ray import tune, air
+from ray.rllib.models import ModelCatalog
+from ray.tune.registry import register_trainable
+
+import my_chess.learner.environments
+from my_chess.learner.environments import (
+    Environment,
+    Chess,
+)
+ENVIRONMENTS = {k:v for k,v in inspect.getmembers(my_chess.learner.environments, inspect.isclass)}
+
+import my_chess.learner.algorithms
+from my_chess.learner.algorithms import (
+    Algorithm,
+    AlgorithmConfig,
+    PPO,
+    PPOConfig,
+)
+ALGORITHMS = {k:v for k,v in inspect.getmembers(my_chess.learner.algorithms, inspect.isclass) if not "Config" in k}
+ALGORITHMCONFIGS = {k:v for k,v in inspect.getmembers(my_chess.learner.algorithms, inspect.isclass) if "Config" in k}
+
+import my_chess.learner.models
+from my_chess.learner.models import (
+    Model,
+    ModelConfig
+)
+MODELS = {k:v for k,v in inspect.getmembers(my_chess.learner.models, inspect.isclass) if not "Config" in k}
+MODELCONFIGS = {k:v for k,v in inspect.getmembers(my_chess.learner.models, inspect.isclass) if "Config" in k}
+
+from my_chess.learner.callbacks import DefaultCallbacks
 
 
 class ArgumentCollector:
@@ -178,6 +210,14 @@ class Train(Script):
             num_cpus:int=1,
             num_gpus:float=0.,
             local_mode:bool=False,
+            environment:Union[Environment, str]=None,
+            algorithm:Union[Algorithm, str]=None,
+            algorithm_config:Union[AlgorithmConfig, str]=None,
+            model:Union[Model, str]=None,
+            model_config:Union[ModelConfig, str]=None,
+            run_config:Union[air.RunConfig, str]=None,
+            callback:DefaultCallbacks=None,
+            framework:Literal["tf","torch"] = "torch",
             **kwargs) -> None:
         """
         Args:
@@ -187,6 +227,14 @@ class Train(Script):
             num_cpus: Number of cpus to allocate to session.
             num_gpus: Number of gpus to allocate to session (including fractional amounts).
             local_mode: Boolean limiting session to be run locally.
+            environment: Name of environment (if any) to train in.
+            algorithm: Name of training algorithm.
+            algorithm_config: Name of training algorithm configuration (named defaults will be used).
+            model: Name of model being trained.
+            model_config: Name of training algorithm configuration (named defaults will be used).
+            run_config: Name of run configuration to be used.
+            callback: Name of in training callback to be used.
+            framework: Name of framework to be used (e.g. torch or tf)
         """
         super().__init__(**kwargs)
         if setup_file:
@@ -203,67 +251,40 @@ class Train(Script):
                 self.local_mode = local_mode
             
             self.restore = restore
+            self.framework = framework
+        self.environment = ENVIRONMENTS[environment]() if isinstance(environment, str) else environment
+        self.algorithm = ALGORITHMS[algorithm] if isinstance(algorithm, str) else algorithm
+        register_trainable(self.algorithm.__name__, self.algorithm)
+        self.algorithm_config = ALGORITHMCONFIGS[algorithm_config]() if isinstance(algorithm_config, str) else algorithm_config
+        self.model = MODELS[model] if isinstance(model, str) else model
+        ModelCatalog.register_custom_model(self.model.__name__, self.model)
+        self.model_config = MODELCONFIGS[model_config]() if isinstance(model_config, str) else model_config
+        self.algorithm_config.training(
+            model={
+                'custom_model': self.model.__name__,
+                'custom_model_config':{"config":self.model_config}})
+        self.run_config = run_config
+        if self.environment:
+            self.algorithm_config.environment(self.environment.getName())
+        self.callback = callback
+
+    def getAlgConfig(self) -> AlgorithmConfig:
+        return self.algorithm_config
 
     def run(self):
         """
         Args:
         """
-        ray.init(num_cpus=self.num_cpus, num_gpus=self.num_gpus, local_mode=self.local_mode)
+        ray.init(num_cpus=self.num_cpus, num_gpus=math.ceil(self.num_gpus), local_mode=self.local_mode)
         
         tuner = None
         if self.restore:
-            tuner = tune.Tuner.restore(self.restore, "PPO", resume_errored=True)
+            tuner = tune.Tuner.restore(self.restore, self.algorithm.__name__, resume_errored=True)
         else:
             tuner = tune.Tuner(
-                "PPO",
-                run_config=air.RunConfig(
-                                local_dir="./results",
-                                name="test",
-                                checkpoint_config=air.CheckpointConfig(checkpoint_frequency=25)),
-                param_space=PPOConfig()
-                                .environment("Chess", env_config={"render_mode":"human"})
-                                .multi_agent(
-                                    # policy_mapping_fn=policy_mapping_fn,
-                                    policy_map_capacity=2,
-                                )
-                                .callbacks(SelfPlayCallback)
-                                .training(
-                                    lr=tune.grid_search([0.0001]),
-                                    model={
-                                        'custom_model': 'my_torch_model',
-                                        'custom_model_config': {}
-                                        # 'fcnet_hiddens':tune.grid_search([[1280,]]),#,[1280,1280]]),#,[2560,],[2560,2560]]),
-                                        # 'dim':8,
-                                        # 'conv_filters':[[20,[1,1],1]],
-                                        # 'use_attention':True,
-                                        # # The number of transformer units within GTrXL.
-                                        # # A transformer unit in GTrXL consists of a) MultiHeadAttention module and
-                                        # # b) a position-wise MLP.
-                                        # "attention_num_transformer_units": 1,
-                                        # # The input and output size of each transformer unit.
-                                        # "attention_dim": 64,
-                                        # # The number of attention heads within the MultiHeadAttention units.
-                                        # "attention_num_heads": 1,
-                                        # # The dim of a single head (within the MultiHeadAttention units).
-                                        # "attention_head_dim": 32,
-                                        # # The memory sizes for inference and training.
-                                        # "attention_memory_inference": 50,
-                                        # "attention_memory_training": 50,
-                                        # # The output dim of the position-wise MLP.
-                                        # "attention_position_wise_mlp_dim": 32,
-                                        # # The initial bias values for the 2 GRU gates within a transformer unit.
-                                        # "attention_init_gru_gate_bias": 2.0,
-                                        # # Whether to feed a_{t-n:t-1} to GTrXL (one-hot encoded if discrete).
-                                        # "attention_use_n_prev_actions": 0,
-                                        # # Whether to feed r_{t-n:t-1} to GTrXL.
-                                        # "attention_use_n_prev_rewards": 0,
-                                        },
-                                    optimizer={'simple_optimizer':True},
-                                )
-                                # .resources(num_gpus=0.25)
-                                .resources(num_gpus=0.85)
-                                .framework(framework='torch')
-                                .rollouts(num_rollout_workers=2, num_envs_per_worker=50),
+                self.algorithm.__name__,
+                run_config=self.run_config,
+                param_space=self.algorithm_config,
             )
 
         tuner.fit()

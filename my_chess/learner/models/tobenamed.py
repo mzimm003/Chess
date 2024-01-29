@@ -23,6 +23,8 @@ from torchvision.models.swin_transformer import (
     Permute    
 )
 
+from my_chess.learner.models import Model, ModelConfig
+
 # from matcher import HungarianMatcher
 
 class PositionalEmbedder(nn.Module):
@@ -185,14 +187,9 @@ class SwinFeatureExtractor(nn.Module):
                 features.append(x)
         return features
 
-class ToBeNamed(TorchModelV2, nn.Module):
+class ToBeNamedConfig(ModelConfig):
     def __init__(
         self,
-        obs_space: gym.spaces.Space,
-        action_space: gym.spaces.Space,
-        num_outputs: int,
-        model_config: ModelConfigDict,
-        name: str,
         swin_input_channels: int = 111,
         swin_patch_size: List[int] = [1,1],
         swin_embed_dim: int = 32,
@@ -219,18 +216,8 @@ class ToBeNamed(TorchModelV2, nn.Module):
         encoder_norm = None,
         encoder_enable_nested_tensor = True,
         encoder_mask_check = True,
-        embedding_dim: int = 256,
-        **kwargs
-    ):
-        TorchModelV2.__init__(
-            self,
-            obs_space = obs_space,
-            action_space = action_space,
-            num_outputs = num_outputs,
-            model_config = model_config,
-            name = name,
-            )
-        nn.Module.__init__(self)
+        embedding_dim: int = 256,) -> None:
+        super().__init__()
         #Metadata
         self.swin_input_channels = swin_input_channels
         self.swin_patch_size = swin_patch_size
@@ -260,29 +247,49 @@ class ToBeNamed(TorchModelV2, nn.Module):
         self.encoder_mask_check = encoder_mask_check
         self.embedding_dim = embedding_dim
 
+class ToBeNamed(Model):
+    def __init__(
+        self,
+        obs_space: gym.spaces.Space=None,
+        action_space: gym.spaces.Space=None,
+        num_outputs: int=None,
+        model_config: ModelConfigDict=None,
+        name: str=None,
+        config:ToBeNamedConfig = None,
+        **kwargs
+    ):
+        Model.__init__(
+            self,
+            obs_space = obs_space,
+            action_space = action_space,
+            num_outputs = num_outputs,
+            model_config = model_config,
+            name = name,
+            )
+        self.config = config
         #Model
         self.feature_extractor = SwinFeatureExtractor(
-            input_channels = self.swin_input_channels,
-            patch_size = self.swin_patch_size,
-            embed_dim = self.swin_embed_dim,
-            depths = self.swin_depths,
-            num_heads = self.swin_num_heads,
-            window_size = self.swin_window_size,
-            mlp_ratio = self.swin_mlp_ratio,
-            dropout = self.swin_dropout,
-            attention_dropout = self.swin_attention_dropout,
-            stochastic_depth_prob = self.swin_stochastic_depth_prob,
-            num_classes = self.swin_num_classes,
-            norm_layer = self.swin_norm_layer,
-            block = self.swin_block,
-            downsample_layer = self.swin_downsample_layer
+            input_channels = self.config.swin_input_channels,
+            patch_size = self.config.swin_patch_size,
+            embed_dim = self.config.swin_embed_dim,
+            depths = self.config.swin_depths,
+            num_heads = self.config.swin_num_heads,
+            window_size = self.config.swin_window_size,
+            mlp_ratio = self.config.swin_mlp_ratio,
+            dropout = self.config.swin_dropout,
+            attention_dropout = self.config.swin_attention_dropout,
+            stochastic_depth_prob = self.config.swin_stochastic_depth_prob,
+            num_classes = self.config.swin_num_classes,
+            norm_layer = self.config.swin_norm_layer,
+            block = self.config.swin_block,
+            downsample_layer = self.config.swin_downsample_layer
         )
 
         sample_obs = torch.tensor(obs_space.original_space['observation'].sample(), dtype=torch.float32).unsqueeze(0).repeat(2,1,1,1)
         sample_feature_map = self.feature_extractor(sample_obs)
 
-        self.feature_projector = FeatureProjector(sample_feature_map, hidden_dim = self.hidden_dim//2)
-        self.pos_emb = PositionalEmbedder(sample_feature_map, hidden_dim = self.hidden_dim//2)
+        self.feature_projector = FeatureProjector(sample_feature_map, hidden_dim = self.config.hidden_dim//2)
+        self.pos_emb = PositionalEmbedder(sample_feature_map, hidden_dim = self.config.hidden_dim//2)
 
         # Initially perhaps only an encoder is necessary to encode the features and their positional embedding
         # Potentially, like DINO, it may make sense for the encoder to provide a "gut instinct move", which can further
@@ -293,46 +300,46 @@ class ToBeNamed(TorchModelV2, nn.Module):
         # this seems challenging to implement/validate for any given board state, and will be impossible for some.
         self.encoder = nn.TransformerEncoder(
             encoder_layer = nn.TransformerEncoderLayer(
-                d_model = self.hidden_dim,
-                nhead = self.encoder_nhead,
-                dim_feedforward = self.encoder_dim_feedforward,
-                dropout = self.encoder_dropout,
-                activation = self.encoder_activation,
-                layer_norm_eps = self.encoder_layer_norm_eps,
-                batch_first = self.encoder_batch_first,
-                norm_first = self.encoder_norm_first,
+                d_model = self.config.hidden_dim,
+                nhead = self.config.encoder_nhead,
+                dim_feedforward = self.config.encoder_dim_feedforward,
+                dropout = self.config.encoder_dropout,
+                activation = self.config.encoder_activation,
+                layer_norm_eps = self.config.encoder_layer_norm_eps,
+                batch_first = self.config.encoder_batch_first,
+                norm_first = self.config.encoder_norm_first,
             ),
-            num_layers = self.encoder_num_layers,
-            norm = self.encoder_norm,
-            enable_nested_tensor = self.encoder_enable_nested_tensor,
-            mask_check = self.encoder_mask_check
+            num_layers = self.config.encoder_num_layers,
+            norm = self.config.encoder_norm,
+            enable_nested_tensor = self.config.encoder_enable_nested_tensor,
+            mask_check = self.config.encoder_mask_check
         )
 
         self.decoder = nn.TransformerDecoder(
             decoder_layer = nn.TransformerDecoderLayer(
-                d_model = self.embedding_dim,
-                nhead = self.encoder_nhead,
-                dim_feedforward = self.encoder_dim_feedforward,
-                dropout = self.encoder_dropout,
-                activation = self.encoder_activation,
-                layer_norm_eps = self.encoder_layer_norm_eps,
-                batch_first = self.encoder_batch_first,
-                norm_first = self.encoder_norm_first,
+                d_model = self.config.embedding_dim,
+                nhead = self.config.encoder_nhead,
+                dim_feedforward = self.config.encoder_dim_feedforward,
+                dropout = self.config.encoder_dropout,
+                activation = self.config.encoder_activation,
+                layer_norm_eps = self.config.encoder_layer_norm_eps,
+                batch_first = self.config.encoder_batch_first,
+                norm_first = self.config.encoder_norm_first,
             ),
-            num_layers = self.encoder_num_layers,
-            norm = self.encoder_norm
+            num_layers = self.config.encoder_num_layers,
+            norm = self.config.encoder_norm
         )
 
-        self.move_emb = nn.Embedding(self.num_outputs, self.embedding_dim)
+        self.move_emb = nn.Embedding(self.num_outputs, self.config.embedding_dim)
         self.move_head = nn.Sequential(
-            nn.Linear(self.hidden_dim, self.encoder_dim_feedforward),
+            nn.Linear(self.config.hidden_dim, self.config.encoder_dim_feedforward),
             nn.ReLU(),
-            nn.Linear(self.encoder_dim_feedforward, self.num_outputs)
+            nn.Linear(self.config.encoder_dim_feedforward, self.num_outputs)
         )
         self.legal_move_head = nn.Sequential(
-            nn.Linear(self.hidden_dim, self.encoder_dim_feedforward),
+            nn.Linear(self.config.hidden_dim, self.config.encoder_dim_feedforward),
             nn.ReLU(),
-            nn.Linear(self.encoder_dim_feedforward, 2)
+            nn.Linear(self.config.encoder_dim_feedforward, 2)
         )
         self.probs = nn.Softmax(-1)
         self.cross_ent = nn.CrossEntropyLoss()

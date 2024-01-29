@@ -1,33 +1,15 @@
-from pettingzoo.classic import chess_v5
+"""Callbacks to invoke during training, (e.g. training state evaluations,
+and actions to take thereupon, like storage or updating active policies"""
 
-import os
-import argparse
-import json
+from my_chess.learner.algorithms import Algorithm
 from pathlib import Path
-os.environ["RAY_OBJECT_STORE_ALLOW_SLOW_STORAGE"] = "1"
 
-import ray
-from ray import tune, air
-from ray.tune.registry import register_env
-from ray.rllib.env import PettingZooEnv
-from ray.rllib.algorithms.ppo import PPOConfig
-from ray.rllib.algorithms.random_agent import RandomAgent
-from ray.rllib.algorithms.algorithm import Algorithm
-from ray.rllib.models import ModelCatalog
-from ray.rllib.policy.policy import (PolicySpec,Policy)
-from ray.rllib.algorithms.callbacks import DefaultCallbacks
-from ray.rllib.evaluation.rollout_worker import RolloutWorker
-
-import numpy as np
 import torch
+import numpy as np
 
-from random_policy import RandomPolicy
-
-from learner import ToBeNamed
-
-# from ray.rllib.algorithms.callbacks import DefaultCallbacks
+from ray.rllib.algorithms.callbacks import DefaultCallbacks
 from ray.rllib.core.rl_module.rl_module import SingleAgentRLModuleSpec
-# from ray.rllib.core.rl_module.marl_module import MultiAgentRLModuleSpec
+from ray.rllib.policy.policy import Policy
 
 class SelfPlayCallback(DefaultCallbacks):
     def __init__(self):
@@ -182,85 +164,3 @@ class SelfPlayCallback(DefaultCallbacks):
             episode.custom_metrics['wins'] = 0
         else:
             episode.custom_metrics['wins'] = 1
-
-def main(args):
-    if args.debug:
-        ray.init(num_cpus=1, num_gpus=0, local_mode=True)
-    else:
-        ray.init(num_cpus=os.cpu_count(), num_gpus=1, local_mode=False)
-    
-    tuner = None
-    if args.restore:
-        tuner = tune.Tuner.restore(args.restore, "PPO", resume_errored=True)
-    else:
-        tuner = tune.Tuner(
-            "PPO",
-            run_config=air.RunConfig(
-                            local_dir="./results",
-                            name="test",
-                            checkpoint_config=air.CheckpointConfig(checkpoint_frequency=25)),
-            param_space=PPOConfig()
-                            .environment("Chess", env_config={"render_mode":"human"})
-                            .multi_agent(
-                                # policy_mapping_fn=policy_mapping_fn,
-                                policy_map_capacity=2,
-                            )
-                            .callbacks(SelfPlayCallback)
-                            .training(
-                                lr=tune.grid_search([0.0001]),
-                                model={
-                                    'custom_model': 'my_torch_model',
-                                    'custom_model_config': {}
-                                    # 'fcnet_hiddens':tune.grid_search([[1280,]]),#,[1280,1280]]),#,[2560,],[2560,2560]]),
-                                    # 'dim':8,
-                                    # 'conv_filters':[[20,[1,1],1]],
-                                    # 'use_attention':True,
-                                    # # The number of transformer units within GTrXL.
-                                    # # A transformer unit in GTrXL consists of a) MultiHeadAttention module and
-                                    # # b) a position-wise MLP.
-                                    # "attention_num_transformer_units": 1,
-                                    # # The input and output size of each transformer unit.
-                                    # "attention_dim": 64,
-                                    # # The number of attention heads within the MultiHeadAttention units.
-                                    # "attention_num_heads": 1,
-                                    # # The dim of a single head (within the MultiHeadAttention units).
-                                    # "attention_head_dim": 32,
-                                    # # The memory sizes for inference and training.
-                                    # "attention_memory_inference": 50,
-                                    # "attention_memory_training": 50,
-                                    # # The output dim of the position-wise MLP.
-                                    # "attention_position_wise_mlp_dim": 32,
-                                    # # The initial bias values for the 2 GRU gates within a transformer unit.
-                                    # "attention_init_gru_gate_bias": 2.0,
-                                    # # Whether to feed a_{t-n:t-1} to GTrXL (one-hot encoded if discrete).
-                                    # "attention_use_n_prev_actions": 0,
-                                    # # Whether to feed r_{t-n:t-1} to GTrXL.
-                                    # "attention_use_n_prev_rewards": 0,
-                                    },
-                                optimizer={'simple_optimizer':True},
-                            )
-                            # .resources(num_gpus=0.25)
-                            .resources(num_gpus=0.85)
-                            .framework(framework='torch')
-                            .rollouts(num_rollout_workers=2, num_envs_per_worker=50),
-        )
-
-    tuner.fit()
-    ray.shutdown()
-    print("Done")
-
-
-if __name__ == "__main__":        
-    def env_creator(args):
-        env = chess_v5.env()
-        return env
-
-    register_env("Chess",lambda config: PettingZooEnv(env_creator(config)))
-    ModelCatalog.register_custom_model("my_torch_model", ToBeNamed)
-
-    parser = argparse.ArgumentParser(description='Run Learner.')
-    parser.add_argument('--debug', help='Set to debug.', type=bool)
-    parser.add_argument('--restore', help='Tuner checkpoint path from which to continue.', type=str)
-
-    args = parser.parse_args()
-    main(args)

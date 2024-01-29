@@ -1,3 +1,4 @@
+
 from gymnasium.spaces import Box
 import numpy as np
 import random
@@ -8,11 +9,11 @@ from typing import (
     Union,
 )
 
-from ray.rllib.policy.policy import Policy
 from ray.rllib.policy.sample_batch import SampleBatch
 from ray.rllib.utils.annotations import override
 from ray.rllib.utils.typing import ModelWeights, TensorStructType, TensorType
 
+from my_chess.learner.policies import Policy
 
 class RandomPolicy(Policy):
     """Hand-coded policy that returns random actions."""

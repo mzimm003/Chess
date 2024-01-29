@@ -1,3 +1,8 @@
+"""This is an important part of learning for the DINO object detector, as outputs are unordered.
+The matcher then assumes the best result between ground truth and model outputs. This may too
+be necessary for the chess model, but this file has not yet been modified to accomodate that."""
+#TODO Incorporate into "ToBeNamed" model
+
 import torch, os
 from torch import nn
 from scipy.optimize import linear_sum_assignment

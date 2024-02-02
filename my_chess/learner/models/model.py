@@ -18,14 +18,14 @@ class Model(TorchModelV2, nn.Module):
         num_outputs: int = None,
         model_config: ModelConfigDict = None,
         name: str = None):
-        TorchModelV2.__init__(
-            self,
+        super().__init__(
             obs_space = obs_space,
             action_space = action_space,
             num_outputs = num_outputs,
             model_config = model_config,
-            name = name,
+            name = name
             )
+        #super is not calling nn.Module init for unknown reasons
         nn.Module.__init__(self)
 
     def getModelSpecificParams(self):

@@ -13,7 +13,10 @@ from ray.rllib.policy.sample_batch import SampleBatch
 from ray.rllib.utils.annotations import override
 from ray.rllib.utils.typing import ModelWeights, TensorStructType, TensorType
 
-from my_chess.learner.policies import Policy
+from my_chess.learner.policies import Policy, PolicyConfig
+
+class RandomPolicyConfig(PolicyConfig):
+    pass
 
 class RandomPolicy(Policy):
     """Hand-coded policy that returns random actions."""

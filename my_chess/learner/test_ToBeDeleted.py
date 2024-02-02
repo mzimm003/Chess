@@ -20,7 +20,7 @@ if __name__ == "__main__":
     pol1 = Policy.from_checkpoint(checkpoints[white_idx])
     pol2 = Policy.from_checkpoint(checkpoints[1-white_idx])
 
-    # checkpoint = './results/test/PPO_Chess_cef9e_00000_0_lr=0.0025,fcnet_hiddens=1280_2023-08-08_20-35-38/checkpoint_000175/'
+    # checkpoint = '/home/mark/Machine_Learning/Reinforcement_Learning/Chess/test/PPO_TicTacToe_f58b2_00000_0_lr=0.0000_2024-01-30_15-33-23/checkpoint_000001'
     # alg = Algorithm.from_checkpoint(
     #     checkpoint,
     #     policy_ids=['main']

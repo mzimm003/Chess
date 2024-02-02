@@ -8,10 +8,11 @@ but should be done in a fashion analogous to techniques applied in other areas.
 To best learn, emphasis will be on result analysis and process automation.
 
 # Analysis
-All analysis completed can be found [here](./analysis/analysis.md). A highlight of the latest work
+All analysis completed can be found [here](./my_chess/analysis/analysis.md). A highlight of the latest work
 is below:
 
 ## Latest
+![latest](./my_chess/analysis/analysis.png "Latest Analysis")
 
 # Automation
 Training will be supported by Ray's RLlib "offering support for production-level, highly distributed

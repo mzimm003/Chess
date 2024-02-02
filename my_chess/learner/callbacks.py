@@ -36,9 +36,9 @@ class SelfPlayCallback(DefaultCallbacks):
         algorithm: Algorithm,
         **kwargs,
     ) -> None:
-        gradFldr = Path('./grads')
-        if not gradFldr.exists():
-            gradFldr.mkdir()
+        # gradFldr = Path('./grads')
+        # if not gradFldr.exists():
+        #     gradFldr.mkdir()
         main_policy = algorithm.get_policy("default_policy")
         algorithm.remove_policy('default_policy')
 
@@ -46,15 +46,14 @@ class SelfPlayCallback(DefaultCallbacks):
             # agent_id = [0|1] -> policy depends on episode ID
             # This way, we make sure that both policies sometimes play agent0
             # (start player) and sometimes agent1 (player to move 2nd).
-            return "main" if episode.custom_metrics['curr_ep'] % 2 == int(agent_id.split('_')[-1]) else "main_v0"
+            return "main" if episode.custom_metrics['curr_ep'] % 2 == int(agent_id.split('_')[-1]) % 2 else "main_v0"
         
-        algorithm.add_policy(policy_id='main_v0', policy_cls=type(main_policy))
+        algorithm.add_policy(policy_id='main_v0', policy=main_policy)
         self.opponent['current'] = 'main_v0'
         if hasattr(algorithm.config, '_enable_learner_api') and algorithm.config._enable_learner_api:
             algorithm.add_policy(
                 policy_id='main',
-                policy_cls=type(main_policy),
-                config=main_policy.config,
+                policy=main_policy,
                 module_spec=SingleAgentRLModuleSpec.from_module(main_policy.model),
                 policies_to_train=['main'],
                 policy_mapping_fn=policy_mapping_fn
@@ -62,8 +61,7 @@ class SelfPlayCallback(DefaultCallbacks):
         else:
             algorithm.add_policy(
                 policy_id='main',
-                policy_cls=type(main_policy),
-                config=main_policy.config,
+                policy=main_policy,
                 policies_to_train=['main'],
                 policy_mapping_fn=policy_mapping_fn
             )
@@ -75,11 +73,10 @@ class SelfPlayCallback(DefaultCallbacks):
         # such that evaluation always happens on the already updated policy,
         # instead of on the already used train_batch.
 
-        grads = [par.grad.cpu().numpy() for par in algorithm.get_policy('main').model.parameters()]
-        torch.save(grads,'./grads/{}.pt'.format(algorithm.training_iteration))
+        # grads = [par.grad.cpu().numpy() for par in algorithm.get_policy('main').model.parameters()]
+        # torch.save(grads,'./grads/{}.pt'.format(algorithm.training_iteration))
         # with open('test.txt', 'a') as f:
         #     json.dump(grads, f)
-
         win_rate = result['custom_metrics']['wins_mean']
         result["win_rate"] = win_rate
         print(f"Iter={algorithm.iteration} win-rate={win_rate} -> ", end="")
@@ -118,7 +115,7 @@ class SelfPlayCallback(DefaultCallbacks):
                     # (start player) and sometimes agent1 (player to move 2nd).
                     return (
                         "main"
-                        if episode.custom_metrics['curr_ep'] % 2 == int(agent_id.split('_')[-1])
+                        if episode.custom_metrics['curr_ep'] % 2 == int(agent_id.split('_')[-1]) % 2
                         else opp_choice_id
                     )
                 

@@ -5,6 +5,7 @@ import abc
 import os
 import sys
 import math
+import time
 from typing import (
     Dict,
     Union,
@@ -13,7 +14,6 @@ from typing import (
 
 import ray
 from ray import tune, air
-from ray.rllib.models import ModelCatalog
 from ray.tune.registry import register_trainable
 
 import my_chess.learner.environments
@@ -32,6 +32,14 @@ from my_chess.learner.algorithms import (
 )
 ALGORITHMS = {k:v for k,v in inspect.getmembers(my_chess.learner.algorithms, inspect.isclass) if not "Config" in k}
 ALGORITHMCONFIGS = {k:v for k,v in inspect.getmembers(my_chess.learner.algorithms, inspect.isclass) if "Config" in k}
+
+import my_chess.learner.policies
+from my_chess.learner.policies import (
+    Policy,
+    PolicyConfig,
+)
+POLICIES = {k:v for k,v in inspect.getmembers(my_chess.learner.policies, inspect.isclass) if not "Config" in k}
+POLICYCONFIGS = {k:v for k,v in inspect.getmembers(my_chess.learner.policies, inspect.isclass) if "Config" in k}
 
 import my_chess.learner.models
 from my_chess.learner.models import (
@@ -189,17 +197,49 @@ class ScriptChooser(Script):
         super().parseArgs()
 
 class Test(Script):
-    def __init__(self, **kwargs) -> None:
+    def __init__(
+            self,
+            checkpoint=None,
+            environment:Union[Environment, str]=None,
+            **kwargs) -> None:
         """
         Args:
+            checkpoint: directory location of policy to visualize
+            environment: Name of environment (if any) to test in.
         """
         super().__init__(**kwargs)
+        self.checkpoint = checkpoint
+        self.environment = ENVIRONMENTS[environment]() if isinstance(environment, str) else environment
     
     def run(self):
         """
         Args:
         """
-        pass
+        pol1 = pol2 = Policy.from_checkpoint(self.checkpoint)
+
+        for i in range(3):
+            self.environment.env.reset()
+            epRew = 0
+            done = False
+            j = 0
+            p1_turn = True
+            while not done:
+                observation, reward, termination, truncation, info = self.environment.env.last()
+                done = termination or truncation
+                # for k,v in observation.items():
+                #     if isinstance(v, np.ndarray):
+                #         observation[k] = v.tolist()
+                # observation = {"obs_flat":observation["obs_flat"]["observation"]}
+                if not done:
+                    act = None
+                    if not p1_turn:
+                        act = pol2.compute_single_action(obs=observation)[0]
+                    else:
+                        act = pol1.compute_single_action(obs=observation)[0]
+                    p1_turn = not p1_turn
+
+                    self.environment.env.step(act)
+                time.sleep(.3)
 
 class Train(Script):
     def __init__(
@@ -213,6 +253,8 @@ class Train(Script):
             environment:Union[Environment, str]=None,
             algorithm:Union[Algorithm, str]=None,
             algorithm_config:Union[AlgorithmConfig, str]=None,
+            policy:Union[Policy, str]=None,
+            policy_config:Union[PolicyConfig, str]=None,
             model:Union[Model, str]=None,
             model_config:Union[ModelConfig, str]=None,
             run_config:Union[air.RunConfig, str]=None,
@@ -230,6 +272,8 @@ class Train(Script):
             environment: Name of environment (if any) to train in.
             algorithm: Name of training algorithm.
             algorithm_config: Name of training algorithm configuration (named defaults will be used).
+            policy: Name of action policy.
+            policy_config: Name of action policy configuration (named defaults will be used).
             model: Name of model being trained.
             model_config: Name of training algorithm configuration (named defaults will be used).
             run_config: Name of run configuration to be used.
@@ -256,13 +300,26 @@ class Train(Script):
         self.algorithm = ALGORITHMS[algorithm] if isinstance(algorithm, str) else algorithm
         register_trainable(self.algorithm.__name__, self.algorithm)
         self.algorithm_config = ALGORITHMCONFIGS[algorithm_config]() if isinstance(algorithm_config, str) else algorithm_config
+
+        self.policy = POLICIES[policy] if isinstance(policy, str) else policy
+        self.policy_config = POLICYCONFIGS[policy_config]() if isinstance(policy_config, str) else policy_config
+        self.algorithm_config.multi_agent(
+                policies = {
+                    "default_policy":(
+                        self.policy,
+                        self.environment.observation_space(),
+                        self.environment.action_space(),
+                        {"config":self.policy_config})},
+        )
+
+
         self.model = MODELS[model] if isinstance(model, str) else model
-        ModelCatalog.register_custom_model(self.model.__name__, self.model)
         self.model_config = MODELCONFIGS[model_config]() if isinstance(model_config, str) else model_config
         self.algorithm_config.training(
             model={
                 'custom_model': self.model.__name__,
-                'custom_model_config':{"config":self.model_config}})
+                'custom_model_config':{"config":self.model_config}
+                })
         self.run_config = run_config
         if self.environment:
             self.algorithm_config.environment(self.environment.getName())
@@ -275,7 +332,11 @@ class Train(Script):
         """
         Args:
         """
-        ray.init(num_cpus=self.num_cpus, num_gpus=math.ceil(self.num_gpus), local_mode=self.local_mode)
+        ray.init(
+            num_cpus=self.num_cpus,
+            num_gpus=math.ceil(self.num_gpus),
+            local_mode=self.local_mode,
+            storage="/home/mark/Machine_Learning/Reinforcement_Learning/Chess")
         
         tuner = None
         if self.restore:

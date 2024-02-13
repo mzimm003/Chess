@@ -16,7 +16,7 @@ class QLearnerConfig(ModelConfig):
     def __init__(
             self,
             num_layers:int=2,
-            hidden_dim:int=16) -> None:
+            hidden_dim:int=256) -> None:
         super().__init__()
         self.num_layers = num_layers
         self.hidden_dim = hidden_dim
@@ -39,19 +39,19 @@ class QLearner(Model):
             name = name
             )
         self.config = config
-        # self.ff = nn.Sequential(
-        #     *[nn.Linear(np.prod(self.obs_space.original_space['observation'].shape), self.config.hidden_dim),
-        #     nn.ReLU()]*(self.config.num_layers-1),
-        #     nn.Linear(self.config.hidden_dim, self.num_outputs)
-        # )
         orig_space = getattr(self.obs_space,"original_space",self.obs_space)
-        self.ff = FullyConnectedNetwork(
-            orig_space["observation"],
-            self.action_space,
-            self.num_outputs,
-            {"fcnet_hiddens":self.config.num_layers*[self.config.hidden_dim],
-             "fcnet_activation":"relu"},
-            "ff")
+        self.ff = nn.Sequential(
+            *[nn.Linear(np.prod(orig_space['observation'].shape), self.config.hidden_dim),
+            nn.ReLU()]*(self.config.num_layers-1),
+            nn.Linear(self.config.hidden_dim, self.num_outputs)
+        )
+        # self.ff = FullyConnectedNetwork(
+        #     orig_space["observation"],
+        #     self.action_space,
+        #     self.num_outputs,
+        #     {"fcnet_hiddens":self.config.num_layers*[self.config.hidden_dim],
+        #      "fcnet_activation":"relu"},
+        #     "ff")
         self.probs = nn.Softmax(-1)
         self._features = None
     
@@ -61,17 +61,17 @@ class QLearner(Model):
         state: List[TensorType],
         seq_lens: TensorType,
     ) -> (TensorType, List[TensorType]):
-        # obs = input_dict['obs']['observation'].flatten(1)
-        # obs = obs.to(next(self.parameters()).dtype)
-        # self._features = self.ff(obs)
         action_mask = input_dict['obs']['action_mask']
         input_dict["obs"] = input_dict["obs"]["observation"]
-        model_out, state = self.ff(
-            input_dict=input_dict,
-            state=state,
-            seq_lens=seq_lens)
-        # model_out = self.probs(self._features)
-        return model_out, state
+        obs = input_dict['obs'].flatten(1)
+        obs = obs.to(next(self.parameters()).dtype)
+        self._features = self.ff(obs)
+        # model_out, state = self.ff(
+        #     input_dict=input_dict,
+        #     state=state,
+        #     seq_lens=seq_lens)
+        return self._features, state
 
     def value_function(self):
-        return self.ff.value_function()
+        # return self.ff.value_function()
+        return self._features.max(-1)[0]

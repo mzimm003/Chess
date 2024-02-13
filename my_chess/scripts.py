@@ -217,7 +217,7 @@ class Test(Script):
         """
         pol1 = pol2 = Policy.from_checkpoint(self.checkpoint)
 
-        for i in range(3):
+        for i in range(50):
             self.environment.env.reset()
             epRew = 0
             done = False

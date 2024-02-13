@@ -23,9 +23,10 @@ def main(kwargs=None):
         model="QLearner",
         model_config="QLearnerConfig",
         run_config=air.RunConfig(
-                            local_dir="./results",
+                            local_dir="results",
                             name="test",
-                            checkpoint_config=air.CheckpointConfig(checkpoint_frequency=25)),
+                            checkpoint_config=air.CheckpointConfig(checkpoint_frequency=25),
+                            stop={"timesteps_total": 10000000},),
     )
     (train_script.getAlgConfig()
         .multi_agent(
@@ -34,8 +35,10 @@ def main(kwargs=None):
                 )
         .callbacks(SelfPlayCallback)
         .training(
-            lr=tune.grid_search([0.000001]),
-            optimizer={'simple_optimizer':True},
+            lr_schedule=tune.grid_search([[[1,0.00001],[7000000,0.000001]],
+                                          [[1,0.00005],[7000000,0.000005],[9000000,0.000001]],
+                                          [[1,0.000025],[7000000,0.0000025],[9000000,0.000001]]]),
+            # optimizer={'simple_optimizer':True},
             # kl_coeff=.005,
         )
         .resources(num_gpus=0.85)

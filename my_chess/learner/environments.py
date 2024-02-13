@@ -80,7 +80,7 @@ class TicTacToe(Environment):
             render_mode:Literal[None, "human", "ansi", "rgb_array"] = None) -> None:
         assert render_mode in {None, "human", "ansi", "rgb_array"}
         env = tictactoe_v3 if env is None else env
-        super().__init__(env)
+        super().__init__(env, render_mode=render_mode)
 # import copy
 # from typing import Dict, Any
 

@@ -3,3 +3,5 @@ test/
 .vscode/
 junk.py
 __pycache__
+Data/
+_valid

@@ -3,14 +3,14 @@ from torch import nn
 import gymnasium as gym
 from ray.rllib.utils.typing import ModelConfigDict
 
-class ModelConfig:
+class ModelRRLIBConfig:
     def __init__(self) -> None:
         pass
 
     def asDict(self):
         return self.__dict__
 
-class Model(TorchModelV2, nn.Module):
+class ModelRLLIB(TorchModelV2, nn.Module):
     def __init__(
         self,
         obs_space: gym.spaces.Space = None,
@@ -27,6 +27,21 @@ class Model(TorchModelV2, nn.Module):
             )
         #super is not calling nn.Module init for unknown reasons
         nn.Module.__init__(self)
+
+    def getModelSpecificParams(self):
+        return self.__dict__
+    
+class ModelConfig:
+    def __init__(self) -> None:
+        pass
+
+    def asDict(self):
+        return self.__dict__
+
+class Model(nn.Module):
+    def __init__(
+        self):
+        super().__init__()
 
     def getModelSpecificParams(self):
         return self.__dict__

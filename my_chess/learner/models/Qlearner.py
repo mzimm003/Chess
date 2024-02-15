@@ -9,10 +9,10 @@ import numpy as np
 
 from typing import Dict, List
 
-from my_chess.learner.models import Model, ModelConfig
+from my_chess.learner.models import ModelRLLIB, ModelRRLIBConfig
 
 
-class QLearnerConfig(ModelConfig):
+class QLearnerConfig(ModelRRLIBConfig):
     def __init__(
             self,
             num_layers:int=2,
@@ -21,7 +21,7 @@ class QLearnerConfig(ModelConfig):
         self.num_layers = num_layers
         self.hidden_dim = hidden_dim
 
-class QLearner(Model):
+class QLearner(ModelRLLIB):
     def __init__(
         self,
         obs_space: gym.spaces.Space=None,

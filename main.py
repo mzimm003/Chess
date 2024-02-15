@@ -15,36 +15,33 @@ def main(kwargs=None):
         # debug=True,
         num_cpus=12,
         num_gpus=0.85,
-        environment="TicTacToe",
-        algorithm="PPO",
-        algorithm_config="PPOConfig",
-        policy="PPOPolicy",
-        policy_config="PPOPolicyConfig",
-        model="QLearner",
-        model_config="QLearnerConfig",
+        training_on="ChessData",
+        algorithm="AutoEncoder",
+        algorithm_config="AutoEncoderConfig",
+        model="DeepChessFE",
+        model_config="DeepChessFEConfig",
         run_config=air.RunConfig(
-                            local_dir="results",
-                            name="test",
+                            name="ChessFeatureExtractor",
                             checkpoint_config=air.CheckpointConfig(checkpoint_frequency=25),
-                            stop={"timesteps_total": 10000000},),
+                            stop={"timesteps_total": 20},),
     )
-    (train_script.getAlgConfig()
-        .multi_agent(
-                # policy_mapping_fn=policy_mapping_fn,
-                policy_map_capacity=2,
-                )
-        .callbacks(SelfPlayCallback)
-        .training(
-            lr_schedule=tune.grid_search([[[1,0.00001],[7000000,0.000001]],
-                                          [[1,0.00005],[7000000,0.000005],[9000000,0.000001]],
-                                          [[1,0.000025],[7000000,0.0000025],[9000000,0.000001]]]),
-            # optimizer={'simple_optimizer':True},
-            # kl_coeff=.005,
-        )
-        .resources(num_gpus=0.85)
-        .framework(framework='torch')
-        .rollouts(num_rollout_workers=11, num_envs_per_worker=50)
-    )
+    # (train_script.getAlgConfig()
+    #     .multi_agent(
+    #             # policy_mapping_fn=policy_mapping_fn,
+    #             policy_map_capacity=2,
+    #             )
+    #     .callbacks(SelfPlayCallback)
+    #     .training(
+    #         lr_schedule=tune.grid_search([[[1,0.00001],[7000000,0.000001]],
+    #                                       [[1,0.00005],[7000000,0.000005],[9000000,0.000001]],
+    #                                       [[1,0.000025],[7000000,0.0000025],[9000000,0.000001]]]),
+    #         # optimizer={'simple_optimizer':True},
+    #         # kl_coeff=.005,
+    #     )
+    #     .resources(num_gpus=0.85)
+    #     .framework(framework='torch')
+    #     .rollouts(num_rollout_workers=11, num_envs_per_worker=50)
+    # )
     train_script.run()
 
 

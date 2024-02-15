@@ -23,12 +23,18 @@ from my_chess.learner.environments import (
 )
 ENVIRONMENTS = {k:v for k,v in inspect.getmembers(my_chess.learner.environments, inspect.isclass)}
 
+import my_chess.learner.datasets
+from my_chess.learner.datasets import (
+    Dataset,
+)
+DATASETS = {k:v for k,v in inspect.getmembers(my_chess.learner.datasets, inspect.isclass)}
+
 import my_chess.learner.algorithms
 from my_chess.learner.algorithms import (
     Algorithm,
     AlgorithmConfig,
-    PPO,
-    PPOConfig,
+    Trainable,
+    TrainableConfig,
 )
 ALGORITHMS = {k:v for k,v in inspect.getmembers(my_chess.learner.algorithms, inspect.isclass) if not "Config" in k}
 ALGORITHMCONFIGS = {k:v for k,v in inspect.getmembers(my_chess.learner.algorithms, inspect.isclass) if "Config" in k}
@@ -43,8 +49,8 @@ POLICYCONFIGS = {k:v for k,v in inspect.getmembers(my_chess.learner.policies, in
 
 import my_chess.learner.models
 from my_chess.learner.models import (
-    Model,
-    ModelConfig
+    ModelRLLIB,
+    ModelRRLIBConfig
 )
 MODELS = {k:v for k,v in inspect.getmembers(my_chess.learner.models, inspect.isclass) if not "Config" in k}
 MODELCONFIGS = {k:v for k,v in inspect.getmembers(my_chess.learner.models, inspect.isclass) if "Config" in k}
@@ -250,13 +256,13 @@ class Train(Script):
             num_cpus:int=1,
             num_gpus:float=0.,
             local_mode:bool=False,
-            environment:Union[Environment, str]=None,
-            algorithm:Union[Algorithm, str]=None,
-            algorithm_config:Union[AlgorithmConfig, str]=None,
+            training_on:Union[Environment, str]=None,
+            algorithm:Union[Trainable, Algorithm, str]=None,
+            algorithm_config:Union[TrainableConfig, AlgorithmConfig, str]=None,
             policy:Union[Policy, str]=None,
             policy_config:Union[PolicyConfig, str]=None,
-            model:Union[Model, str]=None,
-            model_config:Union[ModelConfig, str]=None,
+            model:Union[ModelRLLIB, str]=None,
+            model_config:Union[ModelRRLIBConfig, str]=None,
             run_config:Union[air.RunConfig, str]=None,
             callback:DefaultCallbacks=None,
             framework:Literal["tf","torch"] = "torch",
@@ -269,7 +275,7 @@ class Train(Script):
             num_cpus: Number of cpus to allocate to session.
             num_gpus: Number of gpus to allocate to session (including fractional amounts).
             local_mode: Boolean limiting session to be run locally.
-            environment: Name of environment (if any) to train in.
+            training_on: Name of training set, either an environment or dataset.
             algorithm: Name of training algorithm.
             algorithm_config: Name of training algorithm configuration (named defaults will be used).
             policy: Name of action policy.
@@ -296,33 +302,47 @@ class Train(Script):
             
             self.restore = restore
             self.framework = framework
-        self.environment = ENVIRONMENTS[environment]() if isinstance(environment, str) else environment
+        self.training_on = None
+        if isinstance(training_on, str):
+            if training_on in ENVIRONMENTS:
+                self.training_on = ENVIRONMENTS[training_on]()
+            elif training_on in DATASETS:
+                self.training_on = DATASETS[training_on]
+        else:
+            self.training_on = training_on
         self.algorithm = ALGORITHMS[algorithm] if isinstance(algorithm, str) else algorithm
         register_trainable(self.algorithm.__name__, self.algorithm)
         self.algorithm_config = ALGORITHMCONFIGS[algorithm_config]() if isinstance(algorithm_config, str) else algorithm_config
 
         self.policy = POLICIES[policy] if isinstance(policy, str) else policy
         self.policy_config = POLICYCONFIGS[policy_config]() if isinstance(policy_config, str) else policy_config
-        self.algorithm_config.multi_agent(
-                policies = {
-                    "default_policy":(
-                        self.policy,
-                        self.environment.observation_space(),
-                        self.environment.action_space(),
-                        {"config":self.policy_config})},
-        )
-
 
         self.model = MODELS[model] if isinstance(model, str) else model
         self.model_config = MODELCONFIGS[model_config]() if isinstance(model_config, str) else model_config
-        self.algorithm_config.training(
-            model={
-                'custom_model': self.model.__name__,
-                'custom_model_config':{"config":self.model_config}
-                })
+        if isinstance(self.algorithm_config, AlgorithmConfig):
+            self.algorithm_config.multi_agent(
+                    policies = {
+                        "default_policy":(
+                            self.policy,
+                            self.training_on.observation_space(),
+                            self.training_on.action_space(),
+                            {"config":self.policy_config})},
+            )
+
+            self.algorithm_config.training(
+                model={
+                    'custom_model': self.model.__name__,
+                    'custom_model_config':{"config":self.model_config}
+                    })
+            self.algorithm_config.environment(self.training_on.getName())
+        elif isinstance(self.algorithm_config, TrainableConfig):
+            self.algorithm_config.update(
+                model=self.model,
+                model_config=self.model_config,
+                dataset=self.training_on)
+            algorithm = tune.with_resources(self.algorithm, {"cpu":self.num_cpus//4, "gpu":self.num_gpus/4})
+            tune.register_trainable(algorithm.__name__, algorithm)
         self.run_config = run_config
-        if self.environment:
-            self.algorithm_config.environment(self.environment.getName())
         self.callback = callback
 
     def getAlgConfig(self) -> AlgorithmConfig:
@@ -336,7 +356,7 @@ class Train(Script):
             num_cpus=self.num_cpus,
             num_gpus=math.ceil(self.num_gpus),
             local_mode=self.local_mode,
-            storage="/home/mark/Machine_Learning/Reinforcement_Learning/Chess")
+            storage="/home/mark/Machine_Learning/Reinforcement_Learning/Chess/results")
         
         tuner = None
         if self.restore:

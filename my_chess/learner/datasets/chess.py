@@ -180,7 +180,7 @@ class ChessData(Dataset):
                  if ((labels['Result'] == '1-0' and labels['agent_perspective'] == 'player_0') or
                      (labels['Result'] == '0-1' and labels['agent_perspective'] == 'player_1'))
                  else -1)
-        return ob, label, labels
+        return ob['observation'], label
     
     def __necessary_file(self, idx):
         return np.digitize(idx, self.obs_data["_cum_obs_counts"])-1

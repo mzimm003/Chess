@@ -23,7 +23,7 @@ from torchvision.models.swin_transformer import (
     Permute    
 )
 
-from my_chess.learner.models import Model, ModelConfig
+from my_chess.learner.models import ModelRLLIB, ModelRRLIBConfig
 
 # from matcher import HungarianMatcher
 
@@ -187,7 +187,7 @@ class SwinFeatureExtractor(nn.Module):
                 features.append(x)
         return features
 
-class ToBeNamedConfig(ModelConfig):
+class ToBeNamedConfig(ModelRRLIBConfig):
     def __init__(
         self,
         swin_input_channels: int = 111,
@@ -247,7 +247,7 @@ class ToBeNamedConfig(ModelConfig):
         self.encoder_mask_check = encoder_mask_check
         self.embedding_dim = embedding_dim
 
-class ToBeNamed(Model):
+class ToBeNamed(ModelRLLIB):
     def __init__(
         self,
         obs_space: gym.spaces.Space=None,
@@ -258,7 +258,7 @@ class ToBeNamed(Model):
         config:ToBeNamedConfig = None,
         **kwargs
     ):
-        Model.__init__(
+        ModelRLLIB.__init__(
             self,
             obs_space = obs_space,
             action_space = action_space,

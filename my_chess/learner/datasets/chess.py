@@ -19,6 +19,34 @@ from tqdm import tqdm
 from itertools import islice
 
 """
+To prevent memory problems with multiprocessing.
+Provided by https://github.com/pytorch/pytorch/issues/13246#issuecomment-617140519
+See https://github.com/pytorch/pytorch/issues/13246#issuecomment-715050814 for summary
+"""
+# --- UTILITY FUNCTIONS ---
+def string_to_sequence(s: str, dtype=np.int32) -> np.ndarray:
+    return np.array([ord(c) for c in s], dtype=dtype)
+
+def sequence_to_string(seq: np.ndarray) -> str:
+    return ''.join([chr(c) for c in seq])
+
+def pack_sequences(seqs: Union[np.ndarray, list]) -> Tuple[np.ndarray, np.ndarray]:
+    values = np.concatenate(seqs, axis=0)
+    offsets = np.cumsum([len(s) for s in seqs])
+    return values, offsets
+
+def unpack_sequence(values: np.ndarray, offsets: np.ndarray, index: int) -> np.ndarray:
+    off1 = offsets[index]
+    if index > 0:
+        off0 = offsets[index - 1]
+    elif index == 0:
+        off0 = 0
+    else:
+        raise ValueError(index)
+    return values[off0:off1]
+
+
+"""
 Ray multiprocessing does not provide a locking mechanism. The following solution is provided here: https://github.com/ray-project/ray/issues/8017
 """
 import posix_ipc
@@ -150,28 +178,31 @@ class ChessData(Dataset):
             "current_file":0,
             "_obs_counts":[0],
             "_cum_obs_counts":[0],
-            "labels":None,
             }
         
         self.__create_structure()
         
-        with open(self.label_dir/(ChessData.AUTONAME+".json"), 'r') as f:
-            self.obs_data = json.load(f)
-        with open(self.label_dir/"{}-{}.json".format(ChessData.AUTONAME, self.obs_data["current_file"]), 'r') as f:
-            self.obs_data["labels"] = json.load(f)
+        self.obs_data = pd.read_json(self.label_dir/(ChessData.AUTONAME+".json"))
+        self.labels = pd.read_json(self.label_dir/"{}-{}.json".format(ChessData.AUTONAME, self.obs_data.loc[0,"current_file"]), orient="records")
+    #     self.__apply_numpy()
+
+    # def __apply_numpy(self):
+    #     # See https://github.com/pytorch/pytorch/issues/13246#issuecomment-905703662
+    #     pass
+
+
         
     def __len__(self):
-        return self.obs_data['total_observations']
+        return self.obs_data.loc[0,'total_observations']
     
     def __getitem__(self, idx):
         file_idx = self.__necessary_file(idx)
-        idx -= self.obs_data["_cum_obs_counts"][file_idx]
-        if self.obs_data["current_file"] != file_idx:
-            self.obs_data["current_file"] = file_idx
-            with open(self.label_dir/"{}-{}.json".format(ChessData.AUTONAME, self.obs_data["current_file"]), 'r') as f:
-                self.obs_data["labels"] = json.load(f)
+        idx -= self.obs_data.loc[file_idx,"_cum_obs_counts"]
+        if self.obs_data.loc[0,"current_file"] != file_idx:
+            self.obs_data.loc[0,"current_file"] = file_idx
+            self.labels = pd.read_json(self.label_dir/"{}-{}.json".format(ChessData.AUTONAME, self.obs_data.loc[0,"current_file"]), orient="records")
 
-        labels = self.obs_data['labels']['observations'][idx]
+        labels = self.labels.loc[idx]
         ob_path = self.obs_dir/labels['file_name']
         ob = None
         with open(ob_path, 'rb') as f:
@@ -183,7 +214,7 @@ class ChessData(Dataset):
         return ob['observation'], label
     
     def __necessary_file(self, idx):
-        return np.digitize(idx, self.obs_data["_cum_obs_counts"])-1
+        return np.digitize(idx, self.obs_data.loc[:,"_cum_obs_counts"])-1
     
     def __create_structure(self):
         if (self.reset or
@@ -262,8 +293,7 @@ class ChessData(Dataset):
             games = {'observations':[]}
             for g in gs:
                 games['observations'].append(g)
-            with open(self.label_dir/"{}-{}.json".format(ChessData.AUTONAME, i), 'w') as f:
-                json.dump(games, f, indent=4)
+            pd.DataFrame(gs).to_json(self.label_dir/"{}-{}.json".format(ChessData.AUTONAME, i), orient='records')
     
     def __separate_games_text(self, file:str, pool:Pool):
         file_copy = None

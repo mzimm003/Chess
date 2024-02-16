@@ -339,8 +339,12 @@ class Train(Script):
             self.algorithm_config.update(
                 model=self.model,
                 model_config=self.model_config,
-                dataset=self.training_on)
-            algorithm = tune.with_resources(self.algorithm, {"cpu":self.num_cpus//4, "gpu":self.num_gpus/4})
+                dataset=self.training_on,
+                num_cpus=self.num_cpus)
+            algorithm = tune.with_resources(
+                self.algorithm,
+                resources={"CPU":self.num_cpus, "GPU":self.num_gpus}
+            )
             tune.register_trainable(algorithm.__name__, algorithm)
         self.run_config = run_config
         self.callback = callback

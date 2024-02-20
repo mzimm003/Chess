@@ -1,8 +1,24 @@
 from ray.tune.trainable import Trainable as Trainabletemp
 from ray.train.torch import TorchTrainer
 from ray.tune.tune import _Config
+import torch
 
 import os
+
+class SimpleCustomBatch:
+    def __init__(self, data):
+        transposed_data = list(zip(*data))
+        self.inp = torch.stack(transposed_data[0], 0)
+        self.tgt = torch.stack(transposed_data[1], 0)
+
+    # custom memory pinning method on custom type
+    def pin_memory(self):
+        self.inp = self.inp.pin_memory()
+        self.tgt = self.tgt.pin_memory()
+        return self
+
+def collate_wrapper(batch):
+    return SimpleCustomBatch(batch)
 
 class Trainable(Trainabletemp):
     def getName(self):

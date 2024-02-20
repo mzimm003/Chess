@@ -13,7 +13,7 @@ import ray.tune as tune
 def main(kwargs=None):
     train_script = Train(
         # debug=True,
-        num_cpus=12,
+        num_cpus=16,
         num_gpus=0.85,
         training_on="ChessData",
         algorithm="AutoEncoder",
@@ -23,7 +23,9 @@ def main(kwargs=None):
         run_config=air.RunConfig(
                             name="ChessFeatureExtractor",
                             checkpoint_config=air.CheckpointConfig(checkpoint_frequency=25),
-                            stop={"timesteps_total": 20},),
+                            # stop={"timesteps_total": 20},
+                            stop={"training_iteration": 20},
+                            ),
     )
     # (train_script.getAlgConfig()
     #     .multi_agent(

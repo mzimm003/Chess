@@ -11,39 +11,15 @@ import numpy as np
 import pandas as pd
 from ray.util.multiprocessing import Pool
 import ray
+import torch
+import torch.utils.data
+from torch.multiprocessing import Manager, Queue
 from functools import partial
 from io import TextIOWrapper
 import gc
 from tqdm import tqdm
 
 from itertools import islice
-
-"""
-To prevent memory problems with multiprocessing.
-Provided by https://github.com/pytorch/pytorch/issues/13246#issuecomment-617140519
-See https://github.com/pytorch/pytorch/issues/13246#issuecomment-715050814 for summary
-"""
-# --- UTILITY FUNCTIONS ---
-def string_to_sequence(s: str, dtype=np.int32) -> np.ndarray:
-    return np.array([ord(c) for c in s], dtype=dtype)
-
-def sequence_to_string(seq: np.ndarray) -> str:
-    return ''.join([chr(c) for c in seq])
-
-def pack_sequences(seqs: Union[np.ndarray, list]) -> Tuple[np.ndarray, np.ndarray]:
-    values = np.concatenate(seqs, axis=0)
-    offsets = np.cumsum([len(s) for s in seqs])
-    return values, offsets
-
-def unpack_sequence(values: np.ndarray, offsets: np.ndarray, index: int) -> np.ndarray:
-    off1 = offsets[index]
-    if index > 0:
-        off0 = offsets[index - 1]
-    elif index == 0:
-        off0 = 0
-    else:
-        raise ValueError(index)
-    return values[off0:off1]
 
 
 """
@@ -172,49 +148,91 @@ class ChessData(Dataset):
         self.label_dir = self.data_dir/'labels'
         self.obs_dir = self.data_dir/'observations'
         self.max_games_per_file = max_games_per_file
-        self.obs_data = {
-            "total_label_files":0,
-            "total_observations":0,
-            "current_file":0,
-            "_obs_counts":[0],
-            "_cum_obs_counts":[0],
-            }
-        
+
         self.__create_structure()
         
-        self.obs_data = pd.read_json(self.label_dir/(ChessData.AUTONAME+".json"))
-        self.labels = pd.read_json(self.label_dir/"{}-{}.json".format(ChessData.AUTONAME, self.obs_data.loc[0,"current_file"]), orient="records")
-    #     self.__apply_numpy()
+        self.label_data = pd.read_json(self.label_dir/(ChessData.AUTONAME+".json"))
+        # self.new_labels_loaded_q = Queue()
 
-    # def __apply_numpy(self):
-    #     # See https://github.com/pytorch/pytorch/issues/13246#issuecomment-905703662
-    #     pass
+        self.main_lock = Manager().RLock()
+        self.current_file = torch.tensor([0], dtype=torch.int64).share_memory_()
+        self.current_file[0] = self.label_data.loc[0, Dataset.CURR_FILE_IDX]
+
+        self.file_names_v = self.file_names_o = None
+        self.prev_file_names_v = self.prev_file_names_o = None
+        self.results_v = self.results_o = None
+        self.prev_results_v = self.prev_results_o = None
+        self.agent_perspectives_v = self.agent_perspectives_o = None
+        self.prev_agent_perspectives_v = self.prev_agent_perspectives_o = None
+        self.update_labels(file_idx=self.current_file.item())
 
 
+    def update_labels(self, file_idx):
+        self.prev_file_names_v = self.file_names_v
+        self.prev_file_names_o = self.file_names_o
+        self.prev_results_v = self.results_v        
+        self.prev_results_o = self.results_o
+        self.prev_agent_perspectives_v = self.agent_perspectives_v
+        self.prev_agent_perspectives_o = self.agent_perspectives_o
+
+        labels = pd.read_json(self.label_dir/"{}-{}.json".format(ChessData.AUTONAME, self.current_file.item()), orient="records")
+        self.file_names_v, self.file_names_o = Dataset.strings_to_mem_safe_val_and_offset(labels.loc[:,"file_name"])
+        self.results_v, self.results_o = Dataset.strings_to_mem_safe_val_and_offset(labels.loc[:,"Result"])
+        self.agent_perspectives_v, self.agent_perspectives_o = Dataset.strings_to_mem_safe_val_and_offset(labels.loc[:,"agent_perspective"])
+
+        self.current_file[0] = file_idx
+
+        if self.prev_file_names_v is None:
+            self.prev_file_names_v = self.file_names_v
+            self.prev_file_names_o = self.file_names_o
+            self.prev_results_v = self.results_v        
+            self.prev_results_o = self.results_o
+            self.prev_agent_perspectives_v = self.agent_perspectives_v
+            self.prev_agent_perspectives_o = self.agent_perspectives_o
+
+    def get_file_name(self, file_idx, idx):
+        if self.current_file > file_idx:
+            return Dataset.mem_safe_val_and_offset_to_string(self.prev_file_names_v, self.prev_file_names_o, idx)
+        else:
+            return Dataset.mem_safe_val_and_offset_to_string(self.file_names_v, self.file_names_o, idx)
+        
+    def get_result(self, file_idx, idx):
+        if self.current_file > file_idx:
+            return Dataset.mem_safe_val_and_offset_to_string(self.prev_results_v, self.prev_results_o, idx)
+        else:
+            return Dataset.mem_safe_val_and_offset_to_string(self.results_v, self.results_o, idx)
+        
+    def get_agent_perspective(self, file_idx, idx):
+        if self.current_file > file_idx:
+            return Dataset.mem_safe_val_and_offset_to_string(self.prev_agent_perspectives_v, self.prev_agent_perspectives_o, idx)
+        else:
+            return Dataset.mem_safe_val_and_offset_to_string(self.agent_perspectives_v, self.agent_perspectives_o, idx)
         
     def __len__(self):
-        return self.obs_data.loc[0,'total_observations']
+        return self.label_data.loc[0,Dataset.LBL_COUNT]
     
     def __getitem__(self, idx):
         file_idx = self.__necessary_file(idx)
-        idx -= self.obs_data.loc[file_idx,"_cum_obs_counts"]
-        if self.obs_data.loc[0,"current_file"] != file_idx:
-            self.obs_data.loc[0,"current_file"] = file_idx
-            self.labels = pd.read_json(self.label_dir/"{}-{}.json".format(ChessData.AUTONAME, self.obs_data.loc[0,"current_file"]), orient="records")
+        idx -= self.label_data.loc[file_idx,Dataset.LBL_BINS]
+        if self.current_file < file_idx:
+            with self.main_lock:
+                if self.current_file < file_idx:
+                    self.update_labels(file_idx=file_idx)
 
-        labels = self.labels.loc[idx]
-        ob_path = self.obs_dir/labels['file_name']
+        ob_path = self.obs_dir/self.get_file_name(file_idx=file_idx, idx=idx)
         ob = None
         with open(ob_path, 'rb') as f:
-            ob = pickle.load(f)
+            ob = pickle.load(f)['observation']
+        res = self.get_result(file_idx=file_idx, idx=idx)
+        persp = self.get_agent_perspective(file_idx=file_idx, idx=idx)
         label = (1
-                 if ((labels['Result'] == '1-0' and labels['agent_perspective'] == 'player_0') or
-                     (labels['Result'] == '0-1' and labels['agent_perspective'] == 'player_1'))
+                 if ((res == '1-0' and persp == 'player_0') or
+                     (res == '0-1' and persp == 'player_1'))
                  else -1)
-        return ob['observation'], label
+        return torch.tensor(ob), torch.tensor(label)
     
     def __necessary_file(self, idx):
-        return np.digitize(idx, self.obs_data.loc[:,"_cum_obs_counts"])-1
+        return np.digitize(idx, self.label_data.loc[:,Dataset.LBL_BINS])-1
     
     def __create_structure(self):
         if (self.reset or
@@ -230,10 +248,10 @@ class ChessData(Dataset):
             for file in self.data_dir.glob("*.pgn"):
                 self.__create_database_from_pgn(file)
             
-            self.obs_data["_cum_obs_counts"] = np.cumsum(self.obs_data["_obs_counts"]).tolist()
+            self.label_data[Dataset.LBL_BINS] = np.cumsum(self.label_data[Dataset.LBL_COUNT_BY_FILE]).tolist()
 
             with open(self.label_dir/(ChessData.AUTONAME+".json"), 'w') as f:
-                json.dump(self.obs_data, f)
+                json.dump(self.label_data, f)
 
     
     def __create_database_from_pgn(self, file:str):
@@ -280,16 +298,16 @@ class ChessData(Dataset):
                     metadata.append(m_d)
                 return metadata
 
-        for i in range(self.obs_data["total_label_files"],
-                       self.obs_data["total_label_files"]+(len(games_text)//self.max_games_per_file)+1):
+        for i in range(self.label_data[Dataset.LBL_FILE_COUNT],
+                       self.label_data[Dataset.LBL_FILE_COUNT]+(len(games_text)//self.max_games_per_file)+1):
             file_start_idx = i*self.max_games_per_file
             file_end_idx = (i+1)*self.max_games_per_file
             gs = pool.map(process_game, games_text[file_start_idx:file_end_idx])
             # gs = list(tqdm(pool.imap(process_game, games_text), total=len(games_text))) #tqdm causes cpu under utilization
             gs = [j for k in gs if k for j in k]
-            self.obs_data['total_observations'] += len(gs)
-            self.obs_data['_obs_counts'].append(len(gs))
-            self.obs_data['total_label_files'] += 1
+            self.label_data[Dataset.LBL_COUNT] += len(gs)
+            self.label_data[Dataset.LBL_COUNT_BY_FILE].append(len(gs))
+            self.label_data[Dataset.LBL_FILE_COUNT] += 1
             games = {'observations':[]}
             for g in gs:
                 games['observations'].append(g)

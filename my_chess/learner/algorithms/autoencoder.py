@@ -1,6 +1,7 @@
 from typing import Optional, Type, Tuple, Callable
 from types import SimpleNamespace
 import inspect
+import shutil
 
 from ray.rllib.algorithms.ppo import PPO as PPOtemp
 from ray.rllib.utils.annotations import override
@@ -12,7 +13,7 @@ from torch.optim import Optimizer, Adam
 import torch
 from torch import nn
 
-from my_chess.learner.algorithms import Trainable, TrainableConfig
+from my_chess.learner.algorithms import Trainable, TrainableConfig, collate_wrapper
 from my_chess.learner.policies import Policy, PPOPolicy
 from my_chess.learner.datasets import Dataset, ChessData
 from my_chess.learner.models import Model, ModelConfig
@@ -28,8 +29,8 @@ class AutoEncoderConfig(TrainableConfig):
             criterion_config:Callable=None,
             model:Model=None,
             model_config:ModelConfig=None,
-            batch_size:int=64,
-            shuffle:bool=False, #creates slow down given data separation between files
+            batch_size:int=128,
+            shuffle:bool=False, #True creates slow down given data separation between files, and can also cause RAM to blow up
             seed:int=42,
             data_split:Tuple[float, float, float]=(0.025, 0.005, 0.97),
             pin_memory:bool=True,
@@ -85,58 +86,58 @@ class AutoEncoderConfig(TrainableConfig):
         )
         
 class AutoEncoder(Trainable):
-    @staticmethod
-    def layer_step(config):
-        config = SimpleNamespace(config)
-        idx = config.idx
-        layer = config.layer
-        layer = prepare_model(layer)
+    # @staticmethod
+    # def layer_step(config):
+    #     config = SimpleNamespace(config)
+    #     idx = config.idx
+    #     layer = config.layer
+    #     layer = prepare_model(layer)
 
-        optimizer = config.optimizer_class(layer.parameters(), **config.optimizer_config)
-        optimizer = prepare_optimizer(optimizer)
+    #     optimizer = config.optimizer_class(layer.parameters(), **config.optimizer_config)
+    #     optimizer = prepare_optimizer(optimizer)
 
-        criterion = config.criterion
+    #     criterion = config.criterion
 
-        trainloader = prepare_data_loader(config.trainloader)
-        valloader = prepare_data_loader(config.valloader)
+    #     trainloader = prepare_data_loader(config.trainloader)
+    #     valloader = prepare_data_loader(config.valloader)
 
-        layer.train()
+    #     layer.train()
 
-        total_train_loss = 0
-        for data in trainloader:
-            inp = data[0]
-            target = data[0]
-            # inp = inp.to(dtype=next(iter(layer.parameters())).dtype , device=config.device)
-            # target = target.to(dtype=next(iter(layer.parameters())).dtype, device=config.device)
+    #     total_train_loss = 0
+    #     for data in trainloader:
+    #         inp = data[0]
+    #         target = data[0]
+    #         # inp = inp.to(dtype=next(iter(layer.parameters())).dtype , device=config.device)
+    #         # target = target.to(dtype=next(iter(layer.parameters())).dtype, device=config.device)
 
-            output = layer(inp)
+    #         output = layer(inp)
             
-            optimizer.zero_grad()
-            loss = criterion(output, target)
-            loss.backward()
-            optimizer.step()
+    #         optimizer.zero_grad()
+    #         loss = criterion(output, target)
+    #         loss.backward()
+    #         optimizer.step()
 
-            total_train_loss += loss.item()
+    #         total_train_loss += loss.item()
         
-        layer.eval()
-        total_val_loss = 0
-        for data in valloader:
-            inp = data[0]
-            target = data[0]
-            output = layer(inp)
+    #     layer.eval()
+    #     total_val_loss = 0
+    #     for data in valloader:
+    #         inp = data[0]
+    #         target = data[0]
+    #         output = layer(inp)
 
-            loss = criterion(output, target)
+    #         loss = criterion(output, target)
 
-            total_val_loss += loss.item()
+    #         total_val_loss += loss.item()
 
-        ray.train.report(
-            metrics = {
-            'lyr_{}_total_train_loss'.format(idx):total_train_loss,
-            'lyr_{}_mean_train_loss'.format(idx):total_train_loss/len(trainloader),
-            'lyr_{}_total_val_loss'.format(idx):total_val_loss,
-            'lyr_{}_mean_val_loss'.format(idx):total_val_loss/len(valloader),
-            }
-        )
+    #     ray.train.report(
+    #         metrics = {
+    #         'lyr_{}_total_train_loss'.format(idx):total_train_loss,
+    #         'lyr_{}_mean_train_loss'.format(idx):total_train_loss/len(trainloader),
+    #         'lyr_{}_total_val_loss'.format(idx):total_val_loss,
+    #         'lyr_{}_mean_val_loss'.format(idx):total_val_loss/len(valloader),
+    #         }
+    #     )
 
     def setup(self, config:AutoEncoderConfig):
         if isinstance(config, dict):
@@ -152,19 +153,30 @@ class AutoEncoder(Trainable):
         dl_kwargs = dict(
             batch_size=config.batch_size,
             shuffle=config.shuffle,
+            collate_fn=collate_wrapper,
             pin_memory=config.pin_memory,
-            num_workers=config.num_cpus
+            # num_workers=max(config.num_cpus,1), #Hardcoded for IO bottleneck of my personal computer, too many workers is counterproductive
+            num_workers=min(max(5,1), config.num_cpus), #Hardcoded for IO bottleneck of my personal computer/hard disk, too many workers is counterproductive
+            prefetch_factor=5
             )
         self.trainloader = DataLoader(self.trainset, **dl_kwargs)
         self.valloader = DataLoader(self.valset, **dl_kwargs)
         self.testloader = DataLoader(self.testset, **dl_kwargs)
-        inp_sample = next(iter(self.trainloader))[0]
+        print("Dataloaders created.")
+        inp_sample = next(iter(self.trainloader)).inp
+        print("Input sample created.")
         
         self.model = config.model(input_sample=inp_sample, config=config.model_config)
+        print("Model created.")
         self.model_decoder = self.create_decoder(self.model, inp_sample)
+        print("Decoder created.")
 
         self.num_cpus = config.num_cpus
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+        self.model = self.model.to(self.device)
+        self.model_decoder = self.model_decoder.to(self.device)
+        print("Models to GPU.")
 
         self.optimizer = None
         self.optimizer_class = config.optimizer
@@ -188,7 +200,6 @@ class AutoEncoder(Trainable):
 
     def create_decoder(self, mod, input_sample):
         dec = []
-        post_attach = None
         for lyr in reversed(mod.ff):
             init_dict = {parm:val for parm,val in lyr.__dict__.items() if parm in inspect.signature(lyr.__init__).parameters}
             if "in_features" in init_dict:
@@ -199,23 +210,72 @@ class AutoEncoder(Trainable):
         dec.append(nn.Unflatten(-1, input_sample.shape[1:]))
         return nn.Sequential(*dec)
 
+    # def step(self):
+    #     losses = {}
+    #     for i, lyr in enumerate(self.model.ff):
+    #         if i <= len(self.model.ff)//2:
+    #             self.idx = i
+    #             i = i*2
+    #             partial_model = nn.Sequential(self.model.flatten, self.model.ff[:i+2], self.model_decoder[-(i+3):])
+    #             self.layer = partial_model
+    #             trainer = TorchTrainer(
+    #                 train_loop_per_worker=AutoEncoder.layer_step,
+    #                 train_loop_config=self.train_config,
+    #                 scaling_config=ScalingConfig(num_workers=self.num_cpus-1, use_gpu=self.device == "cuda", resources_per_worker={"CPU":1, "GPU":1/(self.num_cpus-1)-.000000001}),
+    #                 )
+    #             result = trainer.fit()
+    #             losses.update(vars(result))
+    #     return losses
+
     def step(self):
         losses = {}
         for i, lyr in enumerate(self.model.ff):
             if i <= len(self.model.ff)//2:
-                self.idx = i
                 i = i*2
                 partial_model = nn.Sequential(self.model.flatten, self.model.ff[:i+2], self.model_decoder[-(i+3):])
-                self.layer = partial_model
-                trainer = TorchTrainer(
-                    train_loop_per_worker=AutoEncoder.layer_step,
-                    train_loop_config=self.train_config,
-                    scaling_config=ScalingConfig(num_workers=self.num_cpus-1, use_gpu=self.device == "cuda", resources_per_worker={"CPU":1, "GPU":1/(self.num_cpus-1)-.000000001}),
-                    )
-                result = trainer.fit()
-                losses.update(vars(result))
+                self.optimizer = self.optimizer_class(partial_model.parameters(), **self.optimizer_config)
+                losses.update(self.layer_step(i, partial_model))
         return losses
 
+    def layer_step(self, idx, layer):
+        layer.train()
+        i = 0
+        total_train_loss = 0
+        # print("Total ITERATIONS: {}".format(len(self.trainloader)))
+        for data in self.trainloader:
+            temp = data.inp.to(device=str(self.device), dtype=next(iter(layer.parameters())).dtype)
+            inp = temp
+            target = temp
+            self.optimizer.zero_grad()
+
+            output = layer(inp)
+            loss = self.criterion(output, target)
+
+            loss.backward()
+            self.optimizer.step()
+
+            total_train_loss += loss.item()
+            i += 1
+            # print("Made it to ITERATION: {}".format(i))
+
+        layer.eval()
+        total_val_loss = 0
+        for data in self.valloader:
+            temp = data.inp.to(device=str(self.device), dtype=next(iter(layer.parameters())).dtype)
+            inp = temp
+            target = temp
+
+            output = layer(inp)
+            loss = self.criterion(output, target)
+
+            total_val_loss += loss.item()
+
+        return {
+            'lyr_{}_total_train_loss'.format(idx):total_train_loss,
+            'lyr_{}_mean_train_loss'.format(idx):total_train_loss/len(self.trainloader),
+            'lyr_{}_total_val_loss'.format(idx):total_val_loss,
+            'lyr_{}_mean_val_loss'.format(idx):total_val_loss/len(self.valloader),
+            }
 
     def save_checkpoint(self, checkpoint_dir):
         # Save model and optimizer state

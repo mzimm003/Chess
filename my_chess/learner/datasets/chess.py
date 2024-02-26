@@ -138,26 +138,33 @@ def env(**kwargs):
     return env
 
 class ChessData(Dataset):
-    AUTONAME = "complete_generated_dataset"
-    def __init__(self, data_dir, seed=None, apply_deepchess_rules=True, render_mode=None, reset=False, max_games_per_file=14000) -> None:
-        super().__init__()
-        self.reset = reset
+    def __init__(
+            self,
+            dataset_dir,
+            seed=None,
+            apply_deepchess_rules=True,
+            render_mode=None,
+            reset=False,
+            max_games_per_file=14000,
+            subset=None) -> None:
+        super().__init__(
+            dataset_dir=dataset_dir,
+            seed=seed,
+            reset=reset,
+            )
         self.apply_deepchess_rules = apply_deepchess_rules
         self.render_mode = render_mode
-        self.data_dir = Path(data_dir)
-        self.label_dir = self.data_dir/'labels'
-        self.obs_dir = self.data_dir/'observations'
         self.max_games_per_file = max_games_per_file
+        self.subset:int = subset
 
-        self.__create_structure()
+        self.create_structure()
         
         self.label_data = pd.read_json(self.label_dir/(ChessData.AUTONAME+".json"))
         # self.new_labels_loaded_q = Queue()
 
         self.main_lock = Manager().RLock()
         self.current_file = torch.tensor([0], dtype=torch.int64).share_memory_()
-        self.current_file[0] = self.label_data.loc[0, Dataset.CURR_FILE_IDX]
-
+        self.current_file[0] = self.get_curr_file_idx()
         self.file_names_v = self.file_names_o = None
         self.prev_file_names_v = self.prev_file_names_o = None
         self.results_v = self.results_o = None
@@ -166,6 +173,20 @@ class ChessData(Dataset):
         self.prev_agent_perspectives_v = self.prev_agent_perspectives_o = None
         self.update_labels(file_idx=self.current_file.item())
 
+    def get_file_count(self):
+        return self.label_data.loc[0, self.LBL_FILE_COUNT]
+
+    def get_label_count(self):
+        return self.label_data.loc[0, self.LBL_COUNT]
+
+    def get_curr_file_idx(self):
+        return self.label_data.loc[0, self.CURR_FILE_IDX]
+
+    def get_label_count_by_file(self):
+        return self.label_data.loc[:, self.LBL_COUNT_BY_FILE]
+
+    def get_label_bins(self):
+        return self.label_data.loc[:, self.LBL_BINS]
 
     def update_labels(self, file_idx):
         self.prev_file_names_v = self.file_names_v
@@ -208,18 +229,15 @@ class ChessData(Dataset):
         else:
             return Dataset.mem_safe_val_and_offset_to_string(self.agent_perspectives_v, self.agent_perspectives_o, idx)
         
-    def __len__(self):
-        return self.label_data.loc[0,Dataset.LBL_COUNT]
-    
     def __getitem__(self, idx):
-        file_idx = self.__necessary_file(idx)
-        idx -= self.label_data.loc[file_idx,Dataset.LBL_BINS]
+        file_idx = self.necessary_file(idx)
+        idx -= self.get_label_bins()[file_idx]
         if self.current_file < file_idx:
             with self.main_lock:
                 if self.current_file < file_idx:
                     self.update_labels(file_idx=file_idx)
 
-        ob_path = self.obs_dir/self.get_file_name(file_idx=file_idx, idx=idx)
+        ob_path = self.data_dir/self.get_file_name(file_idx=file_idx, idx=idx)
         ob = None
         with open(ob_path, 'rb') as f:
             ob = pickle.load(f)['observation']
@@ -231,37 +249,39 @@ class ChessData(Dataset):
                  else -1)
         return torch.tensor(ob), torch.tensor(label)
     
-    def __necessary_file(self, idx):
-        return np.digitize(idx, self.label_data.loc[:,Dataset.LBL_BINS])-1
+    def create_database(self):
+        if self.subset:
+            rng = np.random.default_rng(self.seed)
+            total_games = 0
+            file_game_counts = []
+            for file in self.dataset_dir.glob("*.pgn"):
+                with open(file, 'r') as f:
+                    num_games = f.readlines().count('\n')//2
+                    file_game_counts.append(num_games)
+                    total_games += num_games
+            subset_idxs = rng.choice(np.arange(total_games), self.subset, replace=False, shuffle=False)
+            subset_idxs.sort()
+            cumulative_counts = np.cumsum(file_game_counts)
+            split_idxs = np.sum(np.repeat(subset_idxs[None,:], len(cumulative_counts), axis=0) < cumulative_counts[:,None], axis=1)
+            subset_idxs_by_file = np.split(subset_idxs, split_idxs)
+            subset_offsets_by_file = [0]+cumulative_counts.tolist()
+
+        for i, file in enumerate(self.dataset_dir.glob("*.pgn")):
+            subset = None
+            if self.subset:
+                subset = subset_idxs_by_file[i]
+                subset -= subset_offsets_by_file[i]
+
+            self.__create_database_from_pgn(file, subset=subset)
     
-    def __create_structure(self):
-        if (self.reset or
-            not (self.label_dir/(ChessData.AUTONAME+".json")).exists()):
-            if self.label_dir.exists():
-                shutil.rmtree(self.label_dir)
-            if self.obs_dir.exists():
-                shutil.rmtree(self.obs_dir)
-            
-            self.label_dir.mkdir(parents=True)
-            self.obs_dir.mkdir(parents=True)
-
-            for file in self.data_dir.glob("*.pgn"):
-                self.__create_database_from_pgn(file)
-            
-            self.label_data[Dataset.LBL_BINS] = np.cumsum(self.label_data[Dataset.LBL_COUNT_BY_FILE]).tolist()
-
-            with open(self.label_dir/(ChessData.AUTONAME+".json"), 'w') as f:
-                json.dump(self.label_data, f)
-
-    
-    def __create_database_from_pgn(self, file:str):
+    def __create_database_from_pgn(self, file:str, subset:List[int]=None):
         """
         Custom parser for files from http://computerchess.org.uk/ccrl/404/games.html, provided in pgn
         DeepChess suggests draw games are not useful, and will be excluded if apply_deepchess_rules=True.
         """
         ray.init()
         pool = Pool()
-        games_text = self.__separate_games_text(file, pool)
+        games_text = self.__separate_games_text(file, pool, subset)
         self.__generate_obs_and_labels(games_text, pool)
         ray.shutdown()
 
@@ -287,9 +307,9 @@ class ChessData(Dataset):
                 metadata = []
                 for i, obs in enumerate(game['observations']):
                     file_name = '{}/{}.pkl'.format(game_idx, i)
-                    if not Path(self.obs_dir/file_name).parent.exists():
-                        Path(self.obs_dir/file_name).parent.mkdir()
-                    with open(self.obs_dir/file_name, 'wb') as f:
+                    if not Path(self.data_dir/file_name).parent.exists():
+                        Path(self.data_dir/file_name).parent.mkdir()
+                    with open(self.data_dir/file_name, 'wb') as f:
                         pickle.dump(obs, f)
                     m_d = game['metadata'].copy()
                     m_d['file_name'] = file_name
@@ -298,8 +318,8 @@ class ChessData(Dataset):
                     metadata.append(m_d)
                 return metadata
 
-        for i in range(self.label_data[Dataset.LBL_FILE_COUNT],
-                       self.label_data[Dataset.LBL_FILE_COUNT]+(len(games_text)//self.max_games_per_file)+1):
+        for i, file_idx in enumerate(range(self.label_data[Dataset.LBL_FILE_COUNT],
+                       self.label_data[Dataset.LBL_FILE_COUNT]+(len(games_text)//self.max_games_per_file)+1)):
             file_start_idx = i*self.max_games_per_file
             file_end_idx = (i+1)*self.max_games_per_file
             gs = pool.map(process_game, games_text[file_start_idx:file_end_idx])
@@ -308,32 +328,33 @@ class ChessData(Dataset):
             self.label_data[Dataset.LBL_COUNT] += len(gs)
             self.label_data[Dataset.LBL_COUNT_BY_FILE].append(len(gs))
             self.label_data[Dataset.LBL_FILE_COUNT] += 1
-            games = {'observations':[]}
-            for g in gs:
-                games['observations'].append(g)
-            pd.DataFrame(gs).to_json(self.label_dir/"{}-{}.json".format(ChessData.AUTONAME, i), orient='records')
+            pd.DataFrame(gs).to_json(self.label_dir/"{}-{}.json".format(ChessData.AUTONAME, file_idx), orient='records')
     
-    def __separate_games_text(self, file:str, pool:Pool):
+    def __separate_games_text(self, file:str, pool:Pool, subset:List[int]=None):
         file_copy = None
         with open(file, 'r') as f:
             file_copy = f.readlines()
         class GamesItr:
-            def __init__(self, file_copy:List[str]) -> None:
+            def __init__(self, file_copy:List[str], subset:List[int]=None) -> None:
                 self.current = -1
                 self.file_data = pd.DataFrame(file_copy)
                 file_idxs = (self.file_data=='\n').cumsum().shift(fill_value=0)
                 self.file_data.set_index(file_idxs[0], inplace=True)
                 self.total_games = file_copy.count('\n')//2
+                self.game_idxs = np.arange(self.total_games)
+                if not subset is None:
+                    self.game_idxs = self.game_idxs[subset]
             
             def __iter__(self):
                 return self
 
             def __next__(self):
                 self.current += 1
-                meta_idx = self.current * 2
-                move_idx = meta_idx + 1
-                if self.current < self.total_games:
-                    return self.current, self.file_data.loc[meta_idx,0], self.file_data.loc[move_idx,0]
+                if self.current < len(self.game_idxs):
+                    game_idx = self.game_idxs[self.current]
+                    meta_idx = game_idx * 2
+                    move_idx = meta_idx + 1
+                    return game_idx, self.file_data.loc[meta_idx,0], self.file_data.loc[move_idx,0]
                 raise StopIteration
 
         def fill_games_text(game_info:Tuple[int, pd.DataFrame, pd.DataFrame]):
@@ -342,7 +363,7 @@ class ChessData(Dataset):
             moves = game_info[2].tolist()[:-1] #Removes trailing '\n'
             return game_count, {'metadata':metadata, 'moves':moves}
 
-        game_itr = GamesItr(file_copy=file_copy)
+        game_itr = GamesItr(file_copy=file_copy, subset=subset)
         # games_text = list(tqdm(pool.imap(fill_games_text, game_itr), total=game_itr.total_games)) #tqdm causes cpu under utilization
         games_text = pool.map(fill_games_text, game_itr)
         print('Game File Read')

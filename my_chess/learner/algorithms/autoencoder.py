@@ -32,15 +32,16 @@ class AutoEncoderConfig(TrainableConfig):
             batch_size:int=128,
             shuffle:bool=False, #True creates slow down given data separation between files, and can also cause RAM to blow up
             seed:int=42,
-            data_split:Tuple[float, float, float]=(0.025, 0.005, 0.97),
+            data_split:Tuple[float, float, float]=(0.225, 0.025, 0.75),
             pin_memory:bool=True,
+            learning_rate:float=0.0001,
             **kwargs
             ) -> None:
         super().__init__(**kwargs)
         self.dataset = dataset if dataset else ChessData
-        self.dataset_config = dataset_config if dataset_config else {"data_dir":"/home/mark/Machine_Learning/Reinforcement_Learning/Chess/Data/Chess-CCRL-404"}
+        self.dataset_config = dataset_config if dataset_config else {"dataset_dir":"/tmp/Chess-CCRL-404"}
         self.optimizer = optimizer if optimizer else Adam
-        self.optimizer_config = optimizer_config if optimizer_config else {}
+        self.optimizer_config = optimizer_config if optimizer_config else {"lr":learning_rate}
         self.criterion = criterion if criterion else nn.MSELoss
         self.criterion_config = criterion_config if criterion_config else {}
         self.model = model
@@ -155,8 +156,8 @@ class AutoEncoder(Trainable):
             shuffle=config.shuffle,
             collate_fn=collate_wrapper,
             pin_memory=config.pin_memory,
-            # num_workers=max(config.num_cpus,1), #Hardcoded for IO bottleneck of my personal computer, too many workers is counterproductive
-            num_workers=min(max(5,1), config.num_cpus), #Hardcoded for IO bottleneck of my personal computer/hard disk, too many workers is counterproductive
+            num_workers=max(config.num_cpus,1), #Hardcoded for IO bottleneck of my personal computer, too many workers is counterproductive
+            # num_workers=min(max(5,1), config.num_cpus), #Hardcoded for IO bottleneck of my personal computer/hard disk, too many workers is counterproductive
             prefetch_factor=5
             )
         self.trainloader = DataLoader(self.trainset, **dl_kwargs)

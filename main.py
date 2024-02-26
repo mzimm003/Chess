@@ -4,8 +4,9 @@ from my_chess.learner.algorithms import (
     PPOConfig,
 )
 from my_chess.learner.callbacks import SelfPlayCallback
-from my_chess.learner.models import ToBeNamed
+from my_chess.learner.models import ToBeNamed, DeepChessFEConfig
 from my_chess.learner.policies import PPOPolicy
+from my_chess.learner.algorithms import AutoEncoderConfig
 
 import ray.air as air
 import ray.tune as tune
@@ -17,8 +18,14 @@ def main(kwargs=None):
         num_gpus=0.85,
         training_on="ChessData",
         algorithm="AutoEncoder",
-        algorithm_config="AutoEncoderConfig",
+        algorithm_config=AutoEncoderConfig(
+            learning_rate = tune.grid_search([.00005, .000075, .0001, .00025]),
+            # learning_rate = 0.0001,
+            # batch_size = tune.grid_search([256, 512, 2048, 4096])
+            batch_size = tune.grid_search([4096])
+        ),
         model="DeepChessFE",
+        # model_config=DeepChessFEConfig(hidden_dims=[4096, 2048, 1024, 256, 128]),
         model_config="DeepChessFEConfig",
         run_config=air.RunConfig(
                             name="ChessFeatureExtractor",

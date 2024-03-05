@@ -35,6 +35,8 @@ class AutoEncoderConfig(TrainableConfig):
             data_split:Tuple[float, float, float]=(0.225, 0.025, 0.75),
             pin_memory:bool=True,
             learning_rate:float=0.0001,
+            learning_rate_scheduler:torch.optim.lr_scheduler._LRScheduler=None,
+            learning_rate_scheduler_config:dict=None,
             **kwargs
             ) -> None:
         super().__init__(**kwargs)
@@ -51,6 +53,8 @@ class AutoEncoderConfig(TrainableConfig):
         self.seed = seed
         self.data_split = data_split
         self.pin_memory = pin_memory
+        self.learning_rate_scheduler = learning_rate_scheduler
+        self.learning_rate_scheduler_config = learning_rate_scheduler_config
     
     def update(
             self,
@@ -156,8 +160,7 @@ class AutoEncoder(Trainable):
             shuffle=config.shuffle,
             collate_fn=collate_wrapper,
             pin_memory=config.pin_memory,
-            num_workers=max(config.num_cpus,1), #Hardcoded for IO bottleneck of my personal computer, too many workers is counterproductive
-            # num_workers=min(max(5,1), config.num_cpus), #Hardcoded for IO bottleneck of my personal computer/hard disk, too many workers is counterproductive
+            num_workers=max(config.num_cpus,1),
             prefetch_factor=5
             )
         self.trainloader = DataLoader(self.trainset, **dl_kwargs)
@@ -184,6 +187,9 @@ class AutoEncoder(Trainable):
         self.optimizer_config = config.optimizer_config
         self.criterion = config.criterion(**config.criterion_config)
 
+        self.learning_rate_scheduler = config.learning_rate_scheduler
+        self.learning_rate_scheduler_config = config.learning_rate_scheduler_config
+
         self.idx = 0
         self.layer = None
 
@@ -198,8 +204,8 @@ class AutoEncoder(Trainable):
                     },
     
 
-
-    def create_decoder(self, mod, input_sample):
+    @staticmethod
+    def create_decoder(mod, input_sample):
         dec = []
         for lyr in reversed(mod.ff):
             init_dict = {parm:val for parm,val in lyr.__dict__.items() if parm in inspect.signature(lyr.__init__).parameters}
@@ -230,15 +236,18 @@ class AutoEncoder(Trainable):
 
     def step(self):
         losses = {}
+        full_model = False
         for i, lyr in enumerate(self.model.ff):
             if i <= len(self.model.ff)//2:
+                if i == len(self.model.ff)//2:
+                    full_model = True
                 i = i*2
                 partial_model = nn.Sequential(self.model.flatten, self.model.ff[:i+2], self.model_decoder[-(i+3):])
                 self.optimizer = self.optimizer_class(partial_model.parameters(), **self.optimizer_config)
-                losses.update(self.layer_step(i, partial_model))
+                losses.update(self.layer_step(i, partial_model, full_model=full_model))
         return losses
 
-    def layer_step(self, idx, layer):
+    def layer_step(self, idx, layer, full_model=False):
         layer.train()
         i = 0
         total_train_loss = 0
@@ -261,22 +270,50 @@ class AutoEncoder(Trainable):
 
         layer.eval()
         total_val_loss = 0
-        for data in self.valloader:
-            temp = data.inp.to(device=str(self.device), dtype=next(iter(layer.parameters())).dtype)
-            inp = temp
-            target = temp
+        
+        if full_model:
+            # TODO put accuracy/recall/whatever here
+            total_acc_ratios = 0
+            total_prec_ratios = 0
+            total_recall_ratios = 0
 
-            output = layer(inp)
-            loss = self.criterion(output, target)
+            for data in self.valloader:
+                temp = data.inp.to(device=str(self.device), dtype=next(iter(layer.parameters())).dtype)
+                inp = temp
+                target = temp
 
-            total_val_loss += loss.item()
-
-        return {
-            'lyr_{}_total_train_loss'.format(idx):total_train_loss,
-            'lyr_{}_mean_train_loss'.format(idx):total_train_loss/len(self.trainloader),
-            'lyr_{}_total_val_loss'.format(idx):total_val_loss,
-            'lyr_{}_mean_val_loss'.format(idx):total_val_loss/len(self.valloader),
+                output = layer(inp)
+                loss = self.criterion(output, target)
+                total_val_loss += loss.item()
+                
+                board_result = torch.round(output)
+                total_acc_ratios += ((board_result.int() == inp.int()).sum()/inp.numel()).item()
+                total_prec_ratios += (inp.int()[board_result.int() == 1].sum()/(board_result.int() == 1).sum()).item()
+                total_recall_ratios += (inp.int()[board_result.int() == 1].sum()/(inp.int() == 1).sum()).item()
+            return {
+                'model_total_train_loss'.format(idx):total_train_loss,
+                'model_mean_train_loss'.format(idx):total_train_loss/len(self.trainloader),
+                'model_total_val_loss'.format(idx):total_val_loss,
+                'model_mean_val_loss'.format(idx):total_val_loss/len(self.valloader),
+                'model_mean_val_acc'.format(idx):total_acc_ratios/len(self.valloader),
+                'model_mean_val_prec'.format(idx):total_prec_ratios/len(self.valloader),
+                'model_mean_val_recall'.format(idx):total_recall_ratios/len(self.valloader),
             }
+        else:
+            for data in self.valloader:
+                temp = data.inp.to(device=str(self.device), dtype=next(iter(layer.parameters())).dtype)
+                inp = temp
+                target = temp
+
+                output = layer(inp)
+                loss = self.criterion(output, target)
+                total_val_loss += loss.item()
+            return {
+                'lyr_{}_total_train_loss'.format(idx):total_train_loss,
+                'lyr_{}_mean_train_loss'.format(idx):total_train_loss/len(self.trainloader),
+                'lyr_{}_total_val_loss'.format(idx):total_val_loss,
+                'lyr_{}_mean_val_loss'.format(idx):total_val_loss/len(self.valloader),
+                }
 
     def save_checkpoint(self, checkpoint_dir):
         # Save model and optimizer state

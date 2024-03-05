@@ -19,14 +19,22 @@ def main(kwargs=None):
         training_on="ChessData",
         algorithm="AutoEncoder",
         algorithm_config=AutoEncoderConfig(
-            learning_rate = tune.grid_search([.00005, .000075, .0001, .00025]),
-            # learning_rate = 0.0001,
+            # learning_rate = tune.grid_search([0.0001]),
+            # learning_rate = tune.grid_search([0.000075, 0.00005, 0.000025]),
+            learning_rate = tune.grid_search([0.000025]),
+            batch_size = tune.grid_search([256])
             # batch_size = tune.grid_search([256, 512, 2048, 4096])
-            batch_size = tune.grid_search([4096])
         ),
         model="DeepChessFE",
-        # model_config=DeepChessFEConfig(hidden_dims=[4096, 2048, 1024, 256, 128]),
-        model_config="DeepChessFEConfig",
+        model_config=tune.grid_search([
+            DeepChessFEConfig(hidden_dims=[4096, 2048, 1024, 512, 256, 128]),
+            # DeepChessFEConfig(hidden_dims=[4096, 2048, 512, 128]),
+            # DeepChessFEConfig(hidden_dims=[4096, 1024, 256, 128]),
+            # DeepChessFEConfig(hidden_dims=[4096, 1024, 512, 128]),
+            # DeepChessFEConfig(hidden_dims=[4096, 1024, 128]),
+            # DeepChessFEConfig(hidden_dims=[4096, 512, 128])
+            ]),
+        # model_config="DeepChessFEConfig",
         run_config=air.RunConfig(
                             name="ChessFeatureExtractor",
                             checkpoint_config=air.CheckpointConfig(checkpoint_frequency=25),

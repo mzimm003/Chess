@@ -130,6 +130,40 @@ class raw_env(r_e):
         [False,  True, False, False, False, False, False, False, False, False, False, False, False],
         [False, False, False,  True, False, False, False, False, False, False, False, False, False]]])
 
+    @classmethod
+    def observation_to_fen(cls, observation:torch.tensor, board_state=0):
+        """For Visualizing purposes only. Will not fully capture moves, castling rights, etc."""
+        observation = observation.int().moveaxis(-1,1)
+        white_piece_ints = [ord('P'),ord('N'),ord('B'),ord('R'),ord('Q'),ord('K'),]
+        black_piece_ints = [ord('p'),ord('n'),ord('b'),ord('r'),ord('q'),ord('k'),]
+        piece_ints = torch.tensor([white_piece_ints+black_piece_ints if obs[5].all() else black_piece_ints+white_piece_ints for obs in observation])
+        observation = observation[:, 7 + board_state * 13:19 + board_state * 13]
+        boards = (observation * piece_ints[:,:,None,None]).sum(1)
+
+        fens = []
+        for board in boards:
+            fen = ''
+            for row in board:
+                empty_space_count = 0
+                for cell in row:
+                    if cell == 0:
+                        empty_space_count += 1
+                    else:
+                        if empty_space_count != 0:
+                            fen += str(empty_space_count)
+                        empty_space_count = 0
+                        fen += chr(cell.item())
+                if empty_space_count != 0:
+                    fen += str(empty_space_count)
+                fen += '/'
+            fen = fen.rstrip('/') + ' w KQkq - 0 1'
+            fens.append(fen)
+        return fens
+
+                
+        
+
+
 def env(**kwargs):
     env = raw_env(**kwargs)
     env = wrappers.TerminateIllegalWrapper(env, illegal_reward=-1)

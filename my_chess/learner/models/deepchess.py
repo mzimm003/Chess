@@ -26,6 +26,9 @@ class DeepChessFEConfig(ModelConfig):
         self.activations = ([DeepChessFEConfig.ACTIVATIONS[a] for a in activations]
                             if isinstance(activations, list)
                             else [DeepChessFEConfig.ACTIVATIONS[activations] for i in range(len(hidden_dims)-1)])
+        
+    def __str__(self) -> str:
+        return "Shape<{}>".format(self.hidden_dims)
 
 class DeepChessFE(Model):
     def __init__(

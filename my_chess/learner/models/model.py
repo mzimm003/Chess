@@ -34,6 +34,9 @@ class ModelRLLIB(TorchModelV2, nn.Module):
 class ModelConfig:
     def __init__(self) -> None:
         pass
+    
+    def __str__(self) -> str:
+        return ''
 
     def asDict(self):
         return self.__dict__

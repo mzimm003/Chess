@@ -182,26 +182,29 @@ class AutoEncoder(Trainable):
         self.model_decoder = self.model_decoder.to(self.device)
         print("Models to GPU.")
 
-        self.optimizer = None
-        self.optimizer_class = config.optimizer
-        self.optimizer_config = config.optimizer_config
+        # self.optimizer = None
+        # self.optimizer_class = config.optimizer
+        # self.optimizer_config = config.optimizer_config
+        self.optimizer = config.optimizer(self.model.parameters(), **config.optimizer_config)
         self.criterion = config.criterion(**config.criterion_config)
 
-        self.learning_rate_scheduler = config.learning_rate_scheduler
-        self.learning_rate_scheduler_config = config.learning_rate_scheduler_config
+        self.learning_rate_scheduler = None
+        if not config.learning_rate_scheduler is None:
+            self.learning_rate_scheduler = config.learning_rate_scheduler(self.optimizer, **config.learning_rate_scheduler_config)
+        # self.learning_rate_scheduler_config = config.learning_rate_scheduler_config
 
         self.idx = 0
         self.layer = None
 
-        self.train_config = {
-                        "idx" : self.idx,
-                        "layer" : self.layer,
-                        "optimizer_class" : self.optimizer_class,
-                        "optimizer_config" : self.optimizer_config,
-                        "trainloader" : self.trainloader,
-                        "valloader" : self.valloader,
-                        "criterion" : self.criterion,
-                    },
+        # self.train_config = {
+        #                 "idx" : self.idx,
+        #                 "layer" : self.layer,
+        #                 "optimizer_class" : self.optimizer_class,
+        #                 "optimizer_config" : self.optimizer_config,
+        #                 "trainloader" : self.trainloader,
+        #                 "valloader" : self.valloader,
+        #                 "criterion" : self.criterion,
+        #             },
     
 
     @staticmethod
@@ -243,11 +246,19 @@ class AutoEncoder(Trainable):
                     full_model = True
                 i = i*2
                 partial_model = nn.Sequential(self.model.flatten, self.model.ff[:i+2], self.model_decoder[-(i+3):])
-                self.optimizer = self.optimizer_class(partial_model.parameters(), **self.optimizer_config)
-                losses.update(self.layer_step(i, partial_model, full_model=full_model))
+
+                optimizer = self.optimizer.__class__(partial_model.parameters())
+                state_dict = self.optimizer.state_dict()
+                state_dict['state'] = {}
+                state_dict['param_groups'][0]['params'] = optimizer.state_dict()['param_groups'][0]['params']
+                optimizer.load_state_dict(state_dict=state_dict)
+                
+                losses.update(self.layer_step(i, partial_model, optimizer, full_model=full_model))
+        if not self.learning_rate_scheduler is None:
+            self.learning_rate_scheduler.step()
         return losses
 
-    def layer_step(self, idx, layer, full_model=False):
+    def layer_step(self, idx, layer, optimizer, full_model=False):
         layer.train()
         i = 0
         total_train_loss = 0
@@ -256,13 +267,13 @@ class AutoEncoder(Trainable):
             temp = data.inp.to(device=str(self.device), dtype=next(iter(layer.parameters())).dtype)
             inp = temp
             target = temp
-            self.optimizer.zero_grad()
+            optimizer.zero_grad()
 
             output = layer(inp)
             loss = self.criterion(output, target)
 
             loss.backward()
-            self.optimizer.step()
+            optimizer.step()
 
             total_train_loss += loss.item()
             i += 1

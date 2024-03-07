@@ -1,7 +1,7 @@
 # Hyperparameter tuning
 Now with reasonable training times I can consider how to create the best feature extractor per hyperparameters. Using Adam (adaptive moment estimation) optimization, the hyperparameters on which I will concentrate will include the optimizer's learning rate, along with the model's depth and layer widths, and the dataset's batch size. Adam is chosen for its ability to avoid saddle points in the loss-space, somewhat simplifying the training. Potentially other optimizers will be explored later to further fine tune the model.
 
-# Batch Size and Learning Rate
+## Batch Size and Learning Rate
 Now with reasonable data loading times we can consider much larger batch sizes. This should come with the advantage of more stable learning, in that each optimization step will be considering a large sample size. From the chart just below I can also see larger batches come with time savings, to a point.
 
 ![batchtiming](images/0301-batchsizetimings.png "Batch Size Timings")
@@ -16,7 +16,7 @@ However, with the larger batch size we also experience fewer optimization steps,
 
  I could potentially address this with a greater number of training epochs, but this seems to defeat the time saving advantage the large batch size provides. I might also use a decaying learning rate, but to keep things straight forward and stable, the smaller batch size already seems to provide what's necessary. Then going forward, in comparing models I will use a batch size of 256 and a learning rate of 0.0001.
 
-# Model Size
+## Model Size
 The model size controls feature extraction in that abstract features inferred late in the model must be well-informed by simpler features early in the model. Thinking of a shape, I cannot know a square before I know a point, a line, a corner, an edge, etc. Then I think what's most important to determine in the model is whether for the chess board, are fine, intermediate, or the most abstract details most important, or are they all equally important. To answer this, I propose several shapes for which level widths shrink at varied rates to emphasize the different levels of feature abstraction:
 
 |Shape|Shrink Rates|Emphasis|

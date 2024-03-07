@@ -8,6 +8,7 @@ from my_chess.learner.models import ToBeNamed, DeepChessFEConfig
 from my_chess.learner.policies import PPOPolicy
 from my_chess.learner.algorithms import AutoEncoderConfig
 
+import torch
 import ray.air as air
 import ray.tune as tune
 
@@ -19,27 +20,29 @@ def main(kwargs=None):
         training_on="ChessData",
         algorithm="AutoEncoder",
         algorithm_config=AutoEncoderConfig(
-            # learning_rate = tune.grid_search([0.0001]),
-            # learning_rate = tune.grid_search([0.000075, 0.00005, 0.000025]),
-            learning_rate = tune.grid_search([0.000025]),
-            batch_size = tune.grid_search([256])
+            learning_rate = tune.grid_search([0.0001]),
+            # learning_rate = tune.grid_search([0.0002]),
+            # learning_rate = tune.grid_search([0.000025]),
+            batch_size = tune.grid_search([256]),
             # batch_size = tune.grid_search([256, 512, 2048, 4096])
+            # learning_rate_scheduler=torch.optim.lr_scheduler.StepLR,
+            # learning_rate_scheduler_config=tune.grid_search([dict(step_size=25, gamma=0.2)]),
         ),
         model="DeepChessFE",
         model_config=tune.grid_search([
-            DeepChessFEConfig(hidden_dims=[4096, 2048, 1024, 512, 256, 128]),
+            # DeepChessFEConfig(hidden_dims=[4096, 2048, 1024, 512, 256, 128]),
             # DeepChessFEConfig(hidden_dims=[4096, 2048, 512, 128]),
             # DeepChessFEConfig(hidden_dims=[4096, 1024, 256, 128]),
             # DeepChessFEConfig(hidden_dims=[4096, 1024, 512, 128]),
-            # DeepChessFEConfig(hidden_dims=[4096, 1024, 128]),
+            DeepChessFEConfig(hidden_dims=[4096, 1024, 128]),
             # DeepChessFEConfig(hidden_dims=[4096, 512, 128])
             ]),
         # model_config="DeepChessFEConfig",
         run_config=air.RunConfig(
                             name="ChessFeatureExtractor",
-                            checkpoint_config=air.CheckpointConfig(checkpoint_frequency=25),
+                            checkpoint_config=air.CheckpointConfig(checkpoint_frequency=10),
                             # stop={"timesteps_total": 20},
-                            stop={"training_iteration": 20},
+                            stop={"training_iteration": 40},
                             ),
     )
     # (train_script.getAlgConfig()

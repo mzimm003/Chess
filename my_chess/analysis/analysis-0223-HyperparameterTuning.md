@@ -24,7 +24,7 @@ The model size controls feature extraction in that abstract features inferred la
 |[4096, 2048, 1024, 512, 256, 128]|2,2,2,2,2|Even across all levels of abstraction|
 |[4096, 2048, 512, 128]|2,4,4|Finer for early levels of abstraction|
 |[4096, 1024, 256, 128]|4,4,2|Finer for later levels of abstraction|
-|[4096, 1024, 512, 128]|2,4,2|Finer for intermediate levels of abstraction|
+|[4096, 1024, 512, 128]|4,2,4|Finer for intermediate levels of abstraction|
 |[4096, 1024, 128]|4,8|Finer for early levels of abstraction|
 |[4096, 512, 128]|8,4|Finer for later levels of abstraction|
 

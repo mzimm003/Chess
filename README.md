@@ -12,7 +12,7 @@ All analysis completed can be found [here](./my_chess/analysis/analysis.md). A h
 is below:
 
 ## Latest
-![latest](./my_chess/analysis/analysis-0315-Evaluator.png "Latest Analysis")
+![latest](./my_chess/analysis/markdowntopng/analysis-0315-Evaluator.png "Latest Analysis")
 
 # Automation
 Training will be supported by Ray's RLlib "offering support for production-level, highly distributed

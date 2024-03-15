@@ -277,10 +277,10 @@ class ChessData(Dataset):
             ob = pickle.load(f)['observation']
         res = self.get_result(file_idx=file_idx, idx=idx)
         persp = self.get_agent_perspective(file_idx=file_idx, idx=idx)
-        label = (1
+        label = ([1,0]
                  if ((res == '1-0' and persp == 'player_0') or
                      (res == '0-1' and persp == 'player_1'))
-                 else -1)
+                 else [0,1])
         return torch.tensor(ob), torch.tensor(label)
     
     def create_database(self):

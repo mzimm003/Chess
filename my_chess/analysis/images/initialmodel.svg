@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="383.38165mm"
+   width="385.70795mm"
    height="245.41252mm"
-   viewBox="0 0 383.38166 245.41249"
+   viewBox="0 0 385.70795 245.41249"
    version="1.1"
    id="svg5"
    sodipodi:docname="initialmodel.svg"
@@ -28,8 +28,8 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="0.45291836"
-     inkscape:cx="751.79112"
-     inkscape:cy="418.3977"
+     inkscape:cx="548.664"
+     inkscape:cy="433.85302"
      inkscape:window-width="1920"
      inkscape:window-height="958"
      inkscape:window-x="0"
@@ -2526,13 +2526,41 @@
     <text
        xml:space="preserve"
        style="font-size:6.35px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;stroke-width:0.264583"
-       x="314.13065"
-       y="224.52315"
+       x="316.47205"
+       y="221.24968"
        id="text6983"><tspan
          sodipodi:role="line"
          id="tspan6981"
          style="font-size:6.35px;stroke-width:0.264583"
-         x="314.13065"
-         y="224.52315">[-1, 1]</tspan></text>
+         x="316.47205"
+         y="221.24968">0.45</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:6.35px;stroke-width:0.264583"
+         x="316.47205"
+         y="229.18718"
+         id="tspan7335">0.55</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:11.2889px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;stroke-width:0.264583"
+       x="311.61856"
+       y="225.9113"
+       id="text17639"><tspan
+         sodipodi:role="line"
+         id="tspan17637"
+         style="font-size:11.2889px;stroke-width:0.264583"
+         x="311.61856"
+         y="225.9113">(</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:11.2889px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;stroke-width:0.264583"
+       x="-333.69861"
+       y="225.9113"
+       id="text17639-3"
+       transform="scale(-1,1)"><tspan
+         sodipodi:role="line"
+         id="tspan17637-6"
+         style="font-size:11.2889px;stroke-width:0.264583"
+         x="-333.69861"
+         y="225.9113">(</tspan></text>
   </g>
 </svg>

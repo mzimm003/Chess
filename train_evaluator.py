@@ -1,0 +1,65 @@
+from my_chess.scripts import Train
+from my_chess.learner.models import DeepChessEvaluatorConfig
+from my_chess.learner.algorithms import ChessEvaluationConfig
+
+import ray.air as air
+import ray.tune as tune
+
+import torch
+
+from pathlib import Path
+import pickle
+
+def main(kwargs=None):
+    best_model_dir = Path("./results/ChessFeatureExtractor/AutoEncoder_5a829_00000_0_batch_size=256,model_config=ref_ph_a52f5213,lr=0.0001_2024-03-07_00-47-39").resolve()
+    best_model_class = None
+    best_model_config = None
+    with open(best_model_dir/"params.pkl",'rb') as f:
+        x = pickle.load(f)
+        best_model_class = x['model']
+        best_model_config = x['model_config']
+
+    latest_checkpoint = sorted(best_model_dir.glob('checkpoint*'), reverse=True)[0]/'model.pt'
+
+    train_script = Train(
+        # debug=True,
+        num_cpus=16,
+        num_gpus=0.85,
+        training_on="ChessData",
+        algorithm="ChessEvaluation",
+        algorithm_config=ChessEvaluationConfig(
+            batch_size = tune.grid_search([256]),
+            optimizer=torch.optim.SGD,
+            # optimizer=torch.optim.Adam,
+            learning_rate = tune.grid_search([0.2]),
+            # learning_rate = tune.grid_search([0.00001, 0.000005]),
+            learning_rate_scheduler=torch.optim.lr_scheduler.MultiStepLR,
+            learning_rate_scheduler_config=tune.grid_search([
+                # dict(step_size=200, gamma=0.9),
+                # dict(step_size=1, gamma=0.95),
+                # dict(step_size=2, gamma=0.9),
+                # dict(step_size=2, gamma=0.85),
+                dict(milestones=range(1,20), gamma=0.75),
+                dict(milestones=range(1,25), gamma=0.75),
+                dict(milestones=range(1,30), gamma=0.75),
+                ]),
+        ),
+        model="DeepChessEvaluator",
+        model_config=tune.grid_search([
+            DeepChessEvaluatorConfig(
+                feature_extractor=best_model_class,
+                feature_extractor_config=best_model_config,
+                feature_extractor_param_dir=latest_checkpoint,
+                hidden_dims=[512, 252, 128]),
+            ]),
+        run_config=air.RunConfig(
+                            name="DeepChessEvaluator",
+                            checkpoint_config=air.CheckpointConfig(checkpoint_frequency=10),
+                            stop={"training_iteration": 40},
+                            ),
+    )
+    train_script.run()
+
+
+if __name__ == "__main__":
+    main()

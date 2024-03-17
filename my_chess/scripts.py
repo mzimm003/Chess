@@ -7,14 +7,21 @@ import sys
 import math
 import time
 from typing import (
+    Type,
     Dict,
+    List,
     Union,
-    Literal
+    Literal,
+    Callable
 )
+from pathlib import Path
+from functools import partial
 
 import ray
 from ray import tune, air
 from ray.tune.registry import register_trainable
+
+import torch
 
 import my_chess.learner.environments
 from my_chess.learner.environments import (
@@ -49,6 +56,8 @@ POLICYCONFIGS = {k:v for k,v in inspect.getmembers(my_chess.learner.policies, in
 
 import my_chess.learner.models
 from my_chess.learner.models import (
+    Model,
+    ModelConfig,
     ModelRLLIB,
     ModelRRLIBConfig
 )
@@ -205,23 +214,28 @@ class ScriptChooser(Script):
 class Test(Script):
     def __init__(
             self,
-            checkpoint=None,
+            checkpoint:List[Union[str,Path]]=None,
             environment:Union[Environment, str]=None,
             **kwargs) -> None:
         """
         Args:
-            checkpoint: directory location of policy to visualize
+            checkpoints: directory location of policy to visualize
             environment: Name of environment (if any) to test in.
         """
         super().__init__(**kwargs)
         self.checkpoint = checkpoint
         self.environment = ENVIRONMENTS[environment]() if isinstance(environment, str) else environment
+        self.policies = None
+        if self.checkpoint:
+            if not isinstance(self.checkpoint, list):
+                self.checkpoint = [self.checkpoint]
+            self.policies = [Policy.from_checkpoint(chkpt) for chkpt in self.checkpoint]
     
     def run(self):
         """
         Args:
         """
-        pol1 = pol2 = Policy.from_checkpoint(self.checkpoint)
+        pol1 = pol2 = self.policies[0]
 
         for i in range(50):
             self.environment.env.reset()
@@ -246,6 +260,71 @@ class Test(Script):
 
                     self.environment.env.step(act)
                 time.sleep(.3)
+
+class HumanVsBot(Test):
+    def __init__(
+            self,
+            checkpoint:List[Union[str,Path]]=None,
+            model:Union[Type[Model],List[Type[Model]]]=None,
+            model_config:Union[ModelConfig,List[ModelConfig]]=None,
+            environment:Union[Environment, str]=None,
+            extra_model_environment_context:Callable=None,
+            **kwargs) -> None:
+        """
+        Args:
+            checkpoint: directory location of policy to visualize
+            model: extra means of creating a policy. Will overwrite checkpoint input.
+            model_config: configuration parameters of model, must be supplied if model is.
+            environment: Name of environment (if any) to test in.
+            extra_model_environment_context: function which operates on environment to provide additional input to model.
+        """
+        super().__init__(checkpoint=checkpoint, environment=environment, **kwargs)
+        self.model = model
+        self.model_config = model_config
+        assert self.environment.render_mode == "human"
+        input_sample, _ = self.environment.reset()
+        input_sample = next(iter(input_sample.values()))
+        self.extra_model_environment_context = extra_model_environment_context if extra_model_environment_context else lambda x: {}
+        if self.model:
+            if isinstance(self.model, list):
+                assert len(self.model) == len(self.model_config)
+            else:
+                assert isinstance(self.model_config, ModelConfig)
+            if not isinstance(self.model, list):
+                self.model = [self.model]
+                self.model_config = [self.model_config]
+            self.policies = [m(input_sample=input_sample, config=m_c) for m, m_c in zip(self.model, self.model_config)]
+        
+        assert len(self.policies) == len(self.environment.agents) - 1
+        self.action_map = {self.environment.agents[0]: self.get_human_input}
+        self.action_map.update(
+            {agnt:partial(self.get_ai_input, model=mod) 
+             for agnt, mod in zip(self.environment.agents[1:], self.policies)})
+
+    def get_human_input(self, observation, **kwargs):
+        options = torch.arange(observation['action_mask'].size)[observation['action_mask'].astype(bool)]
+        choice = torch.randint(options.numel(), (1,))
+        return options[choice].item()
+
+    def get_ai_input(self, observation, env, model:Union[Policy, Model]):
+        act = None
+        if isinstance(model, Policy):
+            act, _ = model.compute_single_action(obs=observation)
+        else:
+            act = model(input=observation, **self.extra_model_environment_context(env))
+        return act
+    
+    def run(self):
+        """
+        Args:
+        """
+        done = False
+        while not done:
+            observation, reward, termination, truncation, info = self.environment.env.last()
+            done = termination or truncation
+            if not done:
+                act = self.action_map[self.environment.env.agent_selection](observation=observation, env=self.environment.env)
+                self.environment.env.step(act)
 
 class Train(Script):
     def __init__(

@@ -3,7 +3,13 @@
 from .model import ModelRLLIB, ModelRRLIBConfig, Model, ModelConfig
 from .tobenamed import ToBeNamed, ToBeNamedConfig
 from .Qlearner import QLearner, QLearnerConfig
-from .deepchess import DeepChessFE, DeepChessFEConfig, DeepChessEvaluator, DeepChessEvaluatorConfig
+from .deepchess import (
+        DeepChessFE,
+        DeepChessFEConfig,
+        DeepChessEvaluator,
+        DeepChessEvaluatorConfig,
+        DeepChessAlphaBeta,
+        DeepChessAlphaBetaConfig)
 
 import inspect
 import sys

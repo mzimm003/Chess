@@ -1,21 +1,25 @@
 """RL Environment"""
 
 from typing import (
-    Literal
+    Literal,
+    Union
 )
 
 from pettingzoo.classic import chess_v6, tictactoe_v3
+from pettingzoo import AECEnv
 from ray.tune.registry import register_env
 from ray.rllib.env import PettingZooEnv as PZE
 from ray.rllib.env.multi_agent_env import MultiAgentEnv
 from ray.rllib.utils.typing import MultiAgentDict
 
+import torch
+
 import gymnasium as gym
 
 class PettingZooEnv(PZE):
-    def __init__(self, env):
+    def __init__(self, env:AECEnv):
         MultiAgentEnv().__init__()
-        self.env = env
+        self.env:AECEnv = env
         env.reset()
 
         self._agent_ids = set(self.env.agents)
@@ -44,6 +48,29 @@ class PettingZooEnv(PZE):
         if agent_id is None:
             agent_id = next(iter(self._agent_ids))
         return self._action_space(agent_id)
+    
+    # def reset(self, *, seed: Union[int, None] = None, options: Union[MultiAgentDict, None] = None):
+    #     ret = super().reset(seed=seed, options=options)
+    #     self.convert_to_tensor(ret)
+    #     return ret
+    
+    # def step(self, action):
+    #     ret = super().step(action)
+    #     self.convert_to_tensor(ret)
+    #     return ret
+    
+    # def convert_to_tensor(self, obj):
+    #     if isinstance(obj, dict):
+    #         for k in obj:
+    #             if isinstance(obj[k], dict):
+    #                 self.convert_to_tensor(obj[k])
+    #             else:
+    #                 obj[k] = torch.tensor(obj[k])
+    #     if isinstance(obj, tuple):
+    #         for o in obj:
+    #             self.convert_to_tensor(o)
+
+
 
 #Necessary to avoid instantiating environment outside of worker, causing shared parameters
 #between what should be independent environments.
@@ -61,6 +88,18 @@ class Environment(PettingZooEnv):
             self.__class__.__name__,
             lambda config: PettingZooEnv(env_creator(env, render_mode=render_mode)))
     
+    @property
+    def render_mode(self) -> str:
+        return self.env.render_mode
+    
+    @property
+    def agent_selection(self) -> str:
+        return self.env.agent_selection
+    
+    @property
+    def agents(self) -> str:
+        return self.env.agents
+    
     def getName(self):
         return self.__class__.__name__
 
@@ -71,8 +110,30 @@ class Chess(Environment):
             render_mode:Literal[None, "human", "ansi", "rgb_array"] = None) -> None:
         assert render_mode in {None, "human", "ansi", "rgb_array"}
         env = chess_v6 if env is None else env
-        super().__init__(env)
+        super().__init__(env, render_mode=render_mode)
 
+    @staticmethod
+    def mirror_board_view(observation):
+        '''Based on Petting Zoo Chess environment'''
+        # 1. Mirror the board
+        if len(observation.shape) == 3:
+            # Not batched
+            observation = torch.flip(observation, dims=(0,))
+        elif len(observation.shape) == 4:
+            # Batched
+            observation = torch.flip(observation, dims=(1,))
+        else:
+            raise RuntimeError("Unexpected observation shape when attempting to mirror.")
+
+        # 2. Swap the white 6 channels with the black 6 channels
+        static_channels = torch.arange(7)
+        white_channels = torch.arange(8)[:,None]*13+7+torch.arange(6)
+        black_channels = torch.arange(8)[:,None]*13+7+6+torch.arange(6)
+        rep_channels = torch.arange(8)[:,None]*13+7+6+6
+        channel_swap = torch.cat((black_channels, white_channels, rep_channels), dim=-1)
+        swap_idxs = torch.cat((static_channels, channel_swap.flatten()))
+        return observation[..., swap_idxs]
+    
 class TicTacToe(Environment):
     def __init__(
             self,

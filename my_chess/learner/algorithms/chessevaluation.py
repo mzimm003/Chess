@@ -17,6 +17,7 @@ from my_chess.learner.algorithms import Trainable, TrainableConfig, collate_wrap
 from my_chess.learner.policies import Policy, PPOPolicy
 from my_chess.learner.datasets import Dataset, ChessData
 from my_chess.learner.models import Model, ModelConfig
+from my_chess.learner.environments import Chess
 
 class ChessEvaluationConfig(TrainableConfig):
     def __init__(
@@ -133,35 +134,13 @@ class ChessEvaluation(Trainable):
         if not config.learning_rate_scheduler is None:
             self.learning_rate_scheduler = config.learning_rate_scheduler(self.optimizer, **config.learning_rate_scheduler_config)
 
-    @staticmethod
-    def mirror_board_view(observation):
-        '''Based on Petting Zoo Chess environment'''
-        # 1. Mirror the board
-        if len(observation.shape) == 3:
-            # Not batched
-            observation = torch.flip(observation, dims=(0,))
-        elif len(observation.shape) == 4:
-            # Batched
-            observation = torch.flip(observation, dims=(1,))
-        else:
-            raise RuntimeError("Unexpected observation shape when attempting to mirror.")
-
-        # 2. Swap the white 6 channels with the black 6 channels
-        static_channels = torch.arange(7)
-        white_channels = torch.arange(8)[:,None]*13+7+torch.arange(6)
-        black_channels = torch.arange(8)[:,None]*13+7+6+torch.arange(6)
-        rep_channels = torch.arange(8)[:,None]*13+7+6+6
-        channel_swap = torch.cat((black_channels, white_channels, rep_channels), dim=-1)
-        swap_idxs = torch.cat((static_channels, channel_swap.flatten()))
-        return observation[..., swap_idxs]
-
     def step(self):
         self.model.train()
         total_train_loss = 0
         for data in self.trainloader:
             # Train once on original observation and result
             temp = data.inp.to(device=str(self.device), dtype=next(iter(self.model.parameters())).dtype)
-            inp = torch.stack([temp, self.mirror_board_view(temp)], dim=1)
+            inp = torch.stack([temp, Chess.mirror_board_view(temp)], dim=-4)
             target = data.tgt.to(device=str(self.device), dtype=next(iter(self.model.parameters())).dtype)
             
             self.optimizer.zero_grad()
@@ -175,7 +154,7 @@ class ChessEvaluation(Trainable):
             total_train_loss += loss.item()
             
             # Train once more on swapped observation and opposite result
-            inp = torch.stack([self.mirror_board_view(temp), temp], dim=1)
+            inp = torch.stack([Chess.mirror_board_view(temp), temp], dim=-4)
             target = 1 - data.tgt.to(device=str(self.device), dtype=next(iter(self.model.parameters())).dtype)
             self.optimizer.zero_grad()
 
@@ -198,7 +177,7 @@ class ChessEvaluation(Trainable):
             # To ensure balanced wins and losses, follow same process as training
             # Validate once on original observation and result
             temp = data.inp.to(device=str(self.device), dtype=next(iter(self.model.parameters())).dtype)
-            inp = torch.stack([temp, self.mirror_board_view(temp)], dim=1)
+            inp = torch.stack([temp, Chess.mirror_board_view(temp)], dim=-4)
             target = data.tgt.to(device=str(self.device), dtype=next(iter(self.model.parameters())).dtype)
 
             output = self.model(inp)
@@ -211,7 +190,7 @@ class ChessEvaluation(Trainable):
             total_recall_ratios += (target.int()[result.int() == 1].sum()/(target.int() == 1).sum()).item()
 
             # Validate once more on swapped observation and opposite result
-            inp = torch.stack([self.mirror_board_view(temp), temp], dim=1)
+            inp = torch.stack([Chess.mirror_board_view(temp), temp], dim=-4)
             target = 1 - data.tgt.to(device=str(self.device), dtype=next(iter(self.model.parameters())).dtype)
 
             output = self.model(inp)

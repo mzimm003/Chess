@@ -152,7 +152,6 @@ class DeepChessAlphaBeta(Model):
         if self.config.board_evaluator_param_dir:
             self.be.load_state_dict(torch.load(self.config.board_evaluator_param_dir))
         self.depth = config.depth
-        self.curr_depth = 0
         self.curr_player = None
 
     def max_player(self):
@@ -168,62 +167,88 @@ class DeepChessAlphaBeta(Model):
                 input[k] = torch.tensor(input[k].copy())
         else:
             input = torch.tensor(input.copy())
-        self.curr_depth = 0
         self.curr_player = board.turn == chess.WHITE
-        act, val = self.max_value(board, input, alpha=float("-inf"), beta=float("inf"))
+        act, val = self.max_value(board, input, alpha=None, beta=None)
         return act
 
-    def max_value(self, board:Board, input, alpha, beta) -> Tuple[int, float]:
-        self.curr_depth += 1
+    def max_value(self, board:Board, input, alpha, beta, depth=1) -> Tuple[int, float]:
         if self.terminal_test(board):
-            return None, self.utility(board)
-        if self.curr_depth > self.depth:
-            ut = self.be(torch.stack([
-                input["observation"],
-                Chess.mirror_board_view(input["observation"])
-                ], dim=-4))
-            ut = 2*(ut[0]-0.5) # translate (0,1) -> (-1,1)
-            return None, ut
+            return None, (self.utility(board), input['observation'])
+        if depth > self.depth:
+            return None, (None, input['observation'])
 
         act = None
-        val = float("-inf")
+        val = None
         for a in chess_utils.legal_moves(board):
+            update_val = False
             b = self.simulate_move(board, a, self.max_player())
             obs = self.simulate_observation(b, input)
-            _, v = self.min_value(b, obs, alpha, beta)
-            if v > val:
-                val = v
+            _, v = self.min_value(b, obs, alpha, beta, depth=depth+1)
+
+            if val is None:
+                update_val = True
+            else:
+                if v[0] == 1:
+                    update_val = True
+                elif v[0] != 0 and v[0] != -1:
+                    comp = self.be(torch.stack([val, v[1]],dim=-4))
+                    if comp[1] > comp[0]:
+                        update_val = True
+            if update_val:
+                val = v[1]
                 act = a
-            if val >= beta:
-                return act, val
-            alpha = max(alpha, val)
-        return act, val
+
+            if not beta is None and update_val:
+                comp = self.be(torch.stack([val, beta],dim=-4))
+                if comp[0] >= comp[1]:
+                    return act, (None, val)
+            
+            if alpha is None:
+                alpha = val
+            else:
+                comp = self.be(torch.stack([val, alpha],dim=-4))
+                if comp[0] > comp[1]:
+                    alpha = val
+        return act, (None, val)
     
-    def min_value(self, board:Board, input, alpha, beta) -> Tuple[int, float]:
-        self.curr_depth += 1
+    def min_value(self, board:Board, input, alpha, beta, depth=1) -> Tuple[int, float]:
         if self.terminal_test(board):
-            return None, self.utility(board)
-        if self.curr_depth > self.depth:
-            ut = self.be(torch.stack([
-                input["observation"],
-                Chess.mirror_board_view(input["observation"])
-                ], dim=-4))
-            ut = 2*(ut[0]-0.5) # translate (0,1) -> (-1,1)
-            return None, ut
+            return None, (self.utility(board), input['observation'])
+        if depth > self.depth:
+            return None, (None, input['observation'])
 
         act = None
-        val = float("inf")
+        val = None
         for a in chess_utils.legal_moves(board):
+            update_val = False
             b = self.simulate_move(board, a, self.min_player())
             obs = self.simulate_observation(b, input)
-            _, v = self.max_value(b, obs, alpha, beta)
-            if v < val:
-                val = v
+            _, v = self.max_value(b, obs, alpha, beta, depth=depth+1)
+
+            if val is None:
+                update_val = True
+            else:
+                if v[0] == -1:
+                    update_val = True
+                elif v[0] != 0 and v[0] != 1:
+                    comp = self.be(torch.stack([val, v[1]],dim=-4))
+                    if comp[1] < comp[0]:
+                        update_val = True
+            if update_val:
+                val = v[1]
                 act = a
-            if val <= alpha:
-                return act, val
-            beta = min(beta, val)
-        return act, val
+
+            if not alpha is None and update_val:
+                comp = self.be(torch.stack([val, alpha],dim=-4))
+                if comp[0] <= comp[1]:
+                    return act, (None, val)
+            if beta is None:
+                beta = val
+            else:
+                comp = self.be(torch.stack([val, beta],dim=-4))
+                if comp[0] < comp[1]:
+                    beta = val
+        return act, (None, val)
 
     def terminal_test(self, board:Board):
         return board.is_game_over(claim_draw=True)
@@ -242,7 +267,7 @@ class DeepChessAlphaBeta(Model):
         """Taken from Petting Zoo Chess Environment - modified as needed"""
         board_history = input["observation"]
 
-        observation = chess_utils.get_observation(board, self.curr_player)
+        observation = chess_utils.get_observation(board, self.max_player())
         observation = np.dstack((observation, board_history[:, :, 7:-13]))
         legal_moves = chess_utils.legal_moves(board)
         action_mask = np.zeros(4672, "int8")

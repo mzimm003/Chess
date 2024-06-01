@@ -47,40 +47,5 @@ class Model(nn.Module):
         self):
         super().__init__()
 
-    @classmethod
-    def load_model(cls, cp):
-        x = None
-        with open(cp/"params.pkl",'rb') as f:
-            x = pickle.load(f)
-        
-        if i == 0:
-            dataset = x['dataset'](**x['dataset_config'])
-            gen = torch.Generator().manual_seed(x['seed'])
-            trainset, valset, testset = random_split(dataset, x['data_split'], generator=gen)
-            if not x['shuffle']:
-                # Improves data gathering speeds. Selected indices for each set are still random.
-                trainset.indices = sorted(trainset.indices)
-                valset.indices = sorted(valset.indices)
-                testset.indices = sorted(testset.indices)
-            dl_kwargs = dict(
-                batch_size=1,
-                shuffle=x['shuffle'],
-                collate_fn=collate_wrapper,
-                pin_memory=x['pin_memory'],
-                num_workers=0,
-                # prefetch_factor=1
-                )
-            trainloader = DataLoader(trainset, **dl_kwargs)
-            valloader = DataLoader(valset, **dl_kwargs)
-            testloader = DataLoader(testset, **dl_kwargs)
-            inp_sample = next(iter(trainloader)).inp
-
-        enc = x['model'](input_sample=inp_sample, config=x['model_config'])
-        dec = AutoEncoder.create_decoder(enc, inp_sample)
-
-        latest_checkpoint = sorted(cp.glob('checkpoint*'), reverse=True)[0]
-
-        enc.load_state_dict(torch.load(latest_checkpoint/'model.pt'))
-
     def getModelSpecificParams(self):
         return self.__dict__

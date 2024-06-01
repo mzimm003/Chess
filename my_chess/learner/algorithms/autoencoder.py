@@ -1,6 +1,7 @@
 from typing import Optional, Type, Tuple, Callable
 from types import SimpleNamespace
 import inspect
+from collections.abc import Iterable
 import shutil
 
 from ray.rllib.algorithms.ppo import PPO as PPOtemp
@@ -41,7 +42,7 @@ class AutoEncoderConfig(TrainableConfig):
             ) -> None:
         super().__init__(**kwargs)
         self.dataset = dataset if dataset else ChessData
-        self.dataset_config = dataset_config if dataset_config else {"dataset_dir":"/tmp/Chess-CCRL-404"}
+        self.dataset_config = dataset_config if dataset_config else {"dataset_dir":"/opt/datasets/Chess-CCRL-404"}
         self.optimizer = optimizer if optimizer else Adam
         self.optimizer_config = optimizer_config if optimizer_config else {"lr":learning_rate}
         self.criterion = criterion if criterion else nn.MSELoss
@@ -172,7 +173,7 @@ class AutoEncoder(Trainable):
         
         self.model = config.model(input_sample=inp_sample, config=config.model_config)
         print("Model created.")
-        self.model_decoder = self.create_decoder(self.model, inp_sample)
+        self.model_decoder = self.create_decoder(self.model)
         print("Decoder created.")
 
         self.num_cpus = config.num_cpus
@@ -208,17 +209,8 @@ class AutoEncoder(Trainable):
     
 
     @staticmethod
-    def create_decoder(mod, input_sample):
-        dec = []
-        for lyr in reversed(mod.ff):
-            init_dict = {parm:val for parm,val in lyr.__dict__.items() if parm in inspect.signature(lyr.__init__).parameters}
-            if "in_features" in init_dict:
-                temp = init_dict["in_features"]
-                init_dict["in_features"] = init_dict["out_features"]
-                init_dict["out_features"] = temp
-            dec.append(lyr.__class__(**init_dict))
-        dec.append(nn.Unflatten(-1, input_sample.shape[1:]))
-        return nn.Sequential(*dec)
+    def create_decoder(mod):
+        return mod.decoder()
 
     # def step(self):
     #     losses = {}
@@ -240,20 +232,18 @@ class AutoEncoder(Trainable):
     def step(self):
         losses = {}
         full_model = False
-        for i, lyr in enumerate(self.model.ff):
-            if i <= len(self.model.ff)//2:
-                if i == len(self.model.ff)//2:
-                    full_model = True
-                i = i*2
-                partial_model = nn.Sequential(self.model.flatten, self.model.ff[:i+2], self.model_decoder[-(i+3):])
+        for i, lyr in enumerate(self.model.body):
+            if i == len(self.model.body)-1:
+                full_model = True
+            partial_model = nn.Sequential(self.model.preprocess, self.model.body[:i+1], self.model_decoder.body[-(i+1):], self.model_decoder.postprocess)
 
-                optimizer = self.optimizer.__class__(partial_model.parameters())
-                state_dict = self.optimizer.state_dict()
-                state_dict['state'] = {}
-                state_dict['param_groups'][0]['params'] = optimizer.state_dict()['param_groups'][0]['params']
-                optimizer.load_state_dict(state_dict=state_dict)
-                
-                losses.update(self.layer_step(i, partial_model, optimizer, full_model=full_model))
+            optimizer = self.optimizer.__class__(partial_model.parameters())
+            state_dict = self.optimizer.state_dict()
+            state_dict['state'] = {}
+            state_dict['param_groups'][0]['params'] = optimizer.state_dict()['param_groups'][0]['params']
+            optimizer.load_state_dict(state_dict=state_dict)
+            
+            losses.update(self.layer_step(i, partial_model, optimizer, full_model=full_model))
         if not self.learning_rate_scheduler is None:
             self.learning_rate_scheduler.step()
         return losses
@@ -265,11 +255,11 @@ class AutoEncoder(Trainable):
         # print("Total ITERATIONS: {}".format(len(self.trainloader)))
         for data in self.trainloader:
             temp = data.inp.to(device=str(self.device), dtype=next(iter(layer.parameters())).dtype)
-            inp = temp
-            target = temp
+            inpt = temp
+            target = torch.stack([temp, 1-temp], -1)
             optimizer.zero_grad()
 
-            output = layer(inp)
+            output = layer(inpt)
             loss = self.criterion(output, target)
 
             loss.backward()
@@ -287,21 +277,28 @@ class AutoEncoder(Trainable):
             total_acc_ratios = 0
             total_prec_ratios = 0
             total_recall_ratios = 0
+            just_board_metrics = {i:{"ttl_acc":0,"ttl_prec":0,"ttl_rcl":0} for i in range(7)}
 
             for data in self.valloader:
                 temp = data.inp.to(device=str(self.device), dtype=next(iter(layer.parameters())).dtype)
-                inp = temp
-                target = temp
+                inpt = temp
+                target = torch.stack([temp, 1-temp], -1)
 
-                output = layer(inp)
+                output = layer(inpt)
                 loss = self.criterion(output, target)
                 total_val_loss += loss.item()
                 
                 board_result = torch.round(output)
-                total_acc_ratios += ((board_result.int() == inp.int()).sum()/inp.numel()).item()
-                total_prec_ratios += (inp.int()[board_result.int() == 1].sum()/(board_result.int() == 1).sum()).item()
-                total_recall_ratios += (inp.int()[board_result.int() == 1].sum()/(inp.int() == 1).sum()).item()
-            return {
+                total_acc_ratios += ((board_result.int() == target.int()).sum()/target.numel()).item()
+                total_prec_ratios += (target.int()[board_result.int() == 1].sum()/(board_result.int() == 1).sum()).item()
+                total_recall_ratios += (target.int()[board_result.int() == 1].sum()/(target.int() == 1).sum()).item()
+                for i, board in just_board_metrics.items():
+                    b_r = board_result[...,7+13*i:19+13*i,:]
+                    inp = target[...,7+13*i:19+13*i,:]
+                    board["ttl_acc"] += ((b_r.int() == inp.int()).sum()/inp.numel()).item()
+                    board["ttl_prec"] += (inp.int()[b_r.int() == 1].sum()/(b_r.int() == 1).sum()).item()
+                    board["ttl_rcl"] += (inp.int()[b_r.int() == 1].sum()/(inp.int() == 1).sum()).item()
+            ret_dict = {
                 'model_total_train_loss'.format(idx):total_train_loss,
                 'model_mean_train_loss'.format(idx):total_train_loss/len(self.trainloader),
                 'model_total_val_loss'.format(idx):total_val_loss,
@@ -310,13 +307,22 @@ class AutoEncoder(Trainable):
                 'model_mean_val_prec'.format(idx):total_prec_ratios/len(self.valloader),
                 'model_mean_val_recall'.format(idx):total_recall_ratios/len(self.valloader),
             }
+            for i, board in just_board_metrics.items():
+                ret_dict.update(
+                    {
+                        'model_board_{}_mean_val_acc'.format(i):board["ttl_acc"]/len(self.valloader),
+                        'model_board_{}_mean_val_prec'.format(i):board["ttl_prec"]/len(self.valloader),
+                        'model_board_{}_mean_val_recall'.format(i):board["ttl_rcl"]/len(self.valloader),
+                    }
+                )
+            return ret_dict
         else:
             for data in self.valloader:
                 temp = data.inp.to(device=str(self.device), dtype=next(iter(layer.parameters())).dtype)
-                inp = temp
-                target = temp
+                inpt = temp
+                target = torch.stack([temp, 1-temp], -1)
 
-                output = layer(inp)
+                output = layer(inpt)
                 loss = self.criterion(output, target)
                 total_val_loss += loss.item()
             return {

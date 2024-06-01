@@ -77,61 +77,64 @@ class SelfPlayCallback(DefaultCallbacks):
         # torch.save(grads,'./grads/{}.pt'.format(algorithm.training_iteration))
         # with open('test.txt', 'a') as f:
         #     json.dump(grads, f)
-        win_rate = result['custom_metrics']['wins_mean']
-        result["win_rate"] = win_rate
-        print(f"Iter={algorithm.iteration} win-rate={win_rate} -> ", end="")
-        # If win rate is good -> Snapshot current policy and play against
-        # it next, keeping the snapshot fixed and only improving the "main"
-        # policy.
-        if win_rate > 0.95:
-        # if win_rate > 0.05:
-            # Remove current opponent policy (to save RAM). Remote workers should finish episode, then update, hence delayed remove.
-            if not self.opponent['toBeRemoved'] is None and not self.opponent['toBeRemoved'] == self.opponent['current']:
-                algorithm.remove_policy(policy_id=self.opponent['toBeRemoved'], )
-            self.opponent['toBeRemoved'] = self.opponent['current']
+        if "wins_mean" in result['custom_metrics']:
+            win_rate = result['custom_metrics']['wins_mean']
+            result["win_rate"] = win_rate
+            print(f"Iter={algorithm.iteration} win-rate={win_rate} -> ", end="")
+            # If win rate is good -> Snapshot current policy and play against
+            # it next, keeping the snapshot fixed and only improving the "main"
+            # policy.
+            if win_rate > 0.95:
+            # if win_rate > 0.05:
+                # Remove current opponent policy (to save RAM). Remote workers should finish episode, then update, hence delayed remove.
+                if not self.opponent['toBeRemoved'] is None and not self.opponent['toBeRemoved'] == self.opponent['current']:
+                    algorithm.remove_policy(policy_id=self.opponent['toBeRemoved'], )
+                self.opponent['toBeRemoved'] = self.opponent['current']
 
-            # Introduce new potential opponent to be selected in next training bout. Represents current state of trained model.
-            self.latest_pot_opponent += 1
-            new_pol_id = f"main_v{self.latest_pot_opponent}"
-            print(f"adding new opponent to the mix ({new_pol_id}).")
-            self.oppPolicies.append(new_pol_id)
+                # Introduce new potential opponent to be selected in next training bout. Represents current state of trained model.
+                self.latest_pot_opponent += 1
+                new_pol_id = f"main_v{self.latest_pot_opponent}"
+                print(f"adding new opponent to the mix ({new_pol_id}).")
+                self.oppPolicies.append(new_pol_id)
 
-            main_policy = algorithm.get_policy("main")
-            main_state = main_policy.get_state()
-            new_policy = Policy.from_state(main_state)
-            new_policy.export_checkpoint(self.oppPolicyDir+new_pol_id)
+                main_policy = algorithm.get_policy("main")
+                main_state = main_policy.get_state()
+                new_policy = Policy.from_state(main_state)
+                new_policy.export_checkpoint(self.oppPolicyDir+new_pol_id)
 
-            # Choose new opponent policy from those checkpoints saved to disk
+                # Choose new opponent policy from those checkpoints saved to disk
 
-            # Re-define the mapping function, such that "main" is forced
-            # to play against any of the previously played policies
-            # (excluding "random").
-            self.opponent['current'] = np.random.choice(self.oppPolicies)
-            if not self.opponent['toBeRemoved'] == self.opponent['current']:
-                opp_choice_id = self.opponent['current']
-                def policy_mapping_fn(agent_id, episode, worker, **kwargs):
-                    # agent_id = [0|1] -> policy depends on episode ID
-                    # This way, we make sure that both policies sometimes play
-                    # (start player) and sometimes agent1 (player to move 2nd).
-                    return (
-                        "main"
-                        if episode.custom_metrics['curr_ep'] % 2 == int(agent_id.split('_')[-1]) % 2
-                        else opp_choice_id
+                # Re-define the mapping function, such that "main" is forced
+                # to play against any of the previously played policies
+                # (excluding "random").
+                self.opponent['current'] = np.random.choice(self.oppPolicies)
+                if not self.opponent['toBeRemoved'] == self.opponent['current']:
+                    opp_choice_id = self.opponent['current']
+                    def policy_mapping_fn(agent_id, episode, worker, **kwargs):
+                        # agent_id = [0|1] -> policy depends on episode ID
+                        # This way, we make sure that both policies sometimes play
+                        # (start player) and sometimes agent1 (player to move 2nd).
+                        return (
+                            "main"
+                            if episode.custom_metrics['curr_ep'] % 2 == int(agent_id.split('_')[-1]) % 2
+                            else opp_choice_id
+                        )
+                    
+                    opp_policy = Policy.from_checkpoint(self.oppPolicyDir+opp_choice_id)
+                    algorithm.add_policy(
+                        policy_id=opp_choice_id,
+                        policy=opp_policy,
+                        policy_mapping_fn=policy_mapping_fn
                     )
-                
-                opp_policy = Policy.from_checkpoint(self.oppPolicyDir+opp_choice_id)
-                algorithm.add_policy(
-                    policy_id=opp_choice_id,
-                    policy=opp_policy,
-                    policy_mapping_fn=policy_mapping_fn
-                )
 
-            algorithm.workers.sync_weights()
+                algorithm.workers.sync_weights()
+            else:
+                print("not good enough; will keep learning ...")
+
+            # +2 = main + random
+            result["league_size"] = self.latest_pot_opponent + 2
         else:
-            print("not good enough; will keep learning ...")
-
-        # +2 = main + random
-        result["league_size"] = self.latest_pot_opponent + 2
+            print(f"Iter={algorithm.iteration} No games yet finished, will keep learning ...")
 
     def on_episode_start(
         self,

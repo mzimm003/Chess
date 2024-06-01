@@ -15,7 +15,7 @@ from torch import nn
 
 from my_chess.learner.algorithms import Trainable, TrainableConfig, collate_wrapper
 from my_chess.learner.policies import Policy, PPOPolicy
-from my_chess.learner.datasets import Dataset, ChessData
+from my_chess.learner.datasets import Dataset, ChessDataWinLossPairs
 from my_chess.learner.models import Model, ModelConfig
 from my_chess.learner.environments import Chess
 
@@ -41,7 +41,7 @@ class ChessEvaluationConfig(TrainableConfig):
             **kwargs
             ) -> None:
         super().__init__(**kwargs)
-        self.dataset = dataset if dataset else ChessData
+        self.dataset = dataset if dataset else ChessDataWinLossPairs
         self.dataset_config = dataset_config if dataset_config else {"dataset_dir":"/opt/datasets/Chess-CCRL-404"}
         self.optimizer = optimizer if optimizer else Adam
         self.optimizer_config = optimizer_config if optimizer_config else {"lr":learning_rate}
@@ -96,8 +96,8 @@ class ChessEvaluation(Trainable):
         if isinstance(config, dict):
             config = ChessEvaluationConfig(**config)
         self.dataset = config.dataset(**config.dataset_config)
-        gen = torch.Generator().manual_seed(config.seed)
-        self.trainset, self.valset, self.testset = random_split(self.dataset, config.data_split, generator=gen)
+        self.gen = torch.Generator().manual_seed(config.seed)
+        self.trainset, self.valset, self.testset = random_split(self.dataset, config.data_split, generator=self.gen)
         if not config.shuffle:
             # Improves data gathering speeds. Selected indices for each set are still random.
             self.trainset.indices = sorted(self.trainset.indices)
@@ -109,7 +109,7 @@ class ChessEvaluation(Trainable):
             collate_fn=collate_wrapper,
             pin_memory=config.pin_memory,
             num_workers=max(config.num_cpus,1),
-            prefetch_factor=5
+            prefetch_factor=2
             )
         self.trainloader = DataLoader(self.trainset, **dl_kwargs)
         self.valloader = DataLoader(self.valset, **dl_kwargs)
@@ -139,8 +139,7 @@ class ChessEvaluation(Trainable):
         total_train_loss = 0
         for data in self.trainloader:
             # Train once on original observation and result
-            temp = data.inp.to(device=str(self.device), dtype=next(iter(self.model.parameters())).dtype)
-            inp = torch.stack([temp, Chess.mirror_board_view(temp)], dim=-4)
+            inp = data.inp.to(device=str(self.device), dtype=next(iter(self.model.parameters())).dtype)
             target = data.tgt.to(device=str(self.device), dtype=next(iter(self.model.parameters())).dtype)
             
             self.optimizer.zero_grad()
@@ -154,7 +153,7 @@ class ChessEvaluation(Trainable):
             total_train_loss += loss.item()
             
             # Train once more on swapped observation and opposite result
-            inp = torch.stack([Chess.mirror_board_view(temp), temp], dim=-4)
+            inp = inp.flip(-4)
             target = 1 - data.tgt.to(device=str(self.device), dtype=next(iter(self.model.parameters())).dtype)
             self.optimizer.zero_grad()
 
@@ -176,8 +175,7 @@ class ChessEvaluation(Trainable):
         for data in self.valloader:
             # To ensure balanced wins and losses, follow same process as training
             # Validate once on original observation and result
-            temp = data.inp.to(device=str(self.device), dtype=next(iter(self.model.parameters())).dtype)
-            inp = torch.stack([temp, Chess.mirror_board_view(temp)], dim=-4)
+            inp = data.inp.to(device=str(self.device), dtype=next(iter(self.model.parameters())).dtype)
             target = data.tgt.to(device=str(self.device), dtype=next(iter(self.model.parameters())).dtype)
 
             output = self.model(inp)
@@ -190,7 +188,7 @@ class ChessEvaluation(Trainable):
             total_recall_ratios += (target.int()[result.int() == 1].sum()/(target.int() == 1).sum()).item()
 
             # Validate once more on swapped observation and opposite result
-            inp = torch.stack([Chess.mirror_board_view(temp), temp], dim=-4)
+            inp = inp.flip(-4)
             target = 1 - data.tgt.to(device=str(self.device), dtype=next(iter(self.model.parameters())).dtype)
 
             output = self.model(inp)

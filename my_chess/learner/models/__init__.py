@@ -9,7 +9,13 @@ from .deepchess import (
         DeepChessEvaluator,
         DeepChessEvaluatorConfig,
         DeepChessAlphaBeta,
-        DeepChessAlphaBetaConfig)
+        DeepChessAlphaBetaConfig,
+        DeepChessRL,
+        DeepChessRLConfig,)
+from .transformerchess import(
+        TransformerChessFE,
+        TransformerChessFEConfig
+)
 
 import inspect
 import sys

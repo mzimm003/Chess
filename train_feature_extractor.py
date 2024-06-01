@@ -4,7 +4,7 @@ from my_chess.learner.algorithms import (
     PPOConfig,
 )
 from my_chess.learner.callbacks import SelfPlayCallback
-from my_chess.learner.models import ToBeNamed, DeepChessFEConfig
+from my_chess.learner.models import ToBeNamed, DeepChessFEConfig, TransformerChessFEConfig
 from my_chess.learner.policies import PPOPolicy
 from my_chess.learner.algorithms import AutoEncoderConfig
 
@@ -28,21 +28,23 @@ def main(kwargs=None):
             # learning_rate_scheduler=torch.optim.lr_scheduler.StepLR,
             # learning_rate_scheduler_config=tune.grid_search([dict(step_size=25, gamma=0.2)]),
         ),
+        # model="TransformerChessFE",
         model="DeepChessFE",
         model_config=tune.grid_search([
             # DeepChessFEConfig(hidden_dims=[4096, 2048, 1024, 512, 256, 128]),
-            # DeepChessFEConfig(hidden_dims=[4096, 2048, 512, 128]),
+            DeepChessFEConfig(hidden_dims=[4096, 2048, 512, 128]),
             # DeepChessFEConfig(hidden_dims=[4096, 1024, 256, 128]),
             # DeepChessFEConfig(hidden_dims=[4096, 1024, 512, 128]),
-            DeepChessFEConfig(hidden_dims=[4096, 1024, 128]),
+            # DeepChessFEConfig(hidden_dims=[4096, 1024, 128]),
             # DeepChessFEConfig(hidden_dims=[4096, 512, 128])
+            # TransformerChessFEConfig()
             ]),
         # model_config="DeepChessFEConfig",
         run_config=air.RunConfig(
                             name="ChessFeatureExtractor",
                             checkpoint_config=air.CheckpointConfig(checkpoint_frequency=10),
                             # stop={"timesteps_total": 20},
-                            stop={"training_iteration": 40},
+                            stop={"training_iteration": 20},
                             ),
     )
     # (train_script.getAlgConfig()

@@ -1,0 +1,1197 @@
+
+
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>my_chess.learner.algorithms.algorithm.Algorithm &#8212; ChessBot 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=649a27d8" />
+    <link rel="stylesheet" type="text/css" href="../_static/bizstyle.css?v=13b2ab6e" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=f6245a2f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="my_chess.learner.algorithms.algorithm.AlgorithmConfig" href="my_chess.learner.algorithms.algorithm.AlgorithmConfig.html" />
+    <link rel="prev" title="my_chess.learner.algorithms.algorithm.measure_recall" href="my_chess.learner.algorithms.algorithm.measure_recall.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="my_chess.learner.algorithms.algorithm.AlgorithmConfig.html" title="my_chess.learner.algorithms.algorithm.AlgorithmConfig"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="my_chess.learner.algorithms.algorithm.measure_recall.html" title="my_chess.learner.algorithms.algorithm.measure_recall"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ChessBot 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="my_chess.html" >my_chess</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="my_chess.learner.html" >my_chess.learner</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="my_chess.learner.algorithms.html" >my_chess.learner.algorithms</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="my_chess.learner.algorithms.algorithm.html" accesskey="U">my_chess.learner.algorithms.algorithm</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">my_chess.learner.algorithms.algorithm.Algorithm</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="my-chess-learner-algorithms-algorithm-algorithm">
+<h1>my_chess.learner.algorithms.algorithm.Algorithm<a class="headerlink" href="#my-chess-learner-algorithms-algorithm-algorithm" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">my_chess.learner.algorithms.algorithm.</span></span><span class="sig-name descname"><span class="pre">Algorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AlgorithmConfig</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_creator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Logger</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AlgorithmConfig</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_creator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Logger</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes an Algorithm instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> – Algorithm-specific configuration object.</p></li>
+<li><p><strong>logger_creator</strong> – Callable that creates a ray.tune.Logger
+object. If unspecified, a default logger is created.</p></li>
+<li><p><strong>**kwargs</strong> – Arguments passed to the Trainable base class.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.__init__" title="my_chess.learner.algorithms.algorithm.Algorithm.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([config, env, logger_creator])</p></td>
+<td><p>Initializes an Algorithm instance.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.add_policy" title="my_chess.learner.algorithms.algorithm.Algorithm.add_policy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_policy</span></code></a>(policy_id[, policy_cls, policy, ...])</p></td>
+<td><p>Adds a new policy to this Algorithm.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.cleanup" title="my_chess.learner.algorithms.algorithm.Algorithm.cleanup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cleanup</span></code></a>()</p></td>
+<td><p>Subclasses should override this for any cleanup on stop.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.compute_actions" title="my_chess.learner.algorithms.algorithm.Algorithm.compute_actions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_actions</span></code></a>(observations[, state, ...])</p></td>
+<td><p>Computes an action for the specified policy on the local Worker.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.compute_single_action" title="my_chess.learner.algorithms.algorithm.Algorithm.compute_single_action"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_single_action</span></code></a>([observation, state, ...])</p></td>
+<td><p>Computes an action for the specified policy on the local worker.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.default_resource_request" title="my_chess.learner.algorithms.algorithm.Algorithm.default_resource_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_resource_request</span></code></a>(config)</p></td>
+<td><p>Provides a static resource requirement for the given configuration.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.evaluate" title="my_chess.learner.algorithms.algorithm.Algorithm.evaluate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">evaluate</span></code></a>([duration_fn])</p></td>
+<td><p>Evaluates current policy under <cite>evaluation_config</cite> settings.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">execution_plan</span></code>(workers, config, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.export_model" title="my_chess.learner.algorithms.algorithm.Algorithm.export_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_model</span></code></a>(export_formats[, export_dir])</p></td>
+<td><p>Exports model based on export_formats.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.export_policy_checkpoint" title="my_chess.learner.algorithms.algorithm.Algorithm.export_policy_checkpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_policy_checkpoint</span></code></a>(export_dir[, policy_id])</p></td>
+<td><p>Exports Policy checkpoint to a local directory and returns an AIR Checkpoint.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.export_policy_model" title="my_chess.learner.algorithms.algorithm.Algorithm.export_policy_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_policy_model</span></code></a>(export_dir[, policy_id, ...])</p></td>
+<td><p>Exports policy model with given policy_id to a local directory.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.from_checkpoint" title="my_chess.learner.algorithms.algorithm.Algorithm.from_checkpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_checkpoint</span></code></a>(checkpoint[, policy_ids, ...])</p></td>
+<td><p>Creates a new algorithm instance from a given checkpoint.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.from_state" title="my_chess.learner.algorithms.algorithm.Algorithm.from_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_state</span></code></a>(state)</p></td>
+<td><p>Recovers an Algorithm from a state object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getName</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.get_auto_filled_metrics" title="my_chess.learner.algorithms.algorithm.Algorithm.get_auto_filled_metrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_auto_filled_metrics</span></code></a>([now, ...])</p></td>
+<td><p>Return a dict with metrics auto-filled by the trainable.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.get_config" title="my_chess.learner.algorithms.algorithm.Algorithm.get_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_config</span></code></a>()</p></td>
+<td><p>Returns configuration passed in by Tune.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_current_ip_pid</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_default_config</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.get_default_policy_class" title="my_chess.learner.algorithms.algorithm.Algorithm.get_default_policy_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_default_policy_class</span></code></a>(config)</p></td>
+<td><p>Returns a default Policy class to use, given a config.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.get_policy" title="my_chess.learner.algorithms.algorithm.Algorithm.get_policy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_policy</span></code></a>([policy_id])</p></td>
+<td><p>Return policy for the specified id, or None.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_state</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.get_weights" title="my_chess.learner.algorithms.algorithm.Algorithm.get_weights"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_weights</span></code></a>([policies])</p></td>
+<td><p>Return a dictionary of policy ids to weights.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.import_model" title="my_chess.learner.algorithms.algorithm.Algorithm.import_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">import_model</span></code></a>(import_file)</p></td>
+<td><p>Imports a model from import_file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.import_policy_model_from_h5" title="my_chess.learner.algorithms.algorithm.Algorithm.import_policy_model_from_h5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">import_policy_model_from_h5</span></code></a>(import_file[, ...])</p></td>
+<td><p>Imports a policy's model with given policy_id from a local h5 file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_actor</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.load_checkpoint" title="my_chess.learner.algorithms.algorithm.Algorithm.load_checkpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_checkpoint</span></code></a>(checkpoint_dir)</p></td>
+<td><p>Subclasses should override this to implement restore().</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.log_result" title="my_chess.learner.algorithms.algorithm.Algorithm.log_result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_result</span></code></a>(result)</p></td>
+<td><p>Subclasses can optionally override this to customize logging.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.merge_algorithm_configs" title="my_chess.learner.algorithms.algorithm.Algorithm.merge_algorithm_configs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_algorithm_configs</span></code></a>(config1, config2[, ...])</p></td>
+<td><p>Merges a complete Algorithm config dict with a partial override dict.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.remove_policy" title="my_chess.learner.algorithms.algorithm.Algorithm.remove_policy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_policy</span></code></a>([policy_id, ...])</p></td>
+<td><p>Removes a new policy from this Algorithm.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.reset" title="my_chess.learner.algorithms.algorithm.Algorithm.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>(new_config[, logger_creator, storage])</p></td>
+<td><p>Resets trial for use with new config.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.reset_config" title="my_chess.learner.algorithms.algorithm.Algorithm.reset_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_config</span></code></a>(new_config)</p></td>
+<td><p>Resets configuration without restarting the trial.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.resource_help" title="my_chess.learner.algorithms.algorithm.Algorithm.resource_help"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resource_help</span></code></a>(config)</p></td>
+<td><p>Returns a help string for configuring this trainable's resources.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.restore" title="my_chess.learner.algorithms.algorithm.Algorithm.restore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">restore</span></code></a>(checkpoint_path)</p></td>
+<td><p>Restores training state from a given model checkpoint.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.restore_workers" title="my_chess.learner.algorithms.algorithm.Algorithm.restore_workers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">restore_workers</span></code></a>(workers)</p></td>
+<td><p>Try syncing previously failed and restarted workers with local, if necessary.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.save" title="my_chess.learner.algorithms.algorithm.Algorithm.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>([checkpoint_dir])</p></td>
+<td><p>Saves the current model state to a checkpoint.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.save_checkpoint" title="my_chess.learner.algorithms.algorithm.Algorithm.save_checkpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_checkpoint</span></code></a>(checkpoint_dir)</p></td>
+<td><p>Exports checkpoint to a local directory.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.set_weights" title="my_chess.learner.algorithms.algorithm.Algorithm.set_weights"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_weights</span></code></a>(weights)</p></td>
+<td><p>Set policy weights by policy id.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.setup" title="my_chess.learner.algorithms.algorithm.Algorithm.setup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup</span></code></a>(config)</p></td>
+<td><p>Subclasses should override this for custom initialization.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.step" title="my_chess.learner.algorithms.algorithm.Algorithm.step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code></a>()</p></td>
+<td><p>Implements the main <cite>Algorithm.train()</cite> logic.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.stop" title="my_chess.learner.algorithms.algorithm.Algorithm.stop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stop</span></code></a>()</p></td>
+<td><p>Releases all resources used by this trainable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.train" title="my_chess.learner.algorithms.algorithm.Algorithm.train"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code></a>()</p></td>
+<td><p>Runs one logical iteration of training.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.train_buffered" title="my_chess.learner.algorithms.algorithm.Algorithm.train_buffered"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train_buffered</span></code></a>(buffer_time_s[, ...])</p></td>
+<td><p>Runs multiple iterations of training.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.training_step" title="my_chess.learner.algorithms.algorithm.Algorithm.training_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">training_step</span></code></a>()</p></td>
+<td><p>Default single iteration logic of an algorithm.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_config</span></code>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.validate_env" title="my_chess.learner.algorithms.algorithm.Algorithm.validate_env"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_env</span></code></a>(env, env_context)</p></td>
+<td><p>Env validator function for this Algorithm class.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.iteration" title="my_chess.learner.algorithms.algorithm.Algorithm.iteration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iteration</span></code></a></p></td>
+<td><p>Current training iteration.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.logdir" title="my_chess.learner.algorithms.algorithm.Algorithm.logdir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logdir</span></code></a></p></td>
+<td><p>Directory of the results and checkpoints for this Trainable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.training_iteration" title="my_chess.learner.algorithms.algorithm.Algorithm.training_iteration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">training_iteration</span></code></a></p></td>
+<td><p>Current training iteration (same as <cite>self.iteration</cite>).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.trial_id" title="my_chess.learner.algorithms.algorithm.Algorithm.trial_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trial_id</span></code></a></p></td>
+<td><p>Trial ID for the corresponding trial of this Trainable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.trial_name" title="my_chess.learner.algorithms.algorithm.Algorithm.trial_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trial_name</span></code></a></p></td>
+<td><p>Trial name for the corresponding trial of this Trainable.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.trial_resources" title="my_chess.learner.algorithms.algorithm.Algorithm.trial_resources"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trial_resources</span></code></a></p></td>
+<td><p>Resources currently assigned to the trial of this Trainable.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.add_policy">
+<span class="sig-name descname"><span class="pre">add_policy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">policy_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policy_cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">Policy</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Policy</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observation_space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Space</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action_space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Space</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AlgorithmConfig</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policy_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">jnp.ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tf.Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policy_mapping_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policies_to_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Container</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">SampleBatch</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">MultiAgentBatch</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluation_workers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module_spec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SingleAgentRLModuleSpec</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Policy</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.add_policy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a new policy to this Algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>policy_id</strong> – ID of the policy to add.
+IMPORTANT: Must not contain characters that
+are also not allowed in Unix/Win filesystems, such as: <cite>&lt;&gt;:”/|?*</cite>,
+or a dot, space or backslash at the end of the ID.</p></li>
+<li><p><strong>policy_cls</strong> – The Policy class to use for constructing the new Policy.
+Note: Only one of <cite>policy_cls</cite> or <cite>policy</cite> must be provided.</p></li>
+<li><p><strong>policy</strong> – The Policy instance to add to this algorithm. If not None, the
+given Policy object will be directly inserted into the Algorithm’s
+local worker and clones of that Policy will be created on all remote
+workers as well as all evaluation workers.
+Note: Only one of <cite>policy_cls</cite> or <cite>policy</cite> must be provided.</p></li>
+<li><p><strong>observation_space</strong> – The observation space of the policy to add.
+If None, try to infer this space from the environment.</p></li>
+<li><p><strong>action_space</strong> – The action space of the policy to add.
+If None, try to infer this space from the environment.</p></li>
+<li><p><strong>config</strong> – The config object or overrides for the policy to add.</p></li>
+<li><p><strong>policy_state</strong> – Optional state dict to apply to the new
+policy instance, right after its construction.</p></li>
+<li><p><strong>policy_mapping_fn</strong> – An optional (updated) policy mapping function
+to use from here on. Note that already ongoing episodes will
+not change their mapping but will use the old mapping till
+the end of the episode.</p></li>
+<li><p><strong>policies_to_train</strong> – An optional list of policy IDs to be trained
+or a callable taking PolicyID and SampleBatchType and
+returning a bool (trainable or not?).
+If None, will keep the existing setup in place. Policies,
+whose IDs are not in the list (or for which the callable
+returns False) will not be updated.</p></li>
+<li><p><strong>evaluation_workers</strong> – Whether to add the new policy also
+to the evaluation WorkerSet.</p></li>
+<li><p><strong>module_spec</strong> – In the new RLModule API we need to pass in the module_spec for
+the new module that is supposed to be added. Knowing the policy spec is
+not sufficient.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The newly added policy (the copy that got added to the local
+worker). If <cite>workers</cite> was provided, None is returned.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.cleanup">
+<span class="sig-name descname"><span class="pre">cleanup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.cleanup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subclasses should override this for any cleanup on stop.</p>
+<p>If any Ray actors are launched in the Trainable (i.e., with a RLlib
+trainer), be sure to kill the Ray actor process here.</p>
+<p>This process should be lightweight. Per default,</p>
+<p>You can kill a Ray actor by calling <cite>ray.kill(actor)</cite>
+on the actor or removing all references to it and waiting for garbage
+collection</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.8.7.</span></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.compute_actions">
+<span class="sig-name descname"><span class="pre">compute_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">jnp.ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tf.Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">jnp.ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tf.Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prev_action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">jnp.ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tf.Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prev_reward</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">jnp.ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tf.Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policy_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'default_policy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_fetch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">explore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">episodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Episode</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unsquash_actions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip_actions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.compute_actions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes an action for the specified policy on the local Worker.</p>
+<p>Note that you can also access the policy object through
+self.get_policy(policy_id) and call compute_actions() on it directly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observation</strong> – Observation from the environment.</p></li>
+<li><p><strong>state</strong> – RNN hidden state, if any. If state is not None,
+then all of compute_single_action(…) is returned
+(computed action, rnn state(s), logits dictionary).
+Otherwise compute_single_action(…)[0] is returned
+(computed action).</p></li>
+<li><p><strong>prev_action</strong> – Previous action value, if any.</p></li>
+<li><p><strong>prev_reward</strong> – Previous reward, if any.</p></li>
+<li><p><strong>info</strong> – Env info dict, if any.</p></li>
+<li><p><strong>policy_id</strong> – Policy to query (only applies to multi-agent).</p></li>
+<li><p><strong>full_fetch</strong> – Whether to return extra action fetch results.
+This is always set to True if RNN state is specified.</p></li>
+<li><p><strong>explore</strong> – Whether to pick an exploitation or exploration
+action (default: None -&gt; use self.config.explore).</p></li>
+<li><p><strong>timestep</strong> – The current (sampling) time step.</p></li>
+<li><p><strong>episodes</strong> – This provides access to all of the internal episodes’
+state, which may be useful for model-based or multi-agent
+algorithms.</p></li>
+<li><p><strong>unsquash_actions</strong> – Should actions be unsquashed according
+to the env’s/Policy’s action space? If None, use
+self.config.normalize_actions.</p></li>
+<li><p><strong>clip_actions</strong> – Should actions be clipped according to the
+env’s/Policy’s action space? If None, use
+self.config.clip_actions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Keyword Arguments<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>kwargs</strong> – forward compatibility placeholder</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The computed action if full_fetch=False, or a tuple consisting of
+the full output of policy.compute_actions_from_input_dict() if
+full_fetch=True or we have an RNN-based Policy.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.compute_single_action">
+<span class="sig-name descname"><span class="pre">compute_single_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">jnp.ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tf.Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">jnp.ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tf.Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prev_action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">jnp.ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tf.Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prev_reward</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SampleBatch</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policy_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'default_policy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_fetch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">explore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">episode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Episode</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unsquash_action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip_action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">jnp.ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tf.Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">jnp.ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tf.Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">jnp.ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tf.Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">array</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">jnp.ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tf.Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.compute_single_action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes an action for the specified policy on the local worker.</p>
+<p>Note that you can also access the policy object through
+self.get_policy(policy_id) and call compute_single_action() on it
+directly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observation</strong> – Single (unbatched) observation from the
+environment.</p></li>
+<li><p><strong>state</strong> – List of all RNN hidden (single, unbatched) state tensors.</p></li>
+<li><p><strong>prev_action</strong> – Single (unbatched) previous action value.</p></li>
+<li><p><strong>prev_reward</strong> – Single (unbatched) previous reward value.</p></li>
+<li><p><strong>info</strong> – Env info dict, if any.</p></li>
+<li><p><strong>input_dict</strong> – An optional SampleBatch that holds all the values
+for: obs, state, prev_action, and prev_reward, plus maybe
+custom defined views of the current env trajectory. Note
+that only one of <cite>obs</cite> or <cite>input_dict</cite> must be non-None.</p></li>
+<li><p><strong>policy_id</strong> – Policy to query (only applies to multi-agent).
+Default: “default_policy”.</p></li>
+<li><p><strong>full_fetch</strong> – Whether to return extra action fetch results.
+This is always set to True if <cite>state</cite> is specified.</p></li>
+<li><p><strong>explore</strong> – Whether to apply exploration to the action.
+Default: None -&gt; use self.config.explore.</p></li>
+<li><p><strong>timestep</strong> – The current (sampling) time step.</p></li>
+<li><p><strong>episode</strong> – This provides access to all of the internal episodes’
+state, which may be useful for model-based or multi-agent
+algorithms.</p></li>
+<li><p><strong>unsquash_action</strong> – Should actions be unsquashed according to the
+env’s/Policy’s action space? If None, use the value of
+self.config.normalize_actions.</p></li>
+<li><p><strong>clip_action</strong> – Should actions be clipped according to the
+env’s/Policy’s action space? If None, use the value of
+self.config.clip_actions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Keyword Arguments<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>kwargs</strong> – forward compatibility placeholder</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The computed action if full_fetch=False, or a tuple of a) the
+full output of policy.compute_actions() if full_fetch=True
+or we have an RNN-based Policy.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the <cite>policy_id</cite> cannot be found in this Algorithm’s local
+    worker.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.default_resource_request">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">default_resource_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AlgorithmConfig</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Resources</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PlacementGroupFactory</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.default_resource_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a static resource requirement for the given configuration.</p>
+<p>This can be overridden by sub-classes to set the correct trial resource
+allocation, so the user does not need to.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong><strong>[</strong><strong>Dict</strong><strong>[</strong><strong>str</strong> – The Trainable’s config dict.</p></li>
+<li><p><strong>Any</strong><strong>]</strong><strong>]</strong> – The Trainable’s config dict.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A PlacementGroupFactory consumed by Tune</dt><dd><p>for queueing.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PlacementGroupFactory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">duration_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates current policy under <cite>evaluation_config</cite> settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>duration_fn</strong> – An optional callable taking the already run
+num episodes as only arg and returning the number of
+episodes left to run. It’s used to find out whether
+evaluation should continue.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.export_model">
+<span class="sig-name descname"><span class="pre">export_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">export_formats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">export_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.export_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exports model based on export_formats.</p>
+<p>Subclasses should override _export_model() to actually
+export model to local directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>export_formats</strong> – Format or list of (str) formats
+that should be exported.</p></li>
+<li><p><strong>export_dir</strong> – Optional dir to place the exported model.
+Defaults to self.logdir.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dict that maps ExportFormats to successfully exported models.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.export_policy_checkpoint">
+<span class="sig-name descname"><span class="pre">export_policy_checkpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">export_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policy_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'default_policy'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.export_policy_checkpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exports Policy checkpoint to a local directory and returns an AIR Checkpoint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>export_dir</strong> – Writable local directory to store the AIR Checkpoint
+information into.</p></li>
+<li><p><strong>policy_id</strong> – Optional policy ID to export. If not provided, will export
+“default_policy”. If <cite>policy_id</cite> does not exist in this Algorithm,
+will raise a KeyError.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError if policy_id cannot be found in this Algorithm.</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.export_policy_model">
+<span class="sig-name descname"><span class="pre">export_policy_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">export_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policy_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'default_policy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onnx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.export_policy_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exports policy model with given policy_id to a local directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>export_dir</strong> – Writable local directory.</p></li>
+<li><p><strong>policy_id</strong> – Optional policy id to export.</p></li>
+<li><p><strong>onnx</strong> – If given, will export model in ONNX format. The
+value of this parameter set the ONNX OpSet version to use.
+If None, the output format will be DL framework specific.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.from_checkpoint">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_checkpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Checkpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policy_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Container</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policy_mapping_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policies_to_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Container</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">SampleBatch</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">MultiAgentBatch</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm" title="my_chess.learner.algorithms.algorithm.Algorithm"><span class="pre">Algorithm</span></a></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.from_checkpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new algorithm instance from a given checkpoint.</p>
+<p>Note: This method must remain backward compatible from 2.0.0 on.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>checkpoint</strong> – The path (str) to the checkpoint directory to use
+or an AIR Checkpoint instance to restore from.</p></li>
+<li><p><strong>policy_ids</strong> – Optional list of PolicyIDs to recover. This allows users to
+restore an Algorithm with only a subset of the originally present
+Policies.</p></li>
+<li><p><strong>policy_mapping_fn</strong> – An optional (updated) policy mapping function
+to use from here on.</p></li>
+<li><p><strong>policies_to_train</strong> – An optional list of policy IDs to be trained
+or a callable taking PolicyID and SampleBatchType and
+returning a bool (trainable or not?).
+If None, will keep the existing setup in place. Policies,
+whose IDs are not in the list (or for which the callable
+returns False) will not be updated.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The instantiated Algorithm.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.from_state">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Algorithm</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.from_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recovers an Algorithm from a state object.</p>
+<p>The <cite>state</cite> of an instantiated Algorithm can be retrieved by calling its
+<cite>get_state</cite> method. It contains all information necessary
+to create the Algorithm from scratch. No access to the original code (e.g.
+configs, knowledge of the Algorithm’s class, etc..) is needed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>state</strong> – The state to recover a new Algorithm instance from.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new Algorithm instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.get_auto_filled_metrics">
+<span class="sig-name descname"><span class="pre">get_auto_filled_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">now</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_this_iter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug_metrics_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.get_auto_filled_metrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dict with metrics auto-filled by the trainable.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">debug_metrics_only</span></code> is True, only metrics that don’t
+require at least one iteration will be returned
+(<code class="docutils literal notranslate"><span class="pre">ray.tune.result.DEBUG_METRICS</span></code>).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.get_config">
+<span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.get_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns configuration passed in by Tune.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.get_default_policy_class">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_default_policy_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AlgorithmConfig</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">Policy</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.get_default_policy_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a default Policy class to use, given a config.</p>
+<p>This class will be used by an Algorithm in case
+the policy class is not provided by the user in any single- or
+multi-agent PolicySpec.</p>
+<p>Note: This method is ignored when the RLModule API is enabled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.get_policy">
+<span class="sig-name descname"><span class="pre">get_policy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">policy_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'default_policy'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Policy</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.get_policy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return policy for the specified id, or None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>policy_id</strong> – ID of the policy to return.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.get_weights">
+<span class="sig-name descname"><span class="pre">get_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">policies</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.get_weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dictionary of policy ids to weights.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>policies</strong> – Optional list of policies to return weights for,
+or None for all policies.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.import_model">
+<span class="sig-name descname"><span class="pre">import_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">import_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.import_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Imports a model from import_file.</p>
+<p>Note: Currently, only h5 files are supported.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>import_file</strong> – The file to import the model from.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dict that maps ExportFormats to successfully exported models.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.import_policy_model_from_h5">
+<span class="sig-name descname"><span class="pre">import_policy_model_from_h5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">import_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policy_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'default_policy'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.import_policy_model_from_h5" title="Permalink to this definition">¶</a></dt>
+<dd><p>Imports a policy’s model with given policy_id from a local h5 file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>import_file</strong> – The h5 file to import from.</p></li>
+<li><p><strong>policy_id</strong> – Optional policy id to import into.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.iteration">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">iteration</span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.iteration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current training iteration.</p>
+<p>This value is automatically incremented every time <cite>train()</cite> is called
+and is automatically inserted into the training result dict.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.load_checkpoint">
+<span class="sig-name descname"><span class="pre">load_checkpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkpoint_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.load_checkpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subclasses should override this to implement restore().</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>In this method, do not rely on absolute paths. The absolute
+path of the checkpoint_dir used in <code class="docutils literal notranslate"><span class="pre">Trainable.save_checkpoint</span></code>
+may be changed.</p>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">Trainable.save_checkpoint</span></code> returned a prefixed string, the
+prefix of the checkpoint string returned by
+<code class="docutils literal notranslate"><span class="pre">Trainable.save_checkpoint</span></code> may be changed.
+This is because trial pausing depends on temporary directories.</p>
+<p>The directory structure under the checkpoint_dir provided to
+<code class="docutils literal notranslate"><span class="pre">Trainable.save_checkpoint</span></code> is preserved.</p>
+<p>See the examples below.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ray.tune.trainable</span> <span class="kn">import</span> <span class="n">Trainable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="n">Trainable</span><span class="p">):</span>
+<span class="gp">... </span>   <span class="k">def</span> <span class="nf">save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint_path</span><span class="p">):</span>
+<span class="gp">... </span>       <span class="n">my_checkpoint_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">checkpoint_path</span><span class="p">,</span> <span class="s2">&quot;my/path&quot;</span><span class="p">)</span>
+<span class="gp">... </span>       <span class="k">return</span> <span class="n">my_checkpoint_path</span>
+<span class="gp">... </span>   <span class="k">def</span> <span class="nf">load_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">my_checkpoint_path</span><span class="p">):</span>
+<span class="gp">... </span>       <span class="nb">print</span><span class="p">(</span><span class="n">my_checkpoint_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">trainer</span> <span class="o">=</span> <span class="n">Example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># This is used when PAUSED.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">checkpoint_result</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="n">trainer</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="n">checkpoint_result</span><span class="p">)</span> 
+</pre></div>
+</div>
+<p>If <cite>Trainable.save_checkpoint</cite> returned a dict, then Tune will directly pass
+the dict data as the argument to this method.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ray.tune.trainable</span> <span class="kn">import</span> <span class="n">Trainable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="n">Trainable</span><span class="p">):</span>
+<span class="gp">... </span>   <span class="k">def</span> <span class="nf">save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint_path</span><span class="p">):</span>
+<span class="gp">... </span>       <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;my_data&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="gp">... </span>   <span class="k">def</span> <span class="nf">load_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint_dict</span><span class="p">):</span>
+<span class="gp">... </span>       <span class="nb">print</span><span class="p">(</span><span class="n">checkpoint_dict</span><span class="p">[</span><span class="s2">&quot;my_data&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.8.7.</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>checkpoint</strong> – If dict, the return value is as
+returned by <code class="docutils literal notranslate"><span class="pre">save_checkpoint</span></code>. Otherwise, the directory
+the checkpoint was stored in.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.log_result">
+<span class="sig-name descname"><span class="pre">log_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.log_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subclasses can optionally override this to customize logging.</p>
+<p>The logging here is done on the worker process rather than
+the driver.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.8.7.</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>result</strong> – Training result returned by step().</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.logdir">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">logdir</span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.logdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Directory of the results and checkpoints for this Trainable.</p>
+<p>Tune will automatically sync this folder with the driver if execution
+is distributed.</p>
+<p>Note that the current working directory will also be changed to this.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.merge_algorithm_configs">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">merge_algorithm_configs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_allow_unknown_configs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.merge_algorithm_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merges a complete Algorithm config dict with a partial override dict.</p>
+<p>Respects nested structures within the config dicts. The values in the
+partial override dict take priority.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config1</strong> – The complete Algorithm’s dict to be merged (overridden)
+with <cite>config2</cite>.</p></li>
+<li><p><strong>config2</strong> – The partial override config dict to merge on top of
+<cite>config1</cite>.</p></li>
+<li><p><strong>_allow_unknown_configs</strong> – If True, keys in <cite>config2</cite> that don’t exist
+in <cite>config1</cite> are allowed and will be added to the final config.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The merged full algorithm config dict.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.remove_policy">
+<span class="sig-name descname"><span class="pre">remove_policy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">policy_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'default_policy'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policy_mapping_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policies_to_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Container</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">SampleBatch</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">MultiAgentBatch</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluation_workers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.remove_policy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes a new policy from this Algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>policy_id</strong> – ID of the policy to be removed.</p></li>
+<li><p><strong>policy_mapping_fn</strong> – An optional (updated) policy mapping function
+to use from here on. Note that already ongoing episodes will
+not change their mapping but will use the old mapping till
+the end of the episode.</p></li>
+<li><p><strong>policies_to_train</strong> – An optional list of policy IDs to be trained
+or a callable taking PolicyID and SampleBatchType and
+returning a bool (trainable or not?).
+If None, will keep the existing setup in place. Policies,
+whose IDs are not in the list (or for which the callable
+returns False) will not be updated.</p></li>
+<li><p><strong>evaluation_workers</strong> – Whether to also remove the policy from the
+evaluation WorkerSet.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_creator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets trial for use with new config.</p>
+<p>Subclasses should override reset_config() to actually
+reset actor behavior for the new config.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.reset_config">
+<span class="sig-name descname"><span class="pre">reset_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.reset_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets configuration without restarting the trial.</p>
+<p>This method is optional, but can be implemented to speed up algorithms
+such as PBT, and to allow performance optimizations such as running
+experiments with reuse_actors=True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_config</strong> – Updated hyperparameter configuration
+for the trainable.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if reset was successful else False.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.resource_help">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">resource_help</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AlgorithmConfig</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.resource_help" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a help string for configuring this trainable’s resources.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – The Trainer’s config dict.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.restore">
+<span class="sig-name descname"><span class="pre">restore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkpoint_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Checkpoint</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_TrainingResult</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.restore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restores training state from a given model checkpoint.</p>
+<p>These checkpoints are returned from calls to save().</p>
+<p>Subclasses should override <code class="docutils literal notranslate"><span class="pre">load_checkpoint()</span></code> instead to
+restore state.
+This method restores additional metadata saved with the checkpoint.</p>
+<p><cite>checkpoint_path</cite> should match with the return from <code class="docutils literal notranslate"><span class="pre">save()</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>checkpoint_path</strong> – Path to restore checkpoint from. If this
+path does not exist on the local node, it will be fetched
+from external (cloud) storage if available, or restored
+from a remote node.</p></li>
+<li><p><strong>checkpoint_node_ip</strong> – If given, try to restore
+checkpoint from this node if it doesn’t exist locally or
+on cloud storage.</p></li>
+<li><p><strong>fallback_to_latest</strong> – If True, will try to recover the
+latest available checkpoint if the given <code class="docutils literal notranslate"><span class="pre">checkpoint_path</span></code>
+could not be found.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>DeveloperAPI:</strong> This API may change across minor Ray releases.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.restore_workers">
+<span class="sig-name descname"><span class="pre">restore_workers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">WorkerSet</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.restore_workers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try syncing previously failed and restarted workers with local, if necessary.</p>
+<p>Algorithms that use custom EnvRunners may override this method to
+disable default, and create custom restoration logics. Note that “restoring”
+does not include the actual restarting process, but merely what should happen
+after such a restart of a (previously failed) worker.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>workers</strong> – The WorkerSet to restore. This may be Rollout or Evaluation
+workers.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkpoint_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">_TrainingResult</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the current model state to a checkpoint.</p>
+<p>Subclasses should override <code class="docutils literal notranslate"><span class="pre">save_checkpoint()</span></code> instead to save state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>checkpoint_dir</strong> – Optional dir to place the checkpoint.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The given or created checkpoint directory.</p>
+</dd>
+</dl>
+<p>Note the return value matches up with what is expected of <cite>restore()</cite>.</p>
+<p><strong>DeveloperAPI:</strong> This API may change across minor Ray releases.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.save_checkpoint">
+<span class="sig-name descname"><span class="pre">save_checkpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkpoint_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.save_checkpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exports checkpoint to a local directory.</p>
+<p>The structure of an Algorithm checkpoint dir will be as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">policies</span><span class="o">/</span>
+    <span class="n">pol_1</span><span class="o">/</span>
+        <span class="n">policy_state</span><span class="o">.</span><span class="n">pkl</span>
+    <span class="n">pol_2</span><span class="o">/</span>
+        <span class="n">policy_state</span><span class="o">.</span><span class="n">pkl</span>
+<span class="n">learner</span><span class="o">/</span>
+    <span class="n">learner_state</span><span class="o">.</span><span class="n">json</span>
+    <span class="n">module_state</span><span class="o">/</span>
+        <span class="n">module_1</span><span class="o">/</span>
+            <span class="o">...</span>
+    <span class="n">optimizer_state</span><span class="o">/</span>
+        <span class="n">optimizers_module_1</span><span class="o">/</span>
+            <span class="o">...</span>
+<span class="n">rllib_checkpoint</span><span class="o">.</span><span class="n">json</span>
+<span class="n">algorithm_state</span><span class="o">.</span><span class="n">pkl</span>
+</pre></div>
+</div>
+<p>Note: <cite>rllib_checkpoint.json</cite> contains a “version” key (e.g. with value 0.1)
+helping RLlib to remain backward compatible wrt. restoring from checkpoints from
+Ray 2.0 onwards.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>checkpoint_dir</strong> – The directory where the checkpoint files will be stored.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.set_weights">
+<span class="sig-name descname"><span class="pre">set_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.set_weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set policy weights by policy id.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>weights</strong> – Map of policy ids to weights to set.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AlgorithmConfig</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subclasses should override this for custom initialization.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.8.7.</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – Hyperparameters and other configs given.
+Copy of <cite>self.config</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements the main <cite>Algorithm.train()</cite> logic.</p>
+<p>Takes n attempts to perform a single training step. Thereby
+catches RayErrors resulting from worker failures. After n attempts,
+fails gracefully.</p>
+<p>Override this method in your Algorithm sub-classes if you would like to
+handle worker failures yourself.
+Otherwise, override only <cite>training_step()</cite> to implement the core
+algorithm logic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The results dict with stats/infos on sampling, training,
+and - if required - evaluation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Releases all resources used by this trainable.</p>
+<p>Calls <code class="docutils literal notranslate"><span class="pre">Trainable.cleanup</span></code> internally. Subclasses should override
+<code class="docutils literal notranslate"><span class="pre">Trainable.cleanup</span></code> for custom cleanup procedures.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.train">
+<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs one logical iteration of training.</p>
+<p>Calls <code class="docutils literal notranslate"><span class="pre">step()</span></code> internally. Subclasses should override <code class="docutils literal notranslate"><span class="pre">step()</span></code>
+instead to return results.
+This method automatically fills the following fields in the result:</p>
+<blockquote>
+<div><p><cite>done</cite> (bool): training is terminated. Filled only if not provided.</p>
+<p><cite>time_this_iter_s</cite> (float): Time in seconds this iteration
+took to run. This may be overridden in order to override the
+system-computed time difference.</p>
+<p><cite>time_total_s</cite> (float): Accumulated time in seconds for this
+entire experiment.</p>
+<p><cite>training_iteration</cite> (int): The index of this
+training iteration, e.g. call to train(). This is incremented
+after <cite>step()</cite> is called.</p>
+<p><cite>pid</cite> (str): The pid of the training process.</p>
+<p><cite>date</cite> (str): A formatted date of when the result was processed.</p>
+<p><cite>timestamp</cite> (str): A UNIX timestamp of when the result
+was processed. This may be overridden.</p>
+<p><cite>hostname</cite> (str): Hostname of the machine hosting the training
+process.</p>
+<p><cite>node_ip</cite> (str): Node ip of the machine hosting the training
+process.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dict that describes training progress.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.train_buffered">
+<span class="sig-name descname"><span class="pre">train_buffered</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffer_time_s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_buffer_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.train_buffered" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs multiple iterations of training.</p>
+<p>Calls <code class="docutils literal notranslate"><span class="pre">train()</span></code> internally. Collects and combines multiple results.
+This function will run <code class="docutils literal notranslate"><span class="pre">self.train()</span></code> repeatedly until one of
+the following conditions is met: 1) the maximum buffer length is
+reached, 2) the maximum buffer time is reached, or 3) a checkpoint
+was created. Even if the maximum time is reached, it will always
+block until at least one result is received.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>buffer_time_s</strong> – Maximum time to buffer. The next result
+received after this amount of time has passed will return
+the whole buffer.</p></li>
+<li><p><strong>max_buffer_length</strong> – Maximum number of results to buffer.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.training_iteration">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">training_iteration</span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.training_iteration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current training iteration (same as <cite>self.iteration</cite>).</p>
+<p>This value is automatically incremented every time <cite>train()</cite> is called
+and is automatically inserted into the training result dict.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.training_step">
+<span class="sig-name descname"><span class="pre">training_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.training_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default single iteration logic of an algorithm.</p>
+<ul class="simple">
+<li><p>Collect on-policy samples (SampleBatches) in parallel using the
+Algorithm’s EnvRunners (&#64;ray.remote).</p></li>
+<li><p>Concatenate collected SampleBatches into one train batch.</p></li>
+<li><p>Note that we may have more than one policy in the multi-agent case:
+Call the different policies’ <cite>learn_on_batch</cite> (simple optimizer) OR
+<cite>load_batch_into_buffer</cite> + <cite>learn_on_loaded_batch</cite> (multi-GPU
+optimizer) methods to calculate loss and update the model(s).</p></li>
+<li><p>Return all collected metrics for the iteration.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The results dict from executing the training iteration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.trial_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trial_id</span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.trial_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trial ID for the corresponding trial of this Trainable.</p>
+<p>This is not set if not using Tune.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.trial_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trial_name</span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.trial_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trial name for the corresponding trial of this Trainable.</p>
+<p>This is not set if not using Tune.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.trial_resources">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trial_resources</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">PlacementGroupFactory</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.trial_resources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resources currently assigned to the trial of this Trainable.</p>
+<p>This is not set if not using Tune.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.Algorithm.validate_env">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_env</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_context</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">EnvContext</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.validate_env" title="Permalink to this definition">¶</a></dt>
+<dd><p>Env validator function for this Algorithm class.</p>
+<p>Override this in child classes to define custom validation
+behavior.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>env</strong> – The (sub-)environment to validate. This is normally a
+single sub-environment (e.g. a gym.Env) within a vectorized
+setup.</p></li>
+<li><p><strong>env_context</strong> – The EnvContext to configure the environment.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception in case something is wrong with the given environment.</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">my_chess.learner.algorithms.algorithm.Algorithm</a><ul>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm"><code class="docutils literal notranslate"><span class="pre">Algorithm</span></code></a><ul>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.__init__"><code class="docutils literal notranslate"><span class="pre">Algorithm.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.add_policy"><code class="docutils literal notranslate"><span class="pre">Algorithm.add_policy()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.cleanup"><code class="docutils literal notranslate"><span class="pre">Algorithm.cleanup()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.compute_actions"><code class="docutils literal notranslate"><span class="pre">Algorithm.compute_actions()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.compute_single_action"><code class="docutils literal notranslate"><span class="pre">Algorithm.compute_single_action()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.default_resource_request"><code class="docutils literal notranslate"><span class="pre">Algorithm.default_resource_request()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.evaluate"><code class="docutils literal notranslate"><span class="pre">Algorithm.evaluate()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.export_model"><code class="docutils literal notranslate"><span class="pre">Algorithm.export_model()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.export_policy_checkpoint"><code class="docutils literal notranslate"><span class="pre">Algorithm.export_policy_checkpoint()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.export_policy_model"><code class="docutils literal notranslate"><span class="pre">Algorithm.export_policy_model()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.from_checkpoint"><code class="docutils literal notranslate"><span class="pre">Algorithm.from_checkpoint()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.from_state"><code class="docutils literal notranslate"><span class="pre">Algorithm.from_state()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.get_auto_filled_metrics"><code class="docutils literal notranslate"><span class="pre">Algorithm.get_auto_filled_metrics()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.get_config"><code class="docutils literal notranslate"><span class="pre">Algorithm.get_config()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.get_default_policy_class"><code class="docutils literal notranslate"><span class="pre">Algorithm.get_default_policy_class()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.get_policy"><code class="docutils literal notranslate"><span class="pre">Algorithm.get_policy()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.get_weights"><code class="docutils literal notranslate"><span class="pre">Algorithm.get_weights()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.import_model"><code class="docutils literal notranslate"><span class="pre">Algorithm.import_model()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.import_policy_model_from_h5"><code class="docutils literal notranslate"><span class="pre">Algorithm.import_policy_model_from_h5()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.iteration"><code class="docutils literal notranslate"><span class="pre">Algorithm.iteration</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.load_checkpoint"><code class="docutils literal notranslate"><span class="pre">Algorithm.load_checkpoint()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.log_result"><code class="docutils literal notranslate"><span class="pre">Algorithm.log_result()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.logdir"><code class="docutils literal notranslate"><span class="pre">Algorithm.logdir</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.merge_algorithm_configs"><code class="docutils literal notranslate"><span class="pre">Algorithm.merge_algorithm_configs()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.remove_policy"><code class="docutils literal notranslate"><span class="pre">Algorithm.remove_policy()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.reset"><code class="docutils literal notranslate"><span class="pre">Algorithm.reset()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.reset_config"><code class="docutils literal notranslate"><span class="pre">Algorithm.reset_config()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.resource_help"><code class="docutils literal notranslate"><span class="pre">Algorithm.resource_help()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.restore"><code class="docutils literal notranslate"><span class="pre">Algorithm.restore()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.restore_workers"><code class="docutils literal notranslate"><span class="pre">Algorithm.restore_workers()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.save"><code class="docutils literal notranslate"><span class="pre">Algorithm.save()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.save_checkpoint"><code class="docutils literal notranslate"><span class="pre">Algorithm.save_checkpoint()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.set_weights"><code class="docutils literal notranslate"><span class="pre">Algorithm.set_weights()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.setup"><code class="docutils literal notranslate"><span class="pre">Algorithm.setup()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.step"><code class="docutils literal notranslate"><span class="pre">Algorithm.step()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.stop"><code class="docutils literal notranslate"><span class="pre">Algorithm.stop()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.train"><code class="docutils literal notranslate"><span class="pre">Algorithm.train()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.train_buffered"><code class="docutils literal notranslate"><span class="pre">Algorithm.train_buffered()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.training_iteration"><code class="docutils literal notranslate"><span class="pre">Algorithm.training_iteration</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.training_step"><code class="docutils literal notranslate"><span class="pre">Algorithm.training_step()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.trial_id"><code class="docutils literal notranslate"><span class="pre">Algorithm.trial_id</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.trial_name"><code class="docutils literal notranslate"><span class="pre">Algorithm.trial_name</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.trial_resources"><code class="docutils literal notranslate"><span class="pre">Algorithm.trial_resources</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.algorithm.Algorithm.validate_env"><code class="docutils literal notranslate"><span class="pre">Algorithm.validate_env()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="my_chess.learner.algorithms.algorithm.measure_recall.html"
+                          title="previous chapter">my_chess.learner.algorithms.algorithm.measure_recall</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="my_chess.learner.algorithms.algorithm.AlgorithmConfig.html"
+                          title="next chapter">my_chess.learner.algorithms.algorithm.AlgorithmConfig</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/_autosummary/my_chess.learner.algorithms.algorithm.Algorithm.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="my_chess.learner.algorithms.algorithm.AlgorithmConfig.html" title="my_chess.learner.algorithms.algorithm.AlgorithmConfig"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="my_chess.learner.algorithms.algorithm.measure_recall.html" title="my_chess.learner.algorithms.algorithm.measure_recall"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ChessBot 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="my_chess.html" >my_chess</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="my_chess.learner.html" >my_chess.learner</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="my_chess.learner.algorithms.html" >my_chess.learner.algorithms</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="my_chess.learner.algorithms.algorithm.html" >my_chess.learner.algorithms.algorithm</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">my_chess.learner.algorithms.algorithm.Algorithm</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2024, Mark Zimmerman.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    </div>
+  </body>
+</html>

@@ -3,6 +3,13 @@
 from .trainable import Trainable, TrainableConfig, SimpleCustomBatch, collate_wrapper
 from .autoencoder import AutoEncoder, AutoEncoderConfig
 from .chessevaluation import ChessEvaluation, ChessEvaluationConfig
+from .distill import ModelDistill, ModelDistillConfig
 
-from .algorithm import Algorithm, AlgorithmConfig
+from .algorithm import (
+    Algorithm,
+    AlgorithmConfig,
+    measure_accuracy,
+    measure_precision,
+    measure_recall
+    )
 from .ppo_cust import PPO, PPOConfig

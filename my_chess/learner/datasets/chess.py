@@ -1,4 +1,5 @@
 from my_chess.learner.datasets import Dataset
+from my_chess.learner.environments import Chess
 from pettingzoo.classic.chess_v6 import raw_env as r_e
 from pettingzoo.utils import wrappers
 from pettingzoo.classic.chess import chess_utils
@@ -160,16 +161,13 @@ class raw_env(r_e):
             fens.append(fen)
         return fens
 
-                
-        
-
-
 def env(**kwargs):
     env = raw_env(**kwargs)
     env = wrappers.TerminateIllegalWrapper(env, illegal_reward=-1)
     env = wrappers.AssertOutOfBoundsWrapper(env)
     env = wrappers.OrderEnforcingWrapper(env)
     return env
+
 
 class ChessData(Dataset):
     def __init__(
@@ -608,3 +606,61 @@ class ChessData(Dataset):
                             action_to_take = legal_action
         
         return action_to_take
+        
+class ChessDataWinLossPairs(ChessData):
+    def __init__(
+            self,
+            dataset_dir,
+            seed=None,
+            apply_deepchess_rules=True,
+            render_mode=None,
+            reset=False,
+            max_games_per_file=14000,
+            subset=None,
+            static_partners:bool=True) -> None:
+        super().__init__(
+            dataset_dir,
+            seed,
+            apply_deepchess_rules,
+            render_mode,
+            reset,
+            max_games_per_file,
+            subset)
+        self.idx_partners = None
+        if static_partners:
+            partners = self.get_static_random_idx_partners()
+            self.idx_partners = lambda x: partners[x]
+        else:
+            self.idx_partners = partial(self.get_dynamic_random_idx_partners)
+        
+    def __getitem__(self, idx):
+        pos1 = super().__getitem__(idx)
+        pos2 = super().__getitem__(self.idx_partners(idx))
+        pos2_ret = pos2[0]
+        if (pos1[1]==pos2[1]).all():
+            pos2_ret = Chess.mirror_board_view(pos2[0])
+        return torch.stack([pos1[0], pos2_ret], dim=-4), pos1[1]
+
+    def get_static_random_idx_partners(self):
+        '''
+        Will provide a random index to be paired with data loader index
+        Created to be consistent with dataset ordering indexes to avoid excessive reloading of labels (which exists in batches)
+        '''
+        partners = []
+        cum_label_counts = self.label_data._cum_label_counts
+        idxs = torch.arange(cum_label_counts.iloc[-1]+1)
+        batches = (idxs[:,None] > torch.tensor(cum_label_counts)).sum(-1)-1
+        for i in range(batches.max()+1):
+            prtnrs = idxs[batches==i]
+            idx_selection = torch.randperm(len(prtnrs), generator=self.gen)
+            partners.append(prtnrs[idx_selection])
+        return torch.cat(partners)
+    
+    def get_dynamic_random_idx_partners(self, idx):
+        '''
+        Will provide a random index to be paired with data loader index
+        Created to be consistent with dataset ordering indexes to avoid excessive reloading of labels (which exists in batches)
+        '''
+        cum_label_counts = self.label_data._cum_label_counts
+        high_idx = (idx >= torch.tensor(cum_label_counts)).sum(-1).item()
+        return torch.randint(cum_label_counts.iloc[high_idx-1], cum_label_counts.iloc[high_idx], size=(1,), generator=self.gen).item()

@@ -22,6 +22,9 @@ from ray import tune, air
 from ray.tune.registry import register_trainable
 
 import torch
+import numpy as np
+
+import pygame
 
 import my_chess.learner.environments
 from my_chess.learner.environments import (
@@ -66,6 +69,8 @@ MODELCONFIGS = {k:v for k,v in inspect.getmembers(my_chess.learner.models, inspe
 
 from my_chess.learner.callbacks import DefaultCallbacks
 
+import chess
+from pettingzoo.classic.chess import chess_utils
 
 class ArgumentCollector:
     DOCSTRARGSHEAD = "Args:"
@@ -175,6 +180,11 @@ class Script(abc.ABC):
         return self.argCol
     
     def complete_run(self):
+        """
+        Runs argument parser before running script.
+
+        Useful for allowing files to run scripts dynamically from the terminal.
+        """
         self.parseArgs()
         self.run()
 
@@ -294,17 +304,85 @@ class HumanVsBot(Test):
                 self.model = [self.model]
                 self.model_config = [self.model_config]
             self.policies = [m(input_sample=input_sample, config=m_c) for m, m_c in zip(self.model, self.model_config)]
+            for p in self.policies:
+                p.eval()
         
         assert len(self.policies) == len(self.environment.agents) - 1
-        self.action_map = {self.environment.agents[0]: self.get_human_input}
-        self.action_map.update(
-            {agnt:partial(self.get_ai_input, model=mod) 
-             for agnt, mod in zip(self.environment.agents[1:], self.policies)})
+        pols = [partial(self.get_ai_input, model=mod) for mod in self.policies]
+        pols.append(self.get_human_input)
+        agent_assignment = np.random.choice(len(pols), len(self.environment.agents), replace=False)
+        self.action_map = {}
+        self.human_player = None
+        for i, j in enumerate(agent_assignment):
+            self.action_map[self.environment.agents[i]] = pols[j]
+            if pols[j] == self.get_human_input:
+                self.human_player = i
+
+    def pos_to_square(self, x, y):
+        window_size = pygame.display.get_surface().get_size()
+        square_width = window_size[0] // 8
+        square_height = window_size[1] // 8
+        return x // square_width, (window_size[1] - y) // square_height
+
+    def square_num(self, x, y):
+        return y * 8 + x
+
+    def square_to_coord(self, x, y):
+        return ''.join((
+            chr(ord('a') + x),
+            str(y + 1)
+            ))
+    
+    def squares_to_move(self, f, t):
+        return self.square_to_coord(*f) + self.square_to_coord(*t)
 
     def get_human_input(self, observation, **kwargs):
-        options = torch.arange(observation['action_mask'].size)[observation['action_mask'].astype(bool)]
-        choice = torch.randint(options.numel(), (1,))
-        return options[choice].item()
+        #RANDOM PLAYER
+        # options = torch.arange(observation['action_mask'].size)[observation['action_mask'].astype(bool)]
+        # choice = torch.randint(options.numel(), (1,))
+        # return options[choice].item()
+        action = None
+        from_coord = None
+        legal_actions = chess_utils.legal_moves(self.environment.env.board)
+        legal_moves = [str(chess_utils.action_to_move(self.environment.env.board, x, self.human_player)) for x in legal_actions]
+        legally_moved = False
+        while not legally_moved:
+            ev = pygame.event.get()
+            for event in ev:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    x, y = event.pos
+                    from_coord = self.pos_to_square(x, y)
+                if event.type == pygame.MOUSEBUTTONUP:
+                    x, y = event.pos
+                    to_coord = self.pos_to_square(x, y)
+                    if to_coord == from_coord:
+                        # clicked to pick piece
+                        attempted_move = False
+                        while not attempted_move:
+                            ev = pygame.event.get()
+                            for event in ev:
+                                if event.type == pygame.MOUSEBUTTONDOWN:
+                                    x, y = event.pos
+                                    to_coord = self.pos_to_square(x, y)
+                                if event.type == pygame.MOUSEBUTTONUP:
+                                    x, y = event.pos
+                                    if self.pos_to_square(x, y) == to_coord:
+                                        attempted_move = True
+                                        move = self.squares_to_move(from_coord, to_coord)
+                                        if not move in legal_moves:
+                                            move = move + 'q' #hack to incorporate promoting to queen
+                                        if move in legal_moves:
+                                            action = legal_actions[legal_moves.index(move)]
+                                            legally_moved = True
+                    else:
+                        # dragged piece
+                        move = self.squares_to_move(from_coord, to_coord)
+                        if not move in legal_moves:
+                            move = move + 'q' #hack to incorporate promoting to queen
+                        if move in legal_moves:
+                            action = legal_actions[legal_moves.index(move)]
+                            legally_moved = True
+        return action
 
     def get_ai_input(self, observation, env, model:Union[Policy, Model]):
         act = None
@@ -347,6 +425,8 @@ class Train(Script):
             framework:Literal["tf","torch"] = "torch",
             **kwargs) -> None:
         """
+        Create a training script for a machine learning model.
+
         Args:
             setup_file: Path to training parameters.
             debug: Boolean determining wether to enable debug mode.
@@ -433,17 +513,24 @@ class Train(Script):
 
     def run(self):
         """
+        Activate model training.
+
+        Based on the preset options of the constructor, a ray server is
+        initiated and a new or existing tuning experiment is run. Once complete,
+        the ray server is shutdown.
+
         Args:
         """
         ray.init(
             num_cpus=self.num_cpus,
             num_gpus=math.ceil(self.num_gpus),
             local_mode=self.local_mode,
-            storage="/home/mark/Machine_Learning/Reinforcement_Learning/Chess/results")
+            # storage="/home/mark/Machine_Learning/Reinforcement_Learning/Chess/results")
+            storage="/opt/ray/results")
         
         tuner = None
         if self.restore:
-            tuner = tune.Tuner.restore(self.restore, self.algorithm.__name__, resume_errored=True)
+            tuner = tune.Tuner.restore(self.restore, self.algorithm.__name__, param_space=self.algorithm_config, resume_errored=True)
         else:
             tuner = tune.Tuner(
                 self.algorithm.__name__,

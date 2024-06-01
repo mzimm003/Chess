@@ -7,7 +7,8 @@ from pathlib import Path
 
 
 def main(kwargs=None):
-    best_model_dir = Path("./results/DeepChessEvaluator/ChessEvaluation_0d120_00000_0_batch_size=256,learning_rate_scheduler_config=step_size_1_gamma_0_75,model_config=ref_ph_a52f5213,lr_2024-03-12_19-04-40").resolve()
+    # best_model_dir = Path("./results/DeepChessEvaluator/ChessEvaluation_d8721_00002_2_batch_size=256,learning_rate_scheduler_config=milestones___ref_ph_33c73b19_gamma_0_75,model_config=r_2024-03-13_10-19-29").resolve()
+    best_model_dir = Path("/opt/ray/results/DeepChessEvaluator/ChessEvaluation_4f508_00000_0_batch_size=256,learning_rate_scheduler_config=step_size_200_gamma_0_9,model_config=ref_ph_a52f5213,l_2024-03-26_14-17-54").resolve()
     best_model_class = None
     best_model_config = None
     with open(best_model_dir/"params.pkl",'rb') as f:
@@ -22,7 +23,7 @@ def main(kwargs=None):
             board_evaluator=best_model_class,
             board_evaluator_config=best_model_config,
             board_evaluator_param_dir=latest_checkpoint,
-            depth=1
+            max_depth=3
         ),
         environment=Chess(render_mode="human"),
         extra_model_environment_context=lambda env: {"board":env.board}

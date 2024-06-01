@@ -10,6 +10,7 @@ import pandas as pd
 from ray.util.multiprocessing import Pool
 import ray
 from torch.multiprocessing import Manager
+import torch
 
 class Dataset(DatasetTorch):
     AUTONAME = "complete_generated_dataset"
@@ -27,6 +28,9 @@ class Dataset(DatasetTorch):
             ) -> None:
         super().__init__()
         self.seed = seed
+        self.gen = torch.Generator()
+        if self.seed:
+            self.gen.manual_seed(self.seed)
         self.reset = reset
         self.dataset_dir = Path(dataset_dir)
         self.label_dir = self.dataset_dir/'labels'

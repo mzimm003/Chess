@@ -1,0 +1,461 @@
+
+
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>my_chess.learner.environments.Environment &#8212; ChessBot 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=649a27d8" />
+    <link rel="stylesheet" type="text/css" href="../_static/bizstyle.css?v=13b2ab6e" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=f6245a2f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="my_chess.learner.environments.PettingZooEnv" href="my_chess.learner.environments.PettingZooEnv.html" />
+    <link rel="prev" title="my_chess.learner.environments.Chess" href="my_chess.learner.environments.Chess.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="my_chess.learner.environments.PettingZooEnv.html" title="my_chess.learner.environments.PettingZooEnv"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="my_chess.learner.environments.Chess.html" title="my_chess.learner.environments.Chess"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ChessBot 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="my_chess.html" >my_chess</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="my_chess.learner.html" >my_chess.learner</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="my_chess.learner.environments.html" accesskey="U">my_chess.learner.environments</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">my_chess.learner.environments.Environment</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="my-chess-learner-environments-environment">
+<h1>my_chess.learner.environments.Environment<a class="headerlink" href="#my-chess-learner-environments-environment" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="my_chess.learner.environments.Environment">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">my_chess.learner.environments.</span></span><span class="sig-name descname"><span class="pre">Environment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">render_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.environments.Environment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="my_chess.learner.environments.PettingZooEnv.html#my_chess.learner.environments.PettingZooEnv" title="my_chess.learner.environments.PettingZooEnv"><code class="xref py py-class docutils literal notranslate"><span class="pre">PettingZooEnv</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.environments.Environment.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">render_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.environments.Environment.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.environments.Environment.__init__" title="my_chess.learner.environments.Environment.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(env[, render_mode])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">action_space</span></code>([agent_id])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.environments.Environment.action_space_contains" title="my_chess.learner.environments.Environment.action_space_contains"><code class="xref py py-obj docutils literal notranslate"><span class="pre">action_space_contains</span></code></a>(x)</p></td>
+<td><p>Checks if the action space contains the given action.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.environments.Environment.action_space_sample" title="my_chess.learner.environments.Environment.action_space_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">action_space_sample</span></code></a>([agent_ids])</p></td>
+<td><p>Returns a random action for each environment, and potentially each</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.environments.Environment.close" title="my_chess.learner.environments.Environment.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a>()</p></td>
+<td><p>After the user has finished using the environment, close contains the code necessary to &quot;clean up&quot; the environment.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getName</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.environments.Environment.get_agent_ids" title="my_chess.learner.environments.Environment.get_agent_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_agent_ids</span></code></a>()</p></td>
+<td><p>Returns a set of agent ids in the environment.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">observation_space</span></code>([agent_id])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.environments.Environment.observation_space_contains" title="my_chess.learner.environments.Environment.observation_space_contains"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observation_space_contains</span></code></a>(x)</p></td>
+<td><p>Checks if the observation space contains the given key.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.environments.Environment.observation_space_sample" title="my_chess.learner.environments.Environment.observation_space_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observation_space_sample</span></code></a>([agent_ids])</p></td>
+<td><p>Returns a random observation from the observation space for each agent if agent_ids is None, otherwise returns a random observation for the agents in agent_ids.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.environments.Environment.render" title="my_chess.learner.environments.Environment.render"><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code></a>()</p></td>
+<td><p>Tries to render the environment.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.environments.Environment.reset" title="my_chess.learner.environments.Environment.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>(*[, seed, options])</p></td>
+<td><p>Resets the env and returns observations from ready agents.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.environments.Environment.step" title="my_chess.learner.environments.Environment.step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code></a>(action)</p></td>
+<td><p>Returns observations from ready agents.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.environments.Environment.to_base_env" title="my_chess.learner.environments.Environment.to_base_env"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_base_env</span></code></a>([make_env, num_envs, ...])</p></td>
+<td><p>Converts an RLlib MultiAgentEnv into a BaseEnv object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.environments.Environment.with_agent_groups" title="my_chess.learner.environments.Environment.with_agent_groups"><code class="xref py py-obj docutils literal notranslate"><span class="pre">with_agent_groups</span></code></a>(groups[, obs_space, act_space])</p></td>
+<td><p>Convenience method for grouping together agents in this env.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">agent_selection</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">agents</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_sub_environments</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">metadata</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.environments.Environment.np_random" title="my_chess.learner.environments.Environment.np_random"><code class="xref py py-obj docutils literal notranslate"><span class="pre">np_random</span></code></a></p></td>
+<td><p>Returns the environment's internal <code class="xref py py-attr docutils literal notranslate"><span class="pre">_np_random</span></code> that if not set will initialise with a random seed.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render_mode</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reward_range</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">spec</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.environments.Environment.unwrapped" title="my_chess.learner.environments.Environment.unwrapped"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unwrapped</span></code></a></p></td>
+<td><p>Returns the base non-wrapped environment.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.environments.Environment.action_space_contains">
+<span class="sig-name descname"><span class="pre">action_space_contains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#my_chess.learner.environments.Environment.action_space_contains" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the action space contains the given action.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> – Actions to check.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the action space contains all actions in x.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.environments.Environment.action_space_sample">
+<span class="sig-name descname"><span class="pre">action_space_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#my_chess.learner.environments.Environment.action_space_sample" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Returns a random action for each environment, and potentially each</dt><dd><p>agent in that environment.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>agent_ids</strong> – List of agent ids to sample actions for. If None or
+empty list, sample actions for all agents in the
+environment.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A random action for each environment.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.environments.Environment.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.environments.Environment.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>After the user has finished using the environment, close contains the code necessary to “clean up” the environment.</p>
+<p>This is critical for closing rendering windows, database or HTTP connections.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.environments.Environment.get_agent_ids">
+<span class="sig-name descname"><span class="pre">get_agent_ids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#my_chess.learner.environments.Environment.get_agent_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set of agent ids in the environment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Set of agent ids.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="my_chess.learner.environments.Environment.np_random">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">np_random</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><a class="headerlink" href="#my_chess.learner.environments.Environment.np_random" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the environment’s internal <code class="xref py py-attr docutils literal notranslate"><span class="pre">_np_random</span></code> that if not set will initialise with a random seed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Instances of <cite>np.random.Generator</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.environments.Environment.observation_space_contains">
+<span class="sig-name descname"><span class="pre">observation_space_contains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#my_chess.learner.environments.Environment.observation_space_contains" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the observation space contains the given key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> – Observations to check.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>True if the observation space contains the given all observations</dt><dd><p>in x.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.environments.Environment.observation_space_sample">
+<span class="sig-name descname"><span class="pre">observation_space_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#my_chess.learner.environments.Environment.observation_space_sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a random observation from the observation space for each
+agent if agent_ids is None, otherwise returns a random observation for
+the agents in agent_ids.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>agent_ids</strong> – List of agent ids to sample actions for. If None or
+empty list, sample actions for all agents in the
+environment.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A random action for each environment.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.environments.Environment.render">
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.environments.Environment.render" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to render the environment.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.environments.Environment.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.environments.Environment.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the env and returns observations from ready agents.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>seed</strong> – An optional seed to use for the new episode.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New observations for each ready agent.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.environments.Environment.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.environments.Environment.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns observations from ready agents.</p>
+<p>The returns are dicts mapping from agent_id strings to values. The
+number of agents in the env can vary over time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple containing 1) new observations for
+each ready agent, 2) reward values for each ready agent. If
+the episode is just started, the value will be None.
+3) Terminated values for each ready agent. The special key
+“__all__” (required) is used to indicate env termination.
+4) Truncated values for each ready agent.
+5) Info values for each agent id (may be empty dicts).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.environments.Environment.to_base_env">
+<span class="sig-name descname"><span class="pre">to_base_env</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">make_env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Env</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_envs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remote_envs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remote_env_batch_wait_ms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">restart_failed_sub_environments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">BaseEnv</span></span></span><a class="headerlink" href="#my_chess.learner.environments.Environment.to_base_env" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts an RLlib MultiAgentEnv into a BaseEnv object.</p>
+<p>The resulting BaseEnv is always vectorized (contains n
+sub-environments) to support batched forward passes, where n may
+also be 1. BaseEnv also supports async execution via the <cite>poll</cite> and
+<cite>send_actions</cite> methods and thus supports external simulators.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>make_env</strong> – A callable taking an int as input (which indicates
+the number of individual sub-environments within the final
+vectorized BaseEnv) and returning one individual
+sub-environment.</p></li>
+<li><p><strong>num_envs</strong> – The number of sub-environments to create in the
+resulting (vectorized) BaseEnv. The already existing <cite>env</cite>
+will be one of the <cite>num_envs</cite>.</p></li>
+<li><p><strong>remote_envs</strong> – Whether each sub-env should be a &#64;ray.remote
+actor. You can set this behavior in your config via the
+<cite>remote_worker_envs=True</cite> option.</p></li>
+<li><p><strong>remote_env_batch_wait_ms</strong> – The wait time (in ms) to poll remote
+sub-environments for, if applicable. Only used if
+<cite>remote_envs</cite> is True.</p></li>
+<li><p><strong>restart_failed_sub_environments</strong> – If True and any sub-environment (within
+a vectorized env) throws any error during env stepping, we will try to
+restart the faulty sub-environment. This is done
+without disturbing the other (still intact) sub-environments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The resulting BaseEnv object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="my_chess.learner.environments.Environment.unwrapped">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unwrapped</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Env</span><span class="p"><span class="pre">[</span></span><span class="pre">ObsType</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ActType</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#my_chess.learner.environments.Environment.unwrapped" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the base non-wrapped environment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The base non-wrapped <code class="xref py py-class docutils literal notranslate"><span class="pre">gymnasium.Env</span></code> instance</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Env</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.environments.Environment.with_agent_groups">
+<span class="sig-name descname"><span class="pre">with_agent_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">groups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs_space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Space</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">act_space</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Space</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">MultiAgentEnv</span></span></span><a class="headerlink" href="#my_chess.learner.environments.Environment.with_agent_groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience method for grouping together agents in this env.</p>
+<p>An agent group is a list of agent IDs that are mapped to a single
+logical agent. All agents of the group must act at the same time in the
+environment. The grouped agent exposes Tuple action and observation
+spaces that are the concatenated action and obs spaces of the
+individual agents.</p>
+<p>The rewards of all the agents in a group are summed. The individual
+agent rewards are available under the “individual_rewards” key of the
+group info return.</p>
+<p>Agent grouping is required to leverage algorithms such as Q-Mix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>groups</strong> – Mapping from group id to a list of the agent ids
+of group members. If an agent id is not present in any group
+value, it will be left ungrouped. The group id becomes a new agent ID
+in the final environment.</p></li>
+<li><p><strong>obs_space</strong> – Optional observation space for the grouped
+env. Must be a tuple space. If not provided, will infer this to be a
+Tuple of n individual agents spaces (n=num agents in a group).</p></li>
+<li><p><strong>act_space</strong> – Optional action space for the grouped env.
+Must be a tuple space. If not provided, will infer this to be a Tuple
+of n individual agents spaces (n=num agents in a group).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">my_chess.learner.environments.Environment</a><ul>
+<li><a class="reference internal" href="#my_chess.learner.environments.Environment"><code class="docutils literal notranslate"><span class="pre">Environment</span></code></a><ul>
+<li><a class="reference internal" href="#my_chess.learner.environments.Environment.__init__"><code class="docutils literal notranslate"><span class="pre">Environment.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.environments.Environment.action_space_contains"><code class="docutils literal notranslate"><span class="pre">Environment.action_space_contains()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.environments.Environment.action_space_sample"><code class="docutils literal notranslate"><span class="pre">Environment.action_space_sample()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.environments.Environment.close"><code class="docutils literal notranslate"><span class="pre">Environment.close()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.environments.Environment.get_agent_ids"><code class="docutils literal notranslate"><span class="pre">Environment.get_agent_ids()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.environments.Environment.np_random"><code class="docutils literal notranslate"><span class="pre">Environment.np_random</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.environments.Environment.observation_space_contains"><code class="docutils literal notranslate"><span class="pre">Environment.observation_space_contains()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.environments.Environment.observation_space_sample"><code class="docutils literal notranslate"><span class="pre">Environment.observation_space_sample()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.environments.Environment.render"><code class="docutils literal notranslate"><span class="pre">Environment.render()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.environments.Environment.reset"><code class="docutils literal notranslate"><span class="pre">Environment.reset()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.environments.Environment.step"><code class="docutils literal notranslate"><span class="pre">Environment.step()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.environments.Environment.to_base_env"><code class="docutils literal notranslate"><span class="pre">Environment.to_base_env()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.environments.Environment.unwrapped"><code class="docutils literal notranslate"><span class="pre">Environment.unwrapped</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.environments.Environment.with_agent_groups"><code class="docutils literal notranslate"><span class="pre">Environment.with_agent_groups()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="my_chess.learner.environments.Chess.html"
+                          title="previous chapter">my_chess.learner.environments.Chess</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="my_chess.learner.environments.PettingZooEnv.html"
+                          title="next chapter">my_chess.learner.environments.PettingZooEnv</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/_autosummary/my_chess.learner.environments.Environment.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="my_chess.learner.environments.PettingZooEnv.html" title="my_chess.learner.environments.PettingZooEnv"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="my_chess.learner.environments.Chess.html" title="my_chess.learner.environments.Chess"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ChessBot 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="my_chess.html" >my_chess</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="my_chess.learner.html" >my_chess.learner</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="my_chess.learner.environments.html" >my_chess.learner.environments</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">my_chess.learner.environments.Environment</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2024, Mark Zimmerman.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    </div>
+  </body>
+</html>

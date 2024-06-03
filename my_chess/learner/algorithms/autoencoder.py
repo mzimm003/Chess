@@ -18,6 +18,7 @@ from my_chess.learner.algorithms import Trainable, TrainableConfig, collate_wrap
 from my_chess.learner.policies import Policy, PPOPolicy
 from my_chess.learner.datasets import Dataset, ChessData
 from my_chess.learner.models import Model, ModelConfig
+import my_chess.learner.algorithms as algorithms
 
 class AutoEncoderConfig(TrainableConfig):
     def __init__(
@@ -289,15 +290,15 @@ class AutoEncoder(Trainable):
                 total_val_loss += loss.item()
                 
                 board_result = torch.round(output)
-                total_acc_ratios += ((board_result.int() == target.int()).sum()/target.numel()).item()
-                total_prec_ratios += (target.int()[board_result.int() == 1].sum()/(board_result.int() == 1).sum()).item()
-                total_recall_ratios += (target.int()[board_result.int() == 1].sum()/(target.int() == 1).sum()).item()
+                total_acc_ratios += algorithms.measure_accuracy(board_result.int(), target.int(), 0).item()
+                total_prec_ratios += algorithms.measure_precision(board_result.int(), target.int(), 0).item()
+                total_recall_ratios += algorithms.measure_recall(board_result.int(), target.int(), 0).item()
                 for i, board in just_board_metrics.items():
                     b_r = board_result[...,7+13*i:19+13*i,:]
                     inp = target[...,7+13*i:19+13*i,:]
-                    board["ttl_acc"] += ((b_r.int() == inp.int()).sum()/inp.numel()).item()
-                    board["ttl_prec"] += (inp.int()[b_r.int() == 1].sum()/(b_r.int() == 1).sum()).item()
-                    board["ttl_rcl"] += (inp.int()[b_r.int() == 1].sum()/(inp.int() == 1).sum()).item()
+                    board["ttl_acc"] += algorithms.measure_accuracy(b_r.int(), inp.int(), 0).item()
+                    board["ttl_prec"] += algorithms.measure_precision(b_r.int(), inp.int(), 0).item()
+                    board["ttl_rcl"] += algorithms.measure_recall(b_r.int(), inp.int(), 0).item()
             ret_dict = {
                 'model_total_train_loss'.format(idx):total_train_loss,
                 'model_mean_train_loss'.format(idx):total_train_loss/len(self.trainloader),

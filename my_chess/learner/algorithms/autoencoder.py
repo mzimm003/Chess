@@ -1,3 +1,6 @@
+"""
+Trains a model and its reflection to reproduce input training data.
+"""
 from typing import Optional, Type, Tuple, Callable
 from types import SimpleNamespace
 import inspect

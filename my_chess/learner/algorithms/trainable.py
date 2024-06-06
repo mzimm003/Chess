@@ -56,6 +56,33 @@ class TrainableConfig(_Config):
             learning_rate_scheduler:torch.optim.lr_scheduler._LRScheduler=None,
             learning_rate_scheduler_config:dict=None,
             **kwargs) -> None:
+        """
+        Args:
+            num_cpus: The number of CPUs with which to resource this algorithm.
+            Defaults to the full CPU count provided by the operating system.
+            dataset: Uninitialized class of a particular dataset (subclassed by
+              "Dataset").
+            dataset_config: Configuration of dataset.
+            optimizer: Uninitialized class of an optimizer from torch.optim.
+            optimizer_config: Configuration of optimizer.
+            criterion: Loss metric on which the learning process is optimized.
+            criterion_config: Configuration of criterion.
+            model: Uninitialized class of model to be trained.
+            model_config: Configuration of model.
+            batch_size: Batch size of training and validation data from dataset.
+            shuffle: Whether dataset should be shuffled after split (dataset
+              split is always performed randomly). 
+            seed: Randomization seed.
+            data_split: Three float values adding to one to determine how the 
+              dataset is split between a training, validation, and testing set, 
+              respectively.
+            pin_memory: Whether to page-lock memory to support faster transfer 
+              of memory to GPU.
+            learning_rate: Rate to apply loss optimizations.
+            learning_rate_scheduler: Unitialized scheduler class to affect
+              learning rate over training epochs.
+            learning_rate_scheduler_config: Configuration for lr scheduler.
+        """
         super().__init__()
         self.num_cpus = num_cpus if num_cpus else os.cpu_count()
         self.dataset  = dataset
@@ -82,6 +109,9 @@ class TrainableConfig(_Config):
         return self.__class__.__name__
     
     def update(self, **kwargs):
+        """
+        Revise configuration parameters after object initialization.
+        """
         for k, v in kwargs.items():
             if v:
                 setattr(self, k, v)

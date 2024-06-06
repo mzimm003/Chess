@@ -7,6 +7,16 @@ but should be done in a fashion analogous to techniques applied in other areas.
 
 To best learn, emphasis will be on result analysis and process automation.
 
+# Documentation
+Module documentation can be found [here](https://mzimm003.github.io/Chess).
+## Contributions
+Documentation is supported by Sphinx. Contributions can be made through the "documentation" branch. Documentation is done within the docstring of modules, classes, and functions. Autodoc and Autosummary takes care of the rest. Once changes are made to docstrings, run `make html` in the docs directory before commiting.
+
+### Helpful Links
+[reStructuredText Basics](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html)\
+[Sphinx Google Style Example](https://www.sphinx-doc.org/en/master/usage/extensions/example_google.html)\
+[Google Style Guide](https://google.github.io/styleguide/pyguide.html)
+
 # Analysis
 All analysis completed can be found [here](./my_chess/analysis). A highlight of the latest work
 is below:

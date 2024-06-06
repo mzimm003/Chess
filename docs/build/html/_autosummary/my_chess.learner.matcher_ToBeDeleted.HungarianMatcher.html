@@ -2,18 +2,19 @@
 
 <!doctype html>
 
-<html lang="en">
+<html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
     <title>my_chess.learner.matcher_ToBeDeleted.HungarianMatcher &#8212; ChessBot 0.0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=649a27d8" />
-    <link rel="stylesheet" type="text/css" href="../_static/bizstyle.css?v=13b2ab6e" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/bizstyle.css" />
     
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=f6245a2f"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <script src="../_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -53,18 +54,18 @@
           <div class="body" role="main">
             
   <section id="my-chess-learner-matcher-tobedeleted-hungarianmatcher">
-<h1>my_chess.learner.matcher_ToBeDeleted.HungarianMatcher<a class="headerlink" href="#my-chess-learner-matcher-tobedeleted-hungarianmatcher" title="Permalink to this heading">¶</a></h1>
+<h1>my_chess.learner.matcher_ToBeDeleted.HungarianMatcher<a class="headerlink" href="#my-chess-learner-matcher-tobedeleted-hungarianmatcher" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">my_chess.learner.matcher_ToBeDeleted.</span></span><span class="sig-name descname"><span class="pre">HungarianMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cost_legal_move</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">focal_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <p>This class computes an assignment between the targets and the predictions of the network
 For efficiency reasons, the targets don’t include the no_object. Because of this, in general,
 there are more predictions than targets. In this case, we do a 1-to-1 matching of the best predictions,
 while the others are un-matched (and thus treated as non-objects).</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cost_legal_move</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">focal_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.__init__" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cost_legal_move</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.float" title="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.float"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">focal_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates the matcher
 Params:</p>
 <blockquote>
@@ -73,7 +74,11 @@ Params:</p>
 </dd></dl>
 
 <p class="rubric">Methods</p>
-<table class="autosummary longtable docutils align-default">
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.__init__" title="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([cost_legal_move, focal_alpha])</p></td>
 <td><p>Creates the matcher Params:     cost_class: This is the relative weight of the classification error in the matching cost</p></td>
@@ -210,26 +215,27 @@ Params:</p>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table class="autosummary longtable docutils align-default">
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">T_destination</span></code></p></td>
-<td><p></p></td>
+<td><p>alias of TypeVar('T_destination', bound=<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code>])</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump_patches</span></code></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">training</span></code></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.add_module">
-<span class="sig-name descname"><span class="pre">add_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Module</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.add_module" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">add_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.nn.modules.module.Module</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.add_module" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a child module to the current module.</p>
 <p>The module can be accessed as an attribute using the given name.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<em>str</em>) – name of the child module. The child module can be
 accessed from this module using the given name</p></li>
@@ -241,18 +247,18 @@ accessed from this module using the given name</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.apply">
-<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Module</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.apply" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">torch.nn.modules.module.Module</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.module.T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Applies <code class="docutils literal notranslate"><span class="pre">fn</span></code> recursively to every submodule (as returned by <code class="docutils literal notranslate"><span class="pre">.children()</span></code>)
 as well as self. Typical use includes initializing the parameters of a model
 (see also <span class="xref std std-ref">nn-init-doc</span>).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>fn</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> -&gt; None) – function to be applied to each submodule</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>self</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Module</p>
 </dd>
 </dl>
@@ -283,17 +289,17 @@ as well as self. Typical use includes initializing the parameters of a model
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.bfloat16">
-<span class="sig-name descname"><span class="pre">bfloat16</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.bfloat16" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">bfloat16</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.module.T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.bfloat16" title="Permalink to this definition">¶</a></dt>
 <dd><p>Casts all floating point parameters and buffers to <code class="docutils literal notranslate"><span class="pre">bfloat16</span></code> datatype.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This method modifies the module in-place.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>self</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Return type</dt>
 <dd class="field-even"><p>Module</p>
 </dd>
 </dl>
@@ -301,15 +307,15 @@ as well as self. Typical use includes initializing the parameters of a model
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.buffers">
-<span class="sig-name descname"><span class="pre">buffers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">recurse</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.buffers" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">buffers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">recurse</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.buffers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an iterator over module buffers.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>recurse</strong> (<em>bool</em>) – if True, then yields buffers of this module
 and all submodules. Otherwise, yields only buffers that
 are direct members of this module.</p>
 </dd>
-<dt class="field-even">Yields<span class="colon">:</span></dt>
+<dt class="field-even">Yields</dt>
 <dd class="field-even"><p><em>torch.Tensor</em> – module buffer</p>
 </dd>
 </dl>
@@ -325,10 +331,10 @@ are direct members of this module.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.children">
-<span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Module</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.children" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.nn.modules.module.Module</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.children" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an iterator over immediate children modules.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Yields<span class="colon">:</span></dt>
+<dt class="field-odd">Yields</dt>
 <dd class="field-odd"><p><em>Module</em> – a child module</p>
 </dd>
 </dl>
@@ -336,17 +342,17 @@ are direct members of this module.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.cpu">
-<span class="sig-name descname"><span class="pre">cpu</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.cpu" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">cpu</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.module.T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.cpu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Moves all model parameters and buffers to the CPU.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This method modifies the module in-place.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>self</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Return type</dt>
 <dd class="field-even"><p>Module</p>
 </dd>
 </dl>
@@ -354,7 +360,7 @@ are direct members of this module.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.cuda">
-<span class="sig-name descname"><span class="pre">cuda</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">device</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.cuda" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">cuda</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.device</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.module.T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.cuda" title="Permalink to this definition">¶</a></dt>
 <dd><p>Moves all model parameters and buffers to the GPU.</p>
 <p>This also makes associated parameters and buffers different objects. So
 it should be called before constructing optimizer if the module will
@@ -364,14 +370,14 @@ live on GPU while being optimized.</p>
 <p>This method modifies the module in-place.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>device</strong> (<em>int</em><em>, </em><em>optional</em>) – if specified, all parameters will be
 copied to that device</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>self</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Module</p>
 </dd>
 </dl>
@@ -379,17 +385,17 @@ copied to that device</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.double">
-<span class="sig-name descname"><span class="pre">double</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.double" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">double</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.module.T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.double" title="Permalink to this definition">¶</a></dt>
 <dd><p>Casts all floating point parameters and buffers to <code class="docutils literal notranslate"><span class="pre">double</span></code> datatype.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This method modifies the module in-place.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>self</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Return type</dt>
 <dd class="field-even"><p>Module</p>
 </dd>
 </dl>
@@ -397,7 +403,7 @@ copied to that device</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.eval">
-<span class="sig-name descname"><span class="pre">eval</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.eval" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">eval</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.module.T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.eval" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the module in evaluation mode.</p>
 <p>This has any effect only on certain modules. See documentations of
 particular modules for details of their behaviors in training/evaluation
@@ -407,10 +413,10 @@ etc.</p>
 <p>See <span class="xref std std-ref">locally-disable-grad-doc</span> for a comparison between
 <cite>.eval()</cite> and several similar mechanisms that may be confused with it.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>self</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Return type</dt>
 <dd class="field-even"><p>Module</p>
 </dd>
 </dl>
@@ -427,17 +433,17 @@ strings are acceptable.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.float">
-<span class="sig-name descname"><span class="pre">float</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.float" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">float</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.module.T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.float" title="Permalink to this definition">¶</a></dt>
 <dd><p>Casts all floating point parameters and buffers to <code class="docutils literal notranslate"><span class="pre">float</span></code> datatype.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This method modifies the module in-place.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>self</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Return type</dt>
 <dd class="field-even"><p>Module</p>
 </dd>
 </dl>
@@ -461,7 +467,7 @@ Params:</p>
 </dl>
 </div></blockquote>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><ul class="simple">
 <li><dl class="simple">
 <dt>index_i is the indices of the selected predictions (in order)</dt><dd><ul>
@@ -477,7 +483,7 @@ Params:</p>
 </dl>
 </p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Return type</dt>
 <dd class="field-even"><p>A list of size batch_size, containing tuples of (index_i, index_j) where</p>
 </dd>
 </dl>
@@ -485,25 +491,25 @@ Params:</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.get_buffer">
-<span class="sig-name descname"><span class="pre">get_buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.get_buffer" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.get_buffer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the buffer given by <code class="docutils literal notranslate"><span class="pre">target</span></code> if it exists,
 otherwise throws an error.</p>
 <p>See the docstring for <code class="docutils literal notranslate"><span class="pre">get_submodule</span></code> for a more detailed
 explanation of this method’s functionality as well as how to
 correctly specify <code class="docutils literal notranslate"><span class="pre">target</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>target</strong> – The fully-qualified string name of the buffer
 to look for. (See <code class="docutils literal notranslate"><span class="pre">get_submodule</span></code> for how to specify a
 fully-qualified string.)</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The buffer referenced by <code class="docutils literal notranslate"><span class="pre">target</span></code></p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>torch.Tensor</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dt class="field-even">Raises</dt>
 <dd class="field-even"><p><strong>AttributeError</strong> – If the target string references an invalid
     path or resolves to something that is not a
     buffer</p>
@@ -523,10 +529,10 @@ of the state_dict. We only provide provide backwards compatibility guarantees
 for serializing Tensors; other objects may break backwards compatibility if
 their serialized pickled form changes.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Any extra state to store in the module’s state_dict</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Return type</dt>
 <dd class="field-even"><p>object</p>
 </dd>
 </dl>
@@ -534,25 +540,25 @@ their serialized pickled form changes.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.get_parameter">
-<span class="sig-name descname"><span class="pre">get_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Parameter</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.get_parameter" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.parameter.Parameter</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.get_parameter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the parameter given by <code class="docutils literal notranslate"><span class="pre">target</span></code> if it exists,
 otherwise throws an error.</p>
 <p>See the docstring for <code class="docutils literal notranslate"><span class="pre">get_submodule</span></code> for a more detailed
 explanation of this method’s functionality as well as how to
 correctly specify <code class="docutils literal notranslate"><span class="pre">target</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>target</strong> – The fully-qualified string name of the Parameter
 to look for. (See <code class="docutils literal notranslate"><span class="pre">get_submodule</span></code> for how to specify a
 fully-qualified string.)</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The Parameter referenced by <code class="docutils literal notranslate"><span class="pre">target</span></code></p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>torch.nn.Parameter</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dt class="field-even">Raises</dt>
 <dd class="field-even"><p><strong>AttributeError</strong> – If the target string references an invalid
     path or resolves to something that is not an
     <code class="docutils literal notranslate"><span class="pre">nn.Parameter</span></code></p>
@@ -562,7 +568,7 @@ fully-qualified string.)</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.get_submodule">
-<span class="sig-name descname"><span class="pre">get_submodule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Module</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.get_submodule" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_submodule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.module.Module</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.get_submodule" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the submodule given by <code class="docutils literal notranslate"><span class="pre">target</span></code> if it exists,
 otherwise throws an error.</p>
 <p>For example, let’s say you have an <code class="docutils literal notranslate"><span class="pre">nn.Module</span></code> <code class="docutils literal notranslate"><span class="pre">A</span></code> that
@@ -591,18 +597,18 @@ the number of transitive modules. So, for a simple check to see
 if some submodule exists, <code class="docutils literal notranslate"><span class="pre">get_submodule</span></code> should always be
 used.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>target</strong> – The fully-qualified string name of the submodule
 to look for. (See above example for how to specify a
 fully-qualified string.)</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The submodule referenced by <code class="docutils literal notranslate"><span class="pre">target</span></code></p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>torch.nn.Module</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dt class="field-even">Raises</dt>
 <dd class="field-even"><p><strong>AttributeError</strong> – If the target string references an invalid
     path or resolves to something that is not an
     <code class="docutils literal notranslate"><span class="pre">nn.Module</span></code></p>
@@ -612,17 +618,17 @@ fully-qualified string.)</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.half">
-<span class="sig-name descname"><span class="pre">half</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.half" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">half</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.module.T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.half" title="Permalink to this definition">¶</a></dt>
 <dd><p>Casts all floating point parameters and buffers to <code class="docutils literal notranslate"><span class="pre">half</span></code> datatype.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This method modifies the module in-place.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>self</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Return type</dt>
 <dd class="field-even"><p>Module</p>
 </dd>
 </dl>
@@ -630,7 +636,7 @@ fully-qualified string.)</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.ipu">
-<span class="sig-name descname"><span class="pre">ipu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">device</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.ipu" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ipu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.device</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.module.T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.ipu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Moves all model parameters and buffers to the IPU.</p>
 <p>This also makes associated parameters and buffers different objects. So
 it should be called before constructing optimizer if the module will
@@ -640,14 +646,14 @@ live on IPU while being optimized.</p>
 <p>This method modifies the module in-place.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>device</strong> (<em>int</em><em>, </em><em>optional</em>) – if specified, all parameters will be
 copied to that device</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>self</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Module</p>
 </dd>
 </dl>
@@ -661,7 +667,7 @@ this module and its descendants. If <code class="xref py py-attr docutils litera
 the keys of <a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.state_dict" title="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.state_dict"><code class="xref py py-attr docutils literal notranslate"><span class="pre">state_dict</span></code></a> must exactly match the keys returned
 by this module’s <code class="xref py py-meth docutils literal notranslate"><span class="pre">state_dict()</span></code> function.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>state_dict</strong> (<em>dict</em>) – a dict containing parameters and
 persistent buffers.</p></li>
@@ -670,14 +676,14 @@ in <a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.Hun
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">state_dict()</span></code> function. Default: <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>missing_keys</strong> is a list of str containing the missing keys</p></li>
 <li><p><strong>unexpected_keys</strong> is a list of str containing the unexpected keys</p></li>
 </ul>
 </p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">NamedTuple</span></code> with <code class="docutils literal notranslate"><span class="pre">missing_keys</span></code> and <code class="docutils literal notranslate"><span class="pre">unexpected_keys</span></code> fields</p>
 </dd>
 </dl>
@@ -691,10 +697,10 @@ exists in <a class="reference internal" href="#my_chess.learner.matcher_ToBeDele
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.modules">
-<span class="sig-name descname"><span class="pre">modules</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Module</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.modules" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">modules</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.nn.modules.module.Module</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.modules" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an iterator over all modules in the network.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Yields<span class="colon">:</span></dt>
+<dt class="field-odd">Yields</dt>
 <dd class="field-odd"><p><em>Module</em> – a module in the network</p>
 </dd>
 </dl>
@@ -720,11 +726,11 @@ example, <code class="docutils literal notranslate"><span class="pre">l</span></
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.named_buffers">
-<span class="sig-name descname"><span class="pre">named_buffers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recurse</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.named_buffers" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">named_buffers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recurse</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.named_buffers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an iterator over module buffers, yielding both the
 name of the buffer as well as the buffer itself.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prefix</strong> (<em>str</em>) – prefix to prepend to all buffer names.</p></li>
 <li><p><strong>recurse</strong> (<em>bool</em>) – if True, then yields buffers of this module
@@ -732,7 +738,7 @@ and all submodules. Otherwise, yields only buffers that
 are direct members of this module.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Yields<span class="colon">:</span></dt>
+<dt class="field-even">Yields</dt>
 <dd class="field-even"><p><em>(str, torch.Tensor)</em> – Tuple containing the name and buffer</p>
 </dd>
 </dl>
@@ -747,11 +753,11 @@ are direct members of this module.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.named_children">
-<span class="sig-name descname"><span class="pre">named_children</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Module</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.named_children" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">named_children</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.nn.modules.module.Module</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.named_children" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an iterator over immediate children modules, yielding both
 the name of the module as well as the module itself.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Yields<span class="colon">:</span></dt>
+<dt class="field-odd">Yields</dt>
 <dd class="field-odd"><p><em>(str, Module)</em> – Tuple containing a name and child module</p>
 </dd>
 </dl>
@@ -766,11 +772,11 @@ the name of the module as well as the module itself.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.named_modules">
-<span class="sig-name descname"><span class="pre">named_modules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">memo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Module</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_duplicate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.named_modules" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">named_modules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">memo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.nn.modules.module.Module</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_duplicate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.named_modules" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an iterator over all modules in the network, yielding
 both the name of the module as well as the module itself.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>memo</strong> – a memo to store the set of modules already added to the result</p></li>
 <li><p><strong>prefix</strong> – a prefix that will be added to the name of the module</p></li>
@@ -778,7 +784,7 @@ both the name of the module as well as the module itself.</p>
 or not</p></li>
 </ul>
 </dd>
-<dt class="field-even">Yields<span class="colon">:</span></dt>
+<dt class="field-even">Yields</dt>
 <dd class="field-even"><p><em>(str, Module)</em> – Tuple of name and module</p>
 </dd>
 </dl>
@@ -804,11 +810,11 @@ example, <code class="docutils literal notranslate"><span class="pre">l</span></
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.named_parameters">
-<span class="sig-name descname"><span class="pre">named_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recurse</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Parameter</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.named_parameters" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">named_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recurse</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.nn.parameter.Parameter</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.named_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an iterator over module parameters, yielding both the
 name of the parameter as well as the parameter itself.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prefix</strong> (<em>str</em>) – prefix to prepend to all parameter names.</p></li>
 <li><p><strong>recurse</strong> (<em>bool</em>) – if True, then yields parameters of this module
@@ -816,7 +822,7 @@ and all submodules. Otherwise, yields only parameters that
 are direct members of this module.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Yields<span class="colon">:</span></dt>
+<dt class="field-even">Yields</dt>
 <dd class="field-even"><p><em>(str, Parameter)</em> – Tuple containing the name and parameter</p>
 </dd>
 </dl>
@@ -831,16 +837,16 @@ are direct members of this module.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.parameters">
-<span class="sig-name descname"><span class="pre">parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">recurse</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Parameter</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.parameters" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">recurse</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.nn.parameter.Parameter</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an iterator over module parameters.</p>
 <p>This is typically passed to an optimizer.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>recurse</strong> (<em>bool</em>) – if True, then yields parameters of this module
 and all submodules. Otherwise, yields only parameters that
 are direct members of this module.</p>
 </dd>
-<dt class="field-even">Yields<span class="colon">:</span></dt>
+<dt class="field-even">Yields</dt>
 <dd class="field-even"><p><em>Parameter</em> – module parameter</p>
 </dd>
 </dl>
@@ -856,16 +862,16 @@ are direct members of this module.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_backward_hook">
-<span class="sig-name descname"><span class="pre">register_backward_hook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hook</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Module</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">RemovableHandle</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_backward_hook" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">register_backward_hook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hook</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">torch.nn.modules.module.Module</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.utils.hooks.RemovableHandle</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_backward_hook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Registers a backward hook on the module.</p>
 <p>This function is deprecated in favor of <code class="xref py py-meth docutils literal notranslate"><span class="pre">register_full_backward_hook()</span></code> and
 the behavior of this function will change in future versions.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>a handle that can be used to remove the added hook by calling
 <code class="docutils literal notranslate"><span class="pre">handle.remove()</span></code></p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Return type</dt>
 <dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.hooks.RemovableHandle</span></code></p>
 </dd>
 </dl>
@@ -873,7 +879,7 @@ the behavior of this function will change in future versions.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_buffer">
-<span class="sig-name descname"><span class="pre">register_buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tensor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">persistent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_buffer" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">register_buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tensor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">persistent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_buffer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a buffer to the module.</p>
 <p>This is typically used to register a buffer that should not to be
 considered a model parameter. For example, BatchNorm’s <code class="docutils literal notranslate"><span class="pre">running_mean</span></code>
@@ -885,7 +891,7 @@ is that the latter will not be a part of this module’s
 <a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.state_dict" title="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.state_dict"><code class="xref py py-attr docutils literal notranslate"><span class="pre">state_dict</span></code></a>.</p>
 <p>Buffers can be accessed as attributes using given names.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<em>str</em>) – name of the buffer. The buffer can be accessed
 from this module using the given name</p></li>
@@ -906,7 +912,7 @@ the buffer is <strong>not</strong> included in the module’s <a class="referenc
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_forward_hook">
-<span class="sig-name descname"><span class="pre">register_forward_hook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hook</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">RemovableHandle</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_forward_hook" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">register_forward_hook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hook</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.utils.hooks.RemovableHandle</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_forward_hook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Registers a forward hook on the module.</p>
 <p>The hook will be called every time after <a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.forward" title="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.forward"><code class="xref py py-func docutils literal notranslate"><span class="pre">forward()</span></code></a> has computed an output.
 It should have the following signature:</p>
@@ -919,11 +925,11 @@ The hook can modify the output. It can modify the input inplace but
 it will not have effect on forward since this is called after
 <a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.forward" title="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.forward"><code class="xref py py-func docutils literal notranslate"><span class="pre">forward()</span></code></a> is called.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>a handle that can be used to remove the added hook by calling
 <code class="docutils literal notranslate"><span class="pre">handle.remove()</span></code></p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Return type</dt>
 <dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.hooks.RemovableHandle</span></code></p>
 </dd>
 </dl>
@@ -931,7 +937,7 @@ it will not have effect on forward since this is called after
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_forward_pre_hook">
-<span class="sig-name descname"><span class="pre">register_forward_pre_hook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hook</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">RemovableHandle</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_forward_pre_hook" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">register_forward_pre_hook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hook</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.utils.hooks.RemovableHandle</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_forward_pre_hook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Registers a forward pre-hook on the module.</p>
 <p>The hook will be called every time before <a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.forward" title="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.forward"><code class="xref py py-func docutils literal notranslate"><span class="pre">forward()</span></code></a> is invoked.
 It should have the following signature:</p>
@@ -944,11 +950,11 @@ The hook can modify the input. User can either return a tuple or a
 single modified value in the hook. We will wrap the value into a tuple
 if a single value is returned(unless that value is already a tuple).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>a handle that can be used to remove the added hook by calling
 <code class="docutils literal notranslate"><span class="pre">handle.remove()</span></code></p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Return type</dt>
 <dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.hooks.RemovableHandle</span></code></p>
 </dd>
 </dl>
@@ -956,7 +962,7 @@ if a single value is returned(unless that value is already a tuple).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_full_backward_hook">
-<span class="sig-name descname"><span class="pre">register_full_backward_hook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hook</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Module</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">RemovableHandle</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_full_backward_hook" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">register_full_backward_hook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hook</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">torch.nn.modules.module.Module</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.utils.hooks.RemovableHandle</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_full_backward_hook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Registers a backward hook on the module.</p>
 <p>The hook will be called every time the gradients with respect to a module
 are computed, i.e. the hook will execute if and only if the gradients with
@@ -982,11 +988,11 @@ of each Tensor returned by the Module’s forward function.</p>
 will raise an error.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>a handle that can be used to remove the added hook by calling
 <code class="docutils literal notranslate"><span class="pre">handle.remove()</span></code></p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Return type</dt>
 <dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.hooks.RemovableHandle</span></code></p>
 </dd>
 </dl>
@@ -1013,11 +1019,11 @@ is a <code class="docutils literal notranslate"><span class="pre">list</span></c
 set of keys will result in an error being thrown when <code class="docutils literal notranslate"><span class="pre">strict=True</span></code>, and
 clearning out both missing and unexpected keys will avoid an error.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>a handle that can be used to remove the added hook by calling
 <code class="docutils literal notranslate"><span class="pre">handle.remove()</span></code></p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dt class="field-even">Return type</dt>
 <dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.hooks.RemovableHandle</span></code></p>
 </dd>
 </dl>
@@ -1025,17 +1031,17 @@ clearning out both missing and unexpected keys will avoid an error.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_module">
-<span class="sig-name descname"><span class="pre">register_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Module</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_module" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">register_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.nn.modules.module.Module</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_module" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for <a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.add_module" title="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.add_module"><code class="xref py py-func docutils literal notranslate"><span class="pre">add_module()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_parameter">
-<span class="sig-name descname"><span class="pre">register_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Parameter</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_parameter" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">register_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.nn.parameter.Parameter</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_parameter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a parameter to the module.</p>
 <p>The parameter can be accessed as an attribute using given name.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<em>str</em>) – name of the parameter. The parameter can be accessed
 from this module using the given name</p></li>
@@ -1050,7 +1056,7 @@ module’s <a class="reference internal" href="#my_chess.learner.matcher_ToBeDel
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.requires_grad_">
-<span class="sig-name descname"><span class="pre">requires_grad_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requires_grad</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.requires_grad_" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">requires_grad_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requires_grad</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.module.T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.requires_grad_" title="Permalink to this definition">¶</a></dt>
 <dd><p>Change if autograd should record operations on parameters in this
 module.</p>
 <p>This method sets the parameters’ <code class="xref py py-attr docutils literal notranslate"><span class="pre">requires_grad</span></code> attributes
@@ -1060,14 +1066,14 @@ or training parts of a model individually (e.g., GAN training).</p>
 <p>See <span class="xref std std-ref">locally-disable-grad-doc</span> for a comparison between
 <cite>.requires_grad_()</cite> and several similar mechanisms that may be confused with it.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>requires_grad</strong> (<em>bool</em>) – whether autograd should record operations on
 parameters in this module. Default: <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>self</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Module</p>
 </dd>
 </dl>
@@ -1081,7 +1087,7 @@ found within the <cite>state_dict</cite>. Implement this function and a correspo
 <a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.get_extra_state" title="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.get_extra_state"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_extra_state()</span></code></a> for your module if you need to store extra state within its
 <cite>state_dict</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>state</strong> (<em>dict</em>) – Extra state from the <cite>state_dict</cite></p>
 </dd>
 </dl>
@@ -1089,7 +1095,7 @@ found within the <cite>state_dict</cite>. Implement this function and a correspo
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.share_memory">
-<span class="sig-name descname"><span class="pre">share_memory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.share_memory" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">share_memory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.module.T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.share_memory" title="Permalink to this definition">¶</a></dt>
 <dd><p>See <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch.Tensor.share_memory_()</span></code></p>
 </dd></dl>
 
@@ -1118,7 +1124,7 @@ future releases.</p>
 designed for end-users.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>destination</strong> (<em>dict</em><em>, </em><em>optional</em>) – If provided, the state of module will
 be updated into the dict and the same object is returned.
@@ -1132,10 +1138,10 @@ set to <code class="docutils literal notranslate"><span class="pre">True</span><
 Default: <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a dictionary containing a whole state of the module</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -1186,7 +1192,7 @@ pinned memory to CUDA devices.</p>
 <p>This method modifies the module in-place.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>device</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">torch.device</span></code>) – the desired device of the parameters
 and buffers in this module</p></li>
@@ -1199,10 +1205,10 @@ format for 4D parameters and buffers in this module (keyword
 only argument)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>self</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Module</p>
 </dd>
 </dl>
@@ -1250,17 +1256,17 @@ only argument)</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.to_empty">
-<span class="sig-name descname"><span class="pre">to_empty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">device</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.to_empty" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">to_empty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.device</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.module.T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.to_empty" title="Permalink to this definition">¶</a></dt>
 <dd><p>Moves the parameters and buffers to the specified device without copying storage.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>device</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">torch.device</span></code>) – The desired device of the parameters
 and buffers in this module.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>self</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Module</p>
 </dd>
 </dl>
@@ -1268,21 +1274,21 @@ and buffers in this module.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.train">
-<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.train" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.module.T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.train" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the module in training mode.</p>
 <p>This has any effect only on certain modules. See documentations of
 particular modules for details of their behaviors in training/evaluation
 mode, if they are affected, e.g. <code class="xref py py-class docutils literal notranslate"><span class="pre">Dropout</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BatchNorm</span></code>,
 etc.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>mode</strong> (<em>bool</em>) – whether to set training mode (<code class="docutils literal notranslate"><span class="pre">True</span></code>) or evaluation
 mode (<code class="docutils literal notranslate"><span class="pre">False</span></code>). Default: <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>self</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Module</p>
 </dd>
 </dl>
@@ -1290,20 +1296,20 @@ mode (<code class="docutils literal notranslate"><span class="pre">False</span><
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.type">
-<span class="sig-name descname"><span class="pre">type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dst_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dtype</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.type" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dst_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.dtype</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.module.T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Casts all parameters and buffers to <code class="xref py py-attr docutils literal notranslate"><span class="pre">dst_type</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This method modifies the module in-place.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>dst_type</strong> (<em>type</em><em> or </em><em>string</em>) – the desired type</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>self</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Module</p>
 </dd>
 </dl>
@@ -1311,7 +1317,7 @@ mode (<code class="docutils literal notranslate"><span class="pre">False</span><
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.xpu">
-<span class="sig-name descname"><span class="pre">xpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">device</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.xpu" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">xpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.device</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.module.T</span></span></span><a class="headerlink" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.xpu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Moves all model parameters and buffers to the XPU.</p>
 <p>This also makes associated parameters and buffers different objects. So
 it should be called before constructing optimizer if the module will
@@ -1321,14 +1327,14 @@ live on XPU while being optimized.</p>
 <p>This method modifies the module in-place.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>device</strong> (<em>int</em><em>, </em><em>optional</em>) – if specified, all parameters will be
 copied to that device</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>self</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>Module</p>
 </dd>
 </dl>
@@ -1340,7 +1346,7 @@ copied to that device</p>
 <dd><p>Sets gradients of all model parameters to zero. See similar function
 under <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.optim.Optimizer</span></code> for more context.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>set_to_none</strong> (<em>bool</em>) – instead of setting to zero, set the grads to None.
 See <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch.optim.Optimizer.zero_grad()</span></code> for details.</p>
 </dd>
@@ -1358,72 +1364,12 @@ See <code class="xref py py-meth docutils literal notranslate"><span class="pre"
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <div>
-    <h3><a href="../index.html">Table of Contents</a></h3>
-    <ul>
-<li><a class="reference internal" href="#">my_chess.learner.matcher_ToBeDeleted.HungarianMatcher</a><ul>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher</span></code></a><ul>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.__init__"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.__init__()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.add_module"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.add_module()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.apply"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.apply()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.bfloat16"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.bfloat16()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.buffers"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.buffers()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.children"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.children()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.cpu"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.cpu()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.cuda"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.cuda()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.double"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.double()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.eval"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.eval()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.extra_repr"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.extra_repr()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.float"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.float()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.forward"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.forward()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.get_buffer"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.get_buffer()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.get_extra_state"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.get_extra_state()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.get_parameter"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.get_parameter()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.get_submodule"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.get_submodule()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.half"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.half()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.ipu"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.ipu()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.load_state_dict"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.load_state_dict()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.modules"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.modules()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.named_buffers"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.named_buffers()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.named_children"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.named_children()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.named_modules"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.named_modules()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.named_parameters"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.named_parameters()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.parameters"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.parameters()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_backward_hook"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.register_backward_hook()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_buffer"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.register_buffer()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_forward_hook"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.register_forward_hook()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_forward_pre_hook"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.register_forward_pre_hook()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_full_backward_hook"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.register_full_backward_hook()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_load_state_dict_post_hook"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.register_load_state_dict_post_hook()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_module"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.register_module()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.register_parameter"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.register_parameter()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.requires_grad_"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.requires_grad_()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.set_extra_state"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.set_extra_state()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.share_memory"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.share_memory()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.state_dict"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.state_dict()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.to"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.to()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.to_empty"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.to_empty()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.train"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.train()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.type"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.type()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.xpu"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.xpu()</span></code></a></li>
-<li><a class="reference internal" href="#my_chess.learner.matcher_ToBeDeleted.HungarianMatcher.zero_grad"><code class="docutils literal notranslate"><span class="pre">HungarianMatcher.zero_grad()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-  </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="my_chess.learner.matcher_ToBeDeleted.html"
-                          title="previous chapter">my_chess.learner.matcher_ToBeDeleted</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="my_chess.learner.models.html"
-                          title="next chapter">my_chess.learner.models</a></p>
-  </div>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="my_chess.learner.matcher_ToBeDeleted.html"
+                        title="previous chapter">my_chess.learner.matcher_ToBeDeleted</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="my_chess.learner.models.html"
+                        title="next chapter">my_chess.learner.models</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -1440,7 +1386,7 @@ See <code class="xref py py-meth docutils literal notranslate"><span class="pre"
     </form>
     </div>
 </div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -1468,8 +1414,8 @@ See <code class="xref py py-meth docutils literal notranslate"><span class="pre"
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-    &#169; Copyright 2024, Mark Zimmerman.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+        &#169; Copyright 2024, Mark Zimmerman.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
     </div>
   </body>
 </html>

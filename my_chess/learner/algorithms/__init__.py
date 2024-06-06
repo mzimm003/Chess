@@ -9,9 +9,11 @@ from .distill import ModelDistill, ModelDistillConfig
 
 from .algorithm import (
     Algorithm,
-    AlgorithmConfig,
+    AlgorithmConfig
+    )
+from .ppo_cust import PPO, PPOConfig
+from .util import (
     measure_accuracy,
     measure_precision,
     measure_recall
     )
-from .ppo_cust import PPO, PPOConfig

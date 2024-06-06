@@ -1,3 +1,7 @@
+"""
+Base class to support the training algorithm of a supervised learning agent.
+"""
+
 from typing import Dict
 from ray.train._internal.storage import StorageContext
 from ray.tune.logger import Logger

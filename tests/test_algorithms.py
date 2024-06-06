@@ -1,7 +1,4 @@
 """
-main.py
-====================================
-The core module of my example project
 """
 import pytest
 

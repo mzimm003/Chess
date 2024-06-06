@@ -17,7 +17,7 @@ RUN apt-get install -y software-properties-common
 RUN add-apt-repository ppa:deadsnakes/ppa
 RUN apt update
 RUN apt-get install -y python3.8 pip
-RUN python3 --version
+RUN apt-get install -y python3-sphinx
 
 # Keeps Python from buffering stdout and stderr to avoid situations where
 # the application crashes without emitting any logs due to buffering.

@@ -1,4 +1,4 @@
-my\_chess.learner.algorithms
+﻿my\_chess.learner.algorithms
 ============================
 
 .. automodule:: my_chess.learner.algorithms
@@ -34,4 +34,5 @@ my\_chess.learner.algorithms
    my_chess.learner.algorithms.distill
    my_chess.learner.algorithms.ppo_cust
    my_chess.learner.algorithms.trainable
+   my_chess.learner.algorithms.util
 

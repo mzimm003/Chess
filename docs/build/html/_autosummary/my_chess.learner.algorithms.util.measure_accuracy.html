@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>my_chess.learner.algorithms.autoencoder &#8212; ChessBot 0.0.1 documentation</title>
+    <title>my_chess.learner.algorithms.util.measure_accuracy &#8212; ChessBot 0.0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/bizstyle.css" />
     
@@ -18,8 +18,8 @@
     <script src="../_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="my_chess.learner.algorithms.autoencoder.AutoEncoder" href="my_chess.learner.algorithms.autoencoder.AutoEncoder.html" />
-    <link rel="prev" title="my_chess.learner.algorithms.algorithm.AlgorithmConfig" href="my_chess.learner.algorithms.algorithm.AlgorithmConfig.html" />
+    <link rel="next" title="my_chess.learner.algorithms.util.measure_precision" href="my_chess.learner.algorithms.util.measure_precision.html" />
+    <link rel="prev" title="my_chess.learner.algorithms.util.determine_sum_dimensions" href="my_chess.learner.algorithms.util.determine_sum_dimensions.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <!--[if lt IE 9]>
     <script src="_static/css3-mediaqueries.js"></script>
@@ -35,16 +35,17 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="my_chess.learner.algorithms.autoencoder.AutoEncoder.html" title="my_chess.learner.algorithms.autoencoder.AutoEncoder"
+          <a href="my_chess.learner.algorithms.util.measure_precision.html" title="my_chess.learner.algorithms.util.measure_precision"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="my_chess.learner.algorithms.algorithm.AlgorithmConfig.html" title="my_chess.learner.algorithms.algorithm.AlgorithmConfig"
+          <a href="my_chess.learner.algorithms.util.determine_sum_dimensions.html" title="my_chess.learner.algorithms.util.determine_sum_dimensions"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">ChessBot 0.0.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="my_chess.html" >my_chess</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="my_chess.learner.html" >my_chess.learner</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="my_chess.learner.algorithms.html" accesskey="U">my_chess.learner.algorithms</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">my_chess.learner.algorithms.autoencoder</a></li> 
+          <li class="nav-item nav-item-3"><a href="my_chess.learner.algorithms.html" >my_chess.learner.algorithms</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="my_chess.learner.algorithms.util.html" accesskey="U">my_chess.learner.algorithms.util</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">my_chess.learner.algorithms.util.measure_accuracy</a></li> 
       </ul>
     </div>  
 
@@ -53,24 +54,13 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="module-my_chess.learner.algorithms.autoencoder">
-<span id="my-chess-learner-algorithms-autoencoder"></span><h1>my_chess.learner.algorithms.autoencoder<a class="headerlink" href="#module-my_chess.learner.algorithms.autoencoder" title="Permalink to this headline">¶</a></h1>
-<p>Trains a model and its reflection to reproduce input training data.</p>
-<p class="rubric">Classes</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="my_chess.learner.algorithms.autoencoder.AutoEncoder.html#my_chess.learner.algorithms.autoencoder.AutoEncoder" title="my_chess.learner.algorithms.autoencoder.AutoEncoder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AutoEncoder</span></code></a>([config, logger_creator, storage])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="my_chess.learner.algorithms.autoencoder.AutoEncoderConfig.html#my_chess.learner.algorithms.autoencoder.AutoEncoderConfig" title="my_chess.learner.algorithms.autoencoder.AutoEncoderConfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AutoEncoderConfig</span></code></a>([dataset, dataset_config, ...])</p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
+  <section id="my-chess-learner-algorithms-util-measure-accuracy">
+<h1>my_chess.learner.algorithms.util.measure_accuracy<a class="headerlink" href="#my-chess-learner-algorithms-util-measure-accuracy" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.util.measure_accuracy">
+<span class="sig-prename descclassname"><span class="pre">my_chess.learner.algorithms.util.</span></span><span class="sig-name descname"><span class="pre">measure_accuracy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.util.measure_accuracy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </section>
 
 
@@ -81,15 +71,15 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="my_chess.learner.algorithms.algorithm.AlgorithmConfig.html"
-                        title="previous chapter">my_chess.learner.algorithms.algorithm.AlgorithmConfig</a></p>
+  <p class="topless"><a href="my_chess.learner.algorithms.util.determine_sum_dimensions.html"
+                        title="previous chapter">my_chess.learner.algorithms.util.determine_sum_dimensions</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="my_chess.learner.algorithms.autoencoder.AutoEncoder.html"
-                        title="next chapter">my_chess.learner.algorithms.autoencoder.AutoEncoder</a></p>
+  <p class="topless"><a href="my_chess.learner.algorithms.util.measure_precision.html"
+                        title="next chapter">my_chess.learner.algorithms.util.measure_precision</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/_autosummary/my_chess.learner.algorithms.autoencoder.rst.txt"
+      <li><a href="../_sources/_autosummary/my_chess.learner.algorithms.util.measure_accuracy.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -117,16 +107,17 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="my_chess.learner.algorithms.autoencoder.AutoEncoder.html" title="my_chess.learner.algorithms.autoencoder.AutoEncoder"
+          <a href="my_chess.learner.algorithms.util.measure_precision.html" title="my_chess.learner.algorithms.util.measure_precision"
              >next</a> |</li>
         <li class="right" >
-          <a href="my_chess.learner.algorithms.algorithm.AlgorithmConfig.html" title="my_chess.learner.algorithms.algorithm.AlgorithmConfig"
+          <a href="my_chess.learner.algorithms.util.determine_sum_dimensions.html" title="my_chess.learner.algorithms.util.determine_sum_dimensions"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">ChessBot 0.0.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="my_chess.html" >my_chess</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="my_chess.learner.html" >my_chess.learner</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="my_chess.learner.algorithms.html" >my_chess.learner.algorithms</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">my_chess.learner.algorithms.autoencoder</a></li> 
+          <li class="nav-item nav-item-4"><a href="my_chess.learner.algorithms.util.html" >my_chess.learner.algorithms.util</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">my_chess.learner.algorithms.util.measure_accuracy</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

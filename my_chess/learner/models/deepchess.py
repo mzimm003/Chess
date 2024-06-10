@@ -23,6 +23,11 @@ from my_chess.learner.environments import Chess
 
 
 class DeepChessFEConfig(ModelConfig):
+    """
+    Governs the infrastructure of the DeepChess geature extractor model.
+        
+    See :py:class:`DeepChessFE` for detail on model inner workings.
+    """
     ACTIVATIONS = {
         'relu':nn.ReLU,
         'sigmoid':nn.Sigmoid
@@ -33,6 +38,16 @@ class DeepChessFEConfig(ModelConfig):
             activations:Union[str, List[str]]='relu',
             batch_norm:bool = True
             ) -> None:
+        """
+        Args:
+            hidden_dims: Number of features at each layer of a fully connected
+              neural network.
+            activations: The activation function to be used after each hidden
+              layer in the network. Can be customized for each layer or the same
+              activation for all layers.
+            batch_norm: Whether batch normalization should be applied between
+              each hidden layer.
+        """
         super().__init__()
         self.hidden_dims = hidden_dims
         self.activations = ([DeepChessFEConfig.ACTIVATIONS[a] for a in activations]
@@ -44,10 +59,27 @@ class DeepChessFEConfig(ModelConfig):
         return "Shape<{}>".format(self.hidden_dims)
 
 class DeepChessFE(Model):
+    """
+    Feature extractor portion of DeepChess model.
+
+    DeepChess begins with a feature extractor applied to a matrix representation
+    of a chess board. The model flattens the height, width, and channels
+    supplied by input. Then, applies several layers of fully connected linear
+    layers, each followed by an activation function. Optionally, a batch
+    normalization can be applied after activation, which may help with
+    propagation of the learning gradient. This all is with the aim of distilling
+    the input data into set of features descriptive of the board.
+    """
     def __init__(
         self,
         input_sample,
         config:DeepChessFEConfig = None) -> None:
+        """
+        Args:
+            input_sample: A sample of the input training data. This is used to 
+              appropriately structure the model to dynamically accept inputs.
+            config: Configration of feature extractor.
+        """
         super().__init__()
         self.config = config
         self.input_shape = input_sample.shape[-3:]
@@ -72,6 +104,11 @@ class DeepChessFE(Model):
         self,
         input: TensorType,
     ) -> Union[TensorType, List[TensorType]]:
+        """
+        
+        Args:
+          input: Training data, batched or unbatched.
+        """
         if len(input.shape) < 4:
             input = input.unsqueeze(0)
         flt = self.preprocess(input)

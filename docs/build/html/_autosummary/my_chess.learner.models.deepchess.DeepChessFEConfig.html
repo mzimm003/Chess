@@ -60,10 +60,25 @@
 <dt class="sig sig-object py" id="my_chess.learner.models.deepchess.DeepChessFEConfig">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">my_chess.learner.models.deepchess.</span></span><span class="sig-name descname"><span class="pre">DeepChessFEConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_dims</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[4096,</span> <span class="pre">1024,</span> <span class="pre">256,</span> <span class="pre">128]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'relu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_norm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.models.deepchess.DeepChessFEConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="my_chess.learner.models.model.ModelConfig.html#my_chess.learner.models.model.ModelConfig" title="my_chess.learner.models.model.ModelConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">my_chess.learner.models.model.ModelConfig</span></code></a></p>
+<p>Governs the infrastructure of the DeepChess geature extractor model.</p>
+<p>See <a class="reference internal" href="my_chess.learner.models.deepchess.DeepChessFE.html#my_chess.learner.models.deepchess.DeepChessFE" title="my_chess.learner.models.deepchess.DeepChessFE"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeepChessFE</span></code></a> for detail on model inner workings.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.models.deepchess.DeepChessFEConfig.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_dims</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[4096,</span> <span class="pre">1024,</span> <span class="pre">256,</span> <span class="pre">128]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'relu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_norm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.models.deepchess.DeepChessFEConfig.__init__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hidden_dims</strong> – Number of features at each layer of a fully connected
+neural network.</p></li>
+<li><p><strong>activations</strong> – The activation function to be used after each hidden
+layer in the network. Can be customized for each layer or the same
+activation for all layers.</p></li>
+<li><p><strong>batch_norm</strong> – Whether batch normalization should be applied between
+each hidden layer.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
@@ -73,7 +88,12 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.models.deepchess.DeepChessFEConfig.__init__" title="my_chess.learner.models.deepchess.DeepChessFEConfig.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([hidden_dims, activations, batch_norm])</p></td>
-<td><p></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">param hidden_dims</dt>
+<dd class="field-odd"><p>Number of features at each layer of a fully connected</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">asDict</span></code>()</p></td>
 <td><p></p></td>

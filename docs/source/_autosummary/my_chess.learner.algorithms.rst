@@ -1,4 +1,4 @@
-﻿my\_chess.learner.algorithms
+my\_chess.learner.algorithms
 ============================
 
 .. automodule:: my_chess.learner.algorithms

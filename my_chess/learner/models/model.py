@@ -49,3 +49,13 @@ class Model(nn.Module):
 
     def getModelSpecificParams(self):
         return self.__dict__
+    
+    def decoder(self):
+        """
+        Mirror of model.
+
+        To support autoencoder training a model must have a decoder version of
+        itself. Decoder method must be implemented for any model intended to be
+        trained by autoencoding.
+        """
+        pass

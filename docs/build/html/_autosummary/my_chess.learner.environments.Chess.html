@@ -279,6 +279,21 @@ environment.</p>
 <dd class="field-even"><p>New observations for each ready agent.</p>
 </dd>
 </dl>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ray.rllib.env.multi_agent_env</span> <span class="kn">import</span> <span class="n">MultiAgentEnv</span>
+<span class="k">class</span> <span class="nc">MyMultiAgentEnv</span><span class="p">(</span><span class="n">MultiAgentEnv</span><span class="p">):</span>
+    <span class="c1"># Define your env here.</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">MyMultiAgentEnv</span><span class="p">()</span>
+<span class="n">obs</span><span class="p">,</span> <span class="n">infos</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{
+    &quot;car_0&quot;: [2.4, 1.6],
+    &quot;car_1&quot;: [3.4, -3.2],
+    &quot;traffic_light_1&quot;: [0, 3, 5, 1],
+}
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -298,6 +313,33 @@ the episode is just started, the value will be None.
 5) Info values for each agent id (may be empty dicts).</p>
 </dd>
 </dl>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="o">...</span>
+<span class="n">obs</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">terminateds</span><span class="p">,</span> <span class="n">truncateds</span><span class="p">,</span> <span class="n">infos</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action_dict</span><span class="o">=</span><span class="p">{</span>
+    <span class="s2">&quot;car_0&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;car_1&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;traffic_light_1&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rewards</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">terminateds</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">infos</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{
+    &quot;car_0&quot;: 3,
+    &quot;car_1&quot;: -1,
+    &quot;traffic_light_1&quot;: 0,
+}
+{
+    &quot;car_0&quot;: False,    # car_0 is still running
+    &quot;car_1&quot;: True,     # car_1 is terminated
+    &quot;__all__&quot;: False,  # the env is not terminated
+}
+{
+    &quot;car_0&quot;: {},  # info for car_0
+    &quot;car_1&quot;: {},  # info for car_1
+}
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -379,6 +421,17 @@ of n individual agents spaces (n=num agents in a group).</p></li>
 </ul>
 </dd>
 </dl>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ray.rllib.env.multi_agent_env</span> <span class="kn">import</span> <span class="n">MultiAgentEnv</span>
+<span class="k">class</span> <span class="nc">MyMultiAgentEnv</span><span class="p">(</span><span class="n">MultiAgentEnv</span><span class="p">):</span>
+    <span class="c1"># define your env here</span>
+    <span class="o">...</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">MyMultiAgentEnv</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">grouped_env</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">with_agent_groups</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="p">{</span>
+  <span class="s2">&quot;group1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;agent1&quot;</span><span class="p">,</span> <span class="s2">&quot;agent2&quot;</span><span class="p">,</span> <span class="s2">&quot;agent3&quot;</span><span class="p">],</span>
+  <span class="s2">&quot;group2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;agent4&quot;</span><span class="p">,</span> <span class="s2">&quot;agent5&quot;</span><span class="p">],</span>
+<span class="p">})</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>

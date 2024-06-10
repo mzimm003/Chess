@@ -663,6 +663,12 @@ remain read-only after this.</p>
 <dt class="sig sig-object py" id="my_chess.learner.algorithms.algorithm.AlgorithmConfig.from_dict">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ray.rllib.algorithms.algorithm_config.AlgorithmConfig</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.AlgorithmConfig.from_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates an AlgorithmConfig from a legacy python config dict.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ray.rllib.algorithms.ppo.ppo</span> <span class="kn">import</span> <span class="n">PPOConfig</span>
+<span class="c1"># pass a RLlib config dict</span>
+<span class="n">ppo_config</span> <span class="o">=</span> <span class="n">PPOConfig</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({})</span>
+<span class="n">ppo</span> <span class="o">=</span> <span class="n">ppo_config</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="s2">&quot;Pendulum-v1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>config_dict</strong> – The legacy formatted python config dict for some algorithm.</p>
@@ -1031,6 +1037,30 @@ AlgorithmConfig object.</p>
 <p>Used anywhere, we would like to enable the user to only define a few config
 settings that would change with respect to some main config, e.g. in multi-agent
 setups and evaluation configs.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ray.rllib.algorithms.ppo</span> <span class="kn">import</span> <span class="n">PPOConfig</span>
+<span class="kn">from</span> <span class="nn">ray.rllib.policy.policy</span> <span class="kn">import</span> <span class="n">PolicySpec</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">PPOConfig</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">multi_agent</span><span class="p">(</span>
+        <span class="n">policies</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;pol0&quot;</span><span class="p">:</span> <span class="n">PolicySpec</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">PPOConfig</span><span class="o">.</span><span class="n">overrides</span><span class="p">(</span><span class="n">lambda_</span><span class="o">=</span><span class="mf">0.95</span><span class="p">))</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ray.rllib.algorithms.algorithm_config</span> <span class="kn">import</span> <span class="n">AlgorithmConfig</span>
+<span class="kn">from</span> <span class="nn">ray.rllib.algorithms.ppo</span> <span class="kn">import</span> <span class="n">PPOConfig</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">PPOConfig</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">evaluation</span><span class="p">(</span>
+        <span class="n">evaluation_num_workers</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">evaluation_interval</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">evaluation_config</span><span class="o">=</span><span class="n">AlgorithmConfig</span><span class="o">.</span><span class="n">overrides</span><span class="p">(</span><span class="n">explore</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>A dict mapping valid config property-names to values.</p>

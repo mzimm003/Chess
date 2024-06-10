@@ -1,4 +1,4 @@
-"""Policies to control actions based on environment state (leveraging model)"""
+"""Policies to control actions based on environment state."""
 
 from .policy import Policy, PolicyConfig
 from .ppo_cust import PPOPolicy, PPOPolicyConfig, PPOTP

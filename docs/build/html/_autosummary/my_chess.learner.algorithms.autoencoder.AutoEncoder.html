@@ -161,7 +161,7 @@ object. If unspecified, a default logger is created.</p></li>
 <td><p>Subclasses should override this for custom initialization.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.autoencoder.AutoEncoder.step" title="my_chess.learner.algorithms.autoencoder.AutoEncoder.step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code></a>()</p></td>
-<td><p>Subclasses should override this to implement train().</p></td>
+<td><p>override</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.autoencoder.AutoEncoder.stop" title="my_chess.learner.algorithms.autoencoder.AutoEncoder.stop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stop</span></code></a>()</p></td>
 <td><p>Releases all resources used by this trainable.</p></td>
@@ -222,6 +222,11 @@ collection</p>
 <dd><p>Provides a static resource requirement for the given configuration.</p>
 <p>This can be overridden by sub-classes to set the correct trial resource
 allocation, so the user does not need to.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">default_resource_request</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">PlacementGroupFactory</span><span class="p">([{</span><span class="s2">&quot;CPU&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;CPU&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}])</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -509,20 +514,7 @@ Copy of <cite>self.config</cite>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.algorithms.autoencoder.AutoEncoder.step">
 <span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.autoencoder.AutoEncoder.step" title="Permalink to this definition">¶</a></dt>
-<dd><p>Subclasses should override this to implement train().</p>
-<p>The return value will be automatically passed to the loggers. Users
-can also return <cite>tune.result.DONE</cite> or <cite>tune.result.SHOULD_CHECKPOINT</cite>
-as a key to manually trigger termination or checkpointing of this
-trial. Note that manual checkpointing only works when subclassing
-Trainables.</p>
-<div class="versionadded">
-<p><span class="versionmodified added">New in version 0.8.7.</span></p>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>A dict that describes training progress.</p>
-</dd>
-</dl>
+<dd><p>override</p>
 </dd></dl>
 
 <dl class="py method">
@@ -601,6 +593,11 @@ and is automatically inserted into the training result dict.</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trial_id</span></span><a class="headerlink" href="#my_chess.learner.algorithms.autoencoder.AutoEncoder.trial_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Trial ID for the corresponding trial of this Trainable.</p>
 <p>This is not set if not using Tune.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ray.tune</span> <span class="kn">import</span> <span class="n">Trainable</span>
+
+<span class="n">trial_id</span> <span class="o">=</span> <span class="n">Trainable</span><span class="p">()</span><span class="o">.</span><span class="n">trial_id</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py property">
@@ -608,6 +605,11 @@ and is automatically inserted into the training result dict.</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trial_name</span></span><a class="headerlink" href="#my_chess.learner.algorithms.autoencoder.AutoEncoder.trial_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Trial name for the corresponding trial of this Trainable.</p>
 <p>This is not set if not using Tune.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ray.tune</span> <span class="kn">import</span> <span class="n">Trainable</span>
+
+<span class="n">name</span> <span class="o">=</span> <span class="n">Trainable</span><span class="p">()</span><span class="o">.</span><span class="n">trial_name</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py property">
@@ -615,6 +617,11 @@ and is automatically inserted into the training result dict.</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trial_resources</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">ray.tune.execution.placement_groups.PlacementGroupFactory</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#my_chess.learner.algorithms.autoencoder.AutoEncoder.trial_resources" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resources currently assigned to the trial of this Trainable.</p>
 <p>This is not set if not using Tune.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ray.tune</span> <span class="kn">import</span> <span class="n">Trainable</span>
+
+<span class="n">trial_resources</span> <span class="o">=</span> <span class="n">Trainable</span><span class="p">()</span><span class="o">.</span><span class="n">trial_resources</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>

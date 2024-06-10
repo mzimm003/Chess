@@ -1,4 +1,4 @@
-my\_chess.learner.models.deepchess.DeepChessAlphaBeta
+﻿my\_chess.learner.models.deepchess.DeepChessAlphaBeta
 =====================================================
 
 .. currentmodule:: my_chess.learner.models.deepchess
@@ -25,6 +25,7 @@ my\_chess.learner.models.deepchess.DeepChessAlphaBeta
       ~DeepChessAlphaBeta.compare_boards
       ~DeepChessAlphaBeta.cpu
       ~DeepChessAlphaBeta.cuda
+      ~DeepChessAlphaBeta.decoder
       ~DeepChessAlphaBeta.double
       ~DeepChessAlphaBeta.eval
       ~DeepChessAlphaBeta.extra_repr

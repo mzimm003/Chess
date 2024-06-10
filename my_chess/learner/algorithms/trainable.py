@@ -3,6 +3,7 @@ Base class to support the training algorithm of a supervised learning agent.
 """
 
 from typing import Dict
+from typing_extensions import override
 from ray.train._internal.storage import StorageContext
 from ray.tune.logger import Logger
 from ray.tune.trainable import Trainable as Trainabletemp
@@ -36,14 +37,22 @@ def collate_wrapper(batch):
     return SimpleCustomBatch(batch)
 
 class TrainableConfig(_Config):
+    """
+    Governs the way a machine learning model is optimized.
+        
+    Where a model will take input from a dataset, and be optimized by
+    comparing model output to dataset labels, in a process called
+    supervised learning, this configuration defines all semantics in that
+    process.
+    """
     def __init__(
             self,
-            num_cpus=None,
+            num_cpus:int=None,
             dataset:Dataset=None,
             dataset_config:dict=None,
-            optimizer:Optimizer=None,
+            optimizer:Type[Optimizer]=None,
             optimizer_config:dict=None,
-            criterion:Callable=None,
+            criterion:Type[torch.nn.modules.loss._Loss]=None,
             criterion_config:dict=None,
             model:Type[Model]=None,
             model_config:ModelConfig=None,
@@ -53,13 +62,13 @@ class TrainableConfig(_Config):
             data_split:Tuple[float, float, float]=None,
             pin_memory:bool=None,
             learning_rate:float=None,
-            learning_rate_scheduler:torch.optim.lr_scheduler._LRScheduler=None,
+            learning_rate_scheduler:Type[torch.optim.lr_scheduler._LRScheduler]=None,
             learning_rate_scheduler_config:dict=None,
             **kwargs) -> None:
         """
         Args:
             num_cpus: The number of CPUs with which to resource this algorithm.
-            Defaults to the full CPU count provided by the operating system.
+              Defaults to the full CPU count provided by the operating system.
             dataset: Uninitialized class of a particular dataset (subclassed by
               "Dataset").
             dataset_config: Configuration of dataset.
@@ -111,12 +120,21 @@ class TrainableConfig(_Config):
     def update(self, **kwargs):
         """
         Revise configuration parameters after object initialization.
+
+        See :py:meth:`__init__` for configuration parameters.
         """
         for k, v in kwargs.items():
             if v:
                 setattr(self, k, v)
 
 class Trainable(Trainabletemp):
+    """
+    Framework for training of supervised learning model.
+
+    Instantiates supervised learning semantic components provided by
+    configuration and provides process of a single training epoch to be iterated
+    as desired.
+    """
     def __init__(
             self,
             config: Dict[str, Any] = None,
@@ -128,6 +146,7 @@ class Trainable(Trainabletemp):
     def getName(self):
         return self.__class__.__name__
     
+    @override
     def setup(self, config:TrainableConfig):
         if isinstance(config, dict):
             config = TrainableConfig(**config)
@@ -211,8 +230,11 @@ class Trainable(Trainabletemp):
             ret['recall'] = (target.int()[result.int() == 1].sum()/(target.int() == 1).sum()).item()
         return ret
 
-
+    @override
     def step(self):
+        """
+        override
+        """
         self.model.train()
         total_train_loss = 0
         for data in self.trainloader:

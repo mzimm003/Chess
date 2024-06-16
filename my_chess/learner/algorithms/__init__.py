@@ -15,3 +15,4 @@ from .util import (
     measure_precision,
     measure_recall
     )
+from .loss import CrossEntropyLoss

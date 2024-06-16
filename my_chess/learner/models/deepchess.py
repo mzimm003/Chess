@@ -11,7 +11,7 @@ from pettingzoo.classic.chess import chess_utils
 from chess import Board
 import chess
 
-from typing import Dict, List, Union, Type, Tuple
+from typing import Dict, List, Union, Type, Tuple, Literal
 from pathlib import Path
 from functools import cmp_to_key, partial
 from itertools import product
@@ -136,6 +136,7 @@ class DeepChessEvaluator(Model):
         config:DeepChessEvaluatorConfig = None) -> None:
         super().__init__()
         self.config = config
+        self.flatten = nn.Flatten(1)
         self.fe = self.config.feature_extractor(input_sample=input_sample, config=self.config.feature_extractor_config)
         if self.config.feature_extractor_param_dir:
             self.fe.load_state_dict(torch.load(self.config.feature_extractor_param_dir, map_location=torch.device("cuda" if torch.cuda.is_available() else "cpu")))
@@ -144,7 +145,7 @@ class DeepChessEvaluator(Model):
         input_sample = input_sample.to(dtype=fe_params.dtype, device=fe_params.device)
         input_sample = input_sample[...,0,:,:,:]
         self.fe.eval()
-        sample_fe_output = self.fe(input_sample)
+        sample_fe_output = self.flatten(self.fe(input_sample))
         ff = []
         for i, lyr_dim in enumerate(self.config.hidden_dims):
             if i == 0:
@@ -166,8 +167,8 @@ class DeepChessEvaluator(Model):
         input = input.to(dtype=next(self.parameters()).dtype, device=next(self.parameters()).device)
         if len(input.shape) < 4:
             input = input.unsqueeze(0)
-        feat_pos_1 = self.fe(input[...,0,:,:,:])
-        feat_pos_2 = self.fe(input[...,1,:,:,:])
+        feat_pos_1 = self.flatten(self.fe(input[...,0,:,:,:]))
+        feat_pos_2 = self.flatten(self.fe(input[...,1,:,:,:]))
         logits = self.ff(torch.cat((feat_pos_1, feat_pos_2),-1))
         probs = self.probs(logits)
         return probs
@@ -180,6 +181,7 @@ class DeepChessAlphaBetaConfig(ModelConfig):
             board_evaluator_param_dir:Union[str, Path]=None,
             max_depth:int = 8,
             iterate_depths:bool = True,
+            move_sort:Literal['none', 'random', 'evaluation'] = 'evaluation'
             ) -> None:
         super().__init__()
         self.board_evaluator:Type[Model] = board_evaluator
@@ -187,6 +189,7 @@ class DeepChessAlphaBetaConfig(ModelConfig):
         self.board_evaluator_param_dir = board_evaluator_param_dir
         self.max_depth = max_depth
         self.iterate_depths = iterate_depths
+        self.move_sort = move_sort
     
 class DeepChessAlphaBeta(Model):
     def __init__(
@@ -211,6 +214,7 @@ class DeepChessAlphaBeta(Model):
         self.heur_obs = {}
         self.curr_player = None
         self.positions_analyzed = 0
+        self.move_sort = self.config.move_sort
 
     def max_player(self):
         return int(self.curr_player == chess.BLACK)
@@ -226,23 +230,30 @@ class DeepChessAlphaBeta(Model):
         return self.compare_boards(self.heur_obs[board_key][comp1[0]], self.heur_obs[board_key][comp2[0]])
     
     def get_move_argsort(self, moves, board_key, best_to_worst=True):
-        obs = []
-        for i, m1 in enumerate(moves):
-            for m2 in moves[i+1:]:
-                obs.append(torch.stack([self.heur_obs[board_key][m1], self.heur_obs[board_key][m2]],dim=-4))
-        obs = torch.stack(obs, dim=-5)
-        heurs = self.be(obs)
-        heurs_resolved = heurs[...,0]-heurs[...,1]
+        idxs = None
+        if self.move_sort == 'none':
+            idxs = torch.arange(len(moves))
+        elif self.move_sort == 'random':
+            idxs = torch.randperm(len(moves))
+        elif self.move_sort == 'evaluation':
+            obs = []
+            for i, m1 in enumerate(moves):
+                for m2 in moves[i+1:]:
+                    obs.append(torch.stack([self.heur_obs[board_key][m1], self.heur_obs[board_key][m2]],dim=-4))
+            obs = torch.stack(obs, dim=-5)
+            heurs = self.be(obs)
+            heurs_resolved = heurs[...,0]-heurs[...,1]
 
-        mask = torch.triu(torch.ones((len(moves),len(moves)), dtype=bool), diagonal=1)
-        comp_table_idxs = torch.cumsum(mask.reshape((-1,)),0).reshape((len(moves),len(moves)))-1
-        comp_table_upr = heurs_resolved[comp_table_idxs]
-        comp_table_upr[torch.logical_not(mask)] = 0
-        comp_table_lwr = heurs_resolved[comp_table_idxs.T]
-        comp_table_lwr[torch.logical_not(mask.T)] = 0
-        comp_table = comp_table_upr-comp_table_lwr
+            mask = torch.triu(torch.ones((len(moves),len(moves)), dtype=bool), diagonal=1)
+            comp_table_idxs = torch.cumsum(mask.reshape((-1,)),0).reshape((len(moves),len(moves)))-1
+            comp_table_upr = heurs_resolved[comp_table_idxs]
+            comp_table_upr[torch.logical_not(mask)] = 0
+            comp_table_lwr = heurs_resolved[comp_table_idxs.T]
+            comp_table_lwr[torch.logical_not(mask.T)] = 0
+            comp_table = comp_table_upr-comp_table_lwr
 
-        return torch.argsort((comp_table>0).sum(-1), descending=best_to_worst)
+            idxs = torch.argsort((comp_table>0).sum(-1), descending=best_to_worst)
+        return idxs
 
     def forward(self, board:Board, input):
         self.positions_analyzed = 0

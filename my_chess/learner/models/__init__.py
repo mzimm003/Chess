@@ -1,6 +1,11 @@
 """Models to learn optimal actions based on environment states"""
 
-from .model import ModelRLLIB, ModelRRLIBConfig, Model, ModelConfig
+from .model import (
+    ModelRLLIB,
+    ModelRRLIBConfig,
+    Model,
+    ModelConfig,
+    ModelAutoEncodable)
 from .tobenamed import ToBeNamed, ToBeNamedConfig
 from .Qlearner import QLearner, QLearnerConfig
 from .deepchess import (

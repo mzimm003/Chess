@@ -2,6 +2,7 @@ from my_chess.scripts import Train
 from my_chess.learner.algorithms import (
     PPO,
     PPOConfig,
+    CrossEntropyLoss
 )
 from my_chess.learner.callbacks import SelfPlayCallback
 from my_chess.learner.models import ToBeNamed, DeepChessFEConfig, TransformerChessFEConfig
@@ -27,17 +28,19 @@ def main(kwargs=None):
             # batch_size = tune.grid_search([256, 512, 2048, 4096])
             # learning_rate_scheduler=torch.optim.lr_scheduler.StepLR,
             # learning_rate_scheduler_config=tune.grid_search([dict(step_size=25, gamma=0.2)]),
+            criterion=CrossEntropyLoss,
+            criterion_config={"class_index":-1}
         ),
-        # model="TransformerChessFE",
-        model="DeepChessFE",
+        model="TransformerChessFE",
+        # model="DeepChessFE",
         model_config=tune.grid_search([
             # DeepChessFEConfig(hidden_dims=[4096, 2048, 1024, 512, 256, 128]),
-            DeepChessFEConfig(hidden_dims=[4096, 2048, 512, 128]),
+            # DeepChessFEConfig(hidden_dims=[4096, 2048, 512, 128]),
             # DeepChessFEConfig(hidden_dims=[4096, 1024, 256, 128]),
             # DeepChessFEConfig(hidden_dims=[4096, 1024, 512, 128]),
             # DeepChessFEConfig(hidden_dims=[4096, 1024, 128]),
             # DeepChessFEConfig(hidden_dims=[4096, 512, 128])
-            # TransformerChessFEConfig()
+            TransformerChessFEConfig(pad_features=True)
             ]),
         # model_config="DeepChessFEConfig",
         run_config=air.RunConfig(

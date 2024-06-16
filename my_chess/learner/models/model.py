@@ -49,3 +49,18 @@ class Model(nn.Module):
 
     def getModelSpecificParams(self):
         return self.__dict__
+
+class ModelAutoEncodable(Model):
+    def __init__(self):
+        super().__init__()
+        self.body = None
+        self.preprocess = None
+
+    def __len__(self):
+        return len(self.body)
+    
+    def __iter__(self):
+        return iter(self.body)
+
+    def __getitem__(self, key):
+        return self.body[key]

@@ -17,7 +17,7 @@ from torch import nn
 from my_chess.learner.algorithms import Trainable, TrainableConfig, collate_wrapper
 from my_chess.learner.policies import Policy, PPOPolicy
 from my_chess.learner.datasets import Dataset, ChessData
-from my_chess.learner.models import Model, ModelConfig
+from my_chess.learner.models import Model, ModelConfig, ModelAutoEncodable
 import my_chess.learner.algorithms as algorithms
 
 class AutoEncoderConfig(TrainableConfig):
@@ -29,7 +29,7 @@ class AutoEncoderConfig(TrainableConfig):
             optimizer_config:dict=None,
             criterion:Callable=None,
             criterion_config:Callable=None,
-            model:Model=None,
+            model:Type[ModelAutoEncodable]=None,
             model_config:ModelConfig=None,
             batch_size:int=128,
             shuffle:bool=False, #True creates slow down given data separation between files, and can also cause RAM to blow up
@@ -66,7 +66,7 @@ class AutoEncoderConfig(TrainableConfig):
             optimizer_config:dict=None,
             criterion:Callable=None,
             criterion_config:Callable=None,
-            model:Model=None,
+            model:Type[ModelAutoEncodable]=None,
             model_config:ModelConfig=None,
             batch_size:int=None,
             shuffle:bool=None,
@@ -233,10 +233,10 @@ class AutoEncoder(Trainable):
     def step(self):
         losses = {}
         full_model = False
-        for i, lyr in enumerate(self.model.body):
-            if i == len(self.model.body)-1:
+        for i, lyr in enumerate(self.model):
+            if i == len(self.model)-1:
                 full_model = True
-            partial_model = nn.Sequential(self.model.preprocess, self.model.body[:i+1], self.model_decoder.body[-(i+1):], self.model_decoder.postprocess)
+            partial_model = nn.Sequential(self.model[:i+1], self.model_decoder[-(i+1):])
 
             optimizer = self.optimizer.__class__(partial_model.parameters())
             state_dict = self.optimizer.state_dict()
@@ -289,7 +289,8 @@ class AutoEncoder(Trainable):
                 loss = self.criterion(output, target)
                 total_val_loss += loss.item()
                 
-                board_result = torch.round(output)
+                board_result = output.max(-1).indices
+                target = target.max(-1).indices
                 total_acc_ratios += algorithms.measure_accuracy(board_result.int(), target.int(), 0).item()
                 total_prec_ratios += algorithms.measure_precision(board_result.int(), target.int(), 0).item()
                 total_recall_ratios += algorithms.measure_recall(board_result.int(), target.int(), 0).item()

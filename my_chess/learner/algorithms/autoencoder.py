@@ -1,3 +1,6 @@
+"""
+Trains a model and its reflection to reproduce input training data.
+"""
 from typing import Optional, Type, Tuple, Callable
 from types import SimpleNamespace
 import inspect
@@ -27,9 +30,9 @@ class AutoEncoderConfig(TrainableConfig):
             dataset_config:dict=None,
             optimizer:Optimizer=None,
             optimizer_config:dict=None,
-            criterion:Callable=None,
-            criterion_config:Callable=None,
-            model:Type[ModelAutoEncodable]=None,
+            criterion:Type[torch.nn.modules.loss._Loss]=None,
+            criterion_config:dict=None,
+            model:Model=None,
             model_config:ModelConfig=None,
             batch_size:int=128,
             shuffle:bool=False, #True creates slow down given data separation between files, and can also cause RAM to blow up
@@ -60,13 +63,13 @@ class AutoEncoderConfig(TrainableConfig):
     
     def update(
             self,
-            dataset:Dataset=None,
+            dataset:Type[Dataset]=None,
             dataset_config:dict=None,
-            optimizer:Optimizer=None,
+            optimizer:Type[Optimizer]=None,
             optimizer_config:dict=None,
-            criterion:Callable=None,
-            criterion_config:Callable=None,
-            model:Type[ModelAutoEncodable]=None,
+            criterion:Type[torch.nn.modules.loss._Loss]=None,
+            criterion_config:dict=None,
+            model:Type[Model]=None,
             model_config:ModelConfig=None,
             batch_size:int=None,
             shuffle:bool=None,

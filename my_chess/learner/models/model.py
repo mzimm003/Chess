@@ -64,3 +64,13 @@ class ModelAutoEncodable(Model):
 
     def __getitem__(self, key):
         return self.body[key]
+    
+    def decoder(self):
+        """
+        Mirror of model.
+
+        To support autoencoder training a model must have a decoder version of
+        itself. Decoder method must be implemented for any model intended to be
+        trained by autoencoding.
+        """
+        pass

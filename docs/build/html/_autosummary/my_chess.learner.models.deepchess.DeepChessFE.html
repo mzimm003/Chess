@@ -60,10 +60,26 @@
 <dt class="sig sig-object py" id="my_chess.learner.models.deepchess.DeepChessFE">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">my_chess.learner.models.deepchess.</span></span><span class="sig-name descname"><span class="pre">DeepChessFE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="my_chess.learner.models.deepchess.DeepChessFEConfig.html#my_chess.learner.models.deepchess.DeepChessFEConfig" title="my_chess.learner.models.deepchess.DeepChessFEConfig"><span class="pre">my_chess.learner.models.deepchess.DeepChessFEConfig</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.models.deepchess.DeepChessFE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="my_chess.learner.models.model.Model.html#my_chess.learner.models.model.Model" title="my_chess.learner.models.model.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">my_chess.learner.models.model.Model</span></code></a></p>
+<p>Feature extractor portion of DeepChess model.</p>
+<p>DeepChess begins with a feature extractor applied to a matrix representation
+of a chess board. The model flattens the height, width, and channels
+supplied by input. Then, applies several layers of fully connected linear
+layers, each followed by an activation function. Optionally, a batch
+normalization can be applied after activation, which may help with
+propagation of the learning gradient. This all is with the aim of distilling
+the input data into set of features descriptive of the board.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.models.deepchess.DeepChessFE.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="my_chess.learner.models.deepchess.DeepChessFEConfig.html#my_chess.learner.models.deepchess.DeepChessFEConfig" title="my_chess.learner.models.deepchess.DeepChessFEConfig"><span class="pre">my_chess.learner.models.deepchess.DeepChessFEConfig</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.models.deepchess.DeepChessFE.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_sample</strong> – A sample of the input training data. This is used to
+appropriately structure the model to dynamically accept inputs.</p></li>
+<li><p><strong>config</strong> – Configration of feature extractor.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <p class="rubric">Methods</p>
@@ -74,7 +90,12 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.models.deepchess.DeepChessFE.__init__" title="my_chess.learner.models.deepchess.DeepChessFE.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(input_sample[, config])</p></td>
-<td><p>Initializes internal Module state, shared by both nn.Module and ScriptModule.</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">param input_sample</dt>
+<dd class="field-odd"><p>A sample of the input training data. This is used to</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.models.deepchess.DeepChessFE.add_module" title="my_chess.learner.models.deepchess.DeepChessFE.add_module"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_module</span></code></a>(name, module)</p></td>
 <td><p>Adds a child module to the current module.</p></td>
@@ -97,8 +118,8 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.models.deepchess.DeepChessFE.cuda" title="my_chess.learner.models.deepchess.DeepChessFE.cuda"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cuda</span></code></a>([device])</p></td>
 <td><p>Moves all model parameters and buffers to the GPU.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">decoder</span></code>()</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.models.deepchess.DeepChessFE.decoder" title="my_chess.learner.models.deepchess.DeepChessFE.decoder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decoder</span></code></a>()</p></td>
+<td><p>Mirror of model.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.models.deepchess.DeepChessFE.double" title="my_chess.learner.models.deepchess.DeepChessFE.double"><code class="xref py py-obj docutils literal notranslate"><span class="pre">double</span></code></a>()</p></td>
 <td><p>Casts all floating point parameters and buffers to <code class="docutils literal notranslate"><span class="pre">double</span></code> datatype.</p></td>
@@ -113,7 +134,12 @@
 <td><p>Casts all floating point parameters and buffers to <code class="docutils literal notranslate"><span class="pre">float</span></code> datatype.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.models.deepchess.DeepChessFE.forward" title="my_chess.learner.models.deepchess.DeepChessFE.forward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward</span></code></a>(input)</p></td>
-<td><p>Defines the computation performed at every call.</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">param input</dt>
+<dd class="field-odd"><p>Training data, batched or unbatched.</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getModelSpecificParams</span></code>()</p></td>
 <td><p></p></td>
@@ -383,6 +409,15 @@ copied to that device</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.models.deepchess.DeepChessFE.decoder">
+<span class="sig-name descname"><span class="pre">decoder</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.models.deepchess.DeepChessFE.decoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mirror of model.</p>
+<p>To support autoencoder training a model must have a decoder version of
+itself. Decoder method must be implemented for any model intended to be
+trained by autoencoding.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.models.deepchess.DeepChessFE.double">
 <span class="sig-name descname"><span class="pre">double</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.nn.modules.module.T</span></span></span><a class="headerlink" href="#my_chess.learner.models.deepchess.DeepChessFE.double" title="Permalink to this definition">¶</a></dt>
 <dd><p>Casts all floating point parameters and buffers to <code class="docutils literal notranslate"><span class="pre">double</span></code> datatype.</p>
@@ -451,15 +486,11 @@ strings are acceptable.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.models.deepchess.DeepChessFE.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.array</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">jnp.ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tf.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.array</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">jnp.ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tf.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.array</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">jnp.ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tf.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#my_chess.learner.models.deepchess.DeepChessFE.forward" title="Permalink to this definition">¶</a></dt>
-<dd><p>Defines the computation performed at every call.</p>
-<p>Should be overridden by all subclasses.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Although the recipe for forward pass needs to be defined within
-this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
-instead of this since the former takes care of running the
-registered hooks while the latter silently ignores them.</p>
-</div>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>input</strong> – Training data, batched or unbatched.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">

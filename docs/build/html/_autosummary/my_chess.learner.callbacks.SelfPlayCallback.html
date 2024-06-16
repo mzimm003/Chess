@@ -436,6 +436,37 @@ You can mutate this object to add additional metrics.</p></li>
 snippet inside your custom override of this method:</p>
 <p>Note that any “worker” inside the algorithm’s <cite>self.worker</cite> and
 <cite>self.evaluation_workers</cite> WorkerSets are instances of a subclass of EnvRunner.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyCallbacks</span><span class="p">(</span><span class="n">DefaultCallbacks</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">on_workers_recreated</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">algorithm</span><span class="p">,</span>
+        <span class="n">worker_set</span><span class="p">,</span>
+        <span class="n">worker_ids</span><span class="p">,</span>
+        <span class="n">is_evaluation</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># Define what you would like to do on the recreated</span>
+        <span class="c1"># workers:</span>
+        <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+            <span class="c1"># Here, we just set some arbitrary property to 1.</span>
+            <span class="k">if</span> <span class="n">is_evaluation</span><span class="p">:</span>
+                <span class="n">w</span><span class="o">.</span><span class="n">_custom_property_for_evaluation</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">w</span><span class="o">.</span><span class="n">_custom_property_for_training</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="c1"># Use the `foreach_workers` method of the worker set and</span>
+        <span class="c1"># only loop through those worker IDs that have been restarted.</span>
+        <span class="c1"># Note that we set `local_worker=False` to NOT include it (local</span>
+        <span class="c1"># workers are never recreated; if they fail, the entire Algorithm</span>
+        <span class="c1"># fails).</span>
+        <span class="n">worker_set</span><span class="o">.</span><span class="n">foreach_worker</span><span class="p">(</span>
+            <span class="n">func</span><span class="p">,</span>
+            <span class="n">remote_worker_ids</span><span class="o">=</span><span class="n">worker_ids</span><span class="p">,</span>
+            <span class="n">local_worker</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">

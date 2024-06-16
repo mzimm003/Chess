@@ -1,4 +1,4 @@
-my\_chess.learner.models.deepchess.DeepChessEvaluator
+﻿my\_chess.learner.models.deepchess.DeepChessEvaluator
 =====================================================
 
 .. currentmodule:: my_chess.learner.models.deepchess
@@ -24,6 +24,7 @@ my\_chess.learner.models.deepchess.DeepChessEvaluator
       ~DeepChessEvaluator.children
       ~DeepChessEvaluator.cpu
       ~DeepChessEvaluator.cuda
+      ~DeepChessEvaluator.decoder
       ~DeepChessEvaluator.double
       ~DeepChessEvaluator.eval
       ~DeepChessEvaluator.extra_repr

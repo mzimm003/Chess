@@ -1,4 +1,4 @@
-my\_chess.learner.models.model.Model
+﻿my\_chess.learner.models.model.Model
 ====================================
 
 .. currentmodule:: my_chess.learner.models.model
@@ -24,6 +24,7 @@ my\_chess.learner.models.model.Model
       ~Model.children
       ~Model.cpu
       ~Model.cuda
+      ~Model.decoder
       ~Model.double
       ~Model.eval
       ~Model.extra_repr

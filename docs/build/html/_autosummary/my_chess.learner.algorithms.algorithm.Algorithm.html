@@ -19,7 +19,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="my_chess.learner.algorithms.algorithm.AlgorithmConfig" href="my_chess.learner.algorithms.algorithm.AlgorithmConfig.html" />
-    <link rel="prev" title="my_chess.learner.algorithms.algorithm.measure_recall" href="my_chess.learner.algorithms.algorithm.measure_recall.html" />
+    <link rel="prev" title="my_chess.learner.algorithms.algorithm" href="my_chess.learner.algorithms.algorithm.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <!--[if lt IE 9]>
     <script src="_static/css3-mediaqueries.js"></script>
@@ -38,7 +38,7 @@
           <a href="my_chess.learner.algorithms.algorithm.AlgorithmConfig.html" title="my_chess.learner.algorithms.algorithm.AlgorithmConfig"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="my_chess.learner.algorithms.algorithm.measure_recall.html" title="my_chess.learner.algorithms.algorithm.measure_recall"
+          <a href="my_chess.learner.algorithms.algorithm.html" title="my_chess.learner.algorithms.algorithm"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">ChessBot 0.0.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="my_chess.html" >my_chess</a> &#187;</li>
@@ -416,6 +416,11 @@ or we have an RNN-based Policy.</p>
 <dd><p>Provides a static resource requirement for the given configuration.</p>
 <p>This can be overridden by sub-classes to set the correct trial resource
 allocation, so the user does not need to.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">default_resource_request</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">PlacementGroupFactory</span><span class="p">([{</span><span class="s2">&quot;CPU&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;CPU&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}])</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -489,6 +494,13 @@ will raise a KeyError.</p></li>
 <dd class="field-even"><p><strong>KeyError if policy_id cannot be found in this Algorithm.</strong> – </p>
 </dd>
 </dl>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ray.rllib.algorithms.ppo</span> <span class="kn">import</span> <span class="n">PPO</span><span class="p">,</span> <span class="n">PPOConfig</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">PPOConfig</span><span class="p">()</span><span class="o">.</span><span class="n">environment</span><span class="p">(</span><span class="s2">&quot;CartPole-v1&quot;</span><span class="p">)</span>
+<span class="n">algo</span> <span class="o">=</span> <span class="n">PPO</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+<span class="n">algo</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+<span class="n">algo</span><span class="o">.</span><span class="n">export_policy_checkpoint</span><span class="p">(</span><span class="s2">&quot;/tmp/export_dir&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -506,6 +518,14 @@ If None, the output format will be DL framework specific.</p></li>
 </ul>
 </dd>
 </dl>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ray.rllib.algorithms.ppo</span> <span class="kn">import</span> <span class="n">PPO</span><span class="p">,</span> <span class="n">PPOConfig</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">PPOConfig</span><span class="p">()</span><span class="o">.</span><span class="n">environment</span><span class="p">(</span><span class="s2">&quot;CartPole-v1&quot;</span><span class="p">)</span>
+<span class="n">algo</span> <span class="o">=</span> <span class="n">PPO</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+<span class="n">algo</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+<span class="n">algo</span><span class="o">.</span><span class="n">export_policy_checkpoint</span><span class="p">(</span><span class="s2">&quot;/tmp/export_dir&quot;</span><span class="p">)</span>
+<span class="n">algo</span><span class="o">.</span><span class="n">export_policy_model</span><span class="p">(</span><span class="s2">&quot;/tmp/dir&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -1040,6 +1060,11 @@ optimizer) methods to calculate loss and update the model(s).</p></li>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trial_id</span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.trial_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Trial ID for the corresponding trial of this Trainable.</p>
 <p>This is not set if not using Tune.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ray.tune</span> <span class="kn">import</span> <span class="n">Trainable</span>
+
+<span class="n">trial_id</span> <span class="o">=</span> <span class="n">Trainable</span><span class="p">()</span><span class="o">.</span><span class="n">trial_id</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py property">
@@ -1047,6 +1072,11 @@ optimizer) methods to calculate loss and update the model(s).</p></li>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trial_name</span></span><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.trial_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Trial name for the corresponding trial of this Trainable.</p>
 <p>This is not set if not using Tune.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ray.tune</span> <span class="kn">import</span> <span class="n">Trainable</span>
+
+<span class="n">name</span> <span class="o">=</span> <span class="n">Trainable</span><span class="p">()</span><span class="o">.</span><span class="n">trial_name</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py property">
@@ -1054,6 +1084,11 @@ optimizer) methods to calculate loss and update the model(s).</p></li>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trial_resources</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">ray.tune.execution.placement_groups.PlacementGroupFactory</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#my_chess.learner.algorithms.algorithm.Algorithm.trial_resources" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resources currently assigned to the trial of this Trainable.</p>
 <p>This is not set if not using Tune.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ray.tune</span> <span class="kn">import</span> <span class="n">Trainable</span>
+
+<span class="n">trial_resources</span> <span class="o">=</span> <span class="n">Trainable</span><span class="p">()</span><span class="o">.</span><span class="n">trial_resources</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -1089,8 +1124,8 @@ setup.</p></li>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="my_chess.learner.algorithms.algorithm.measure_recall.html"
-                        title="previous chapter">my_chess.learner.algorithms.algorithm.measure_recall</a></p>
+  <p class="topless"><a href="my_chess.learner.algorithms.algorithm.html"
+                        title="previous chapter">my_chess.learner.algorithms.algorithm</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="my_chess.learner.algorithms.algorithm.AlgorithmConfig.html"
                         title="next chapter">my_chess.learner.algorithms.algorithm.AlgorithmConfig</a></p>
@@ -1128,7 +1163,7 @@ setup.</p></li>
           <a href="my_chess.learner.algorithms.algorithm.AlgorithmConfig.html" title="my_chess.learner.algorithms.algorithm.AlgorithmConfig"
              >next</a> |</li>
         <li class="right" >
-          <a href="my_chess.learner.algorithms.algorithm.measure_recall.html" title="my_chess.learner.algorithms.algorithm.measure_recall"
+          <a href="my_chess.learner.algorithms.algorithm.html" title="my_chess.learner.algorithms.algorithm"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">ChessBot 0.0.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="my_chess.html" >my_chess</a> &#187;</li>

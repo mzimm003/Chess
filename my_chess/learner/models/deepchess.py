@@ -259,6 +259,9 @@ class DeepChessAlphaBeta(Model):
     def min_player(self):
         return int(self.curr_player == chess.WHITE)
     
+    def update_curr_player(self, board:Board):
+        self.curr_player = board.turn == chess.WHITE
+    
     def compare_boards(self, obs1, obs2):
         comp = self.be(torch.stack([obs1, obs2],dim=-4))
         return comp[0] - comp[1]
@@ -301,7 +304,7 @@ class DeepChessAlphaBeta(Model):
                 input[k] = torch.tensor(input[k].copy())
         else:
             input = torch.tensor(input.copy())
-        self.curr_player = board.turn == chess.WHITE
+        self.update_curr_player(board)
         act = None
         if self.iter_depths:
             act = self.iterate_depths(board, input)
@@ -483,11 +486,10 @@ class DeepChessAlphaBeta(Model):
         observation = chess_utils.get_observation(board, self.max_player())
         observation = np.dstack((observation, board_history[:, :, 7:-13]))
         legal_moves = chess_utils.legal_moves(board)
-        action_mask = np.zeros(4672, "int8")
-        for i in legal_moves:
-            action_mask[i] = 1
+        action_mask = torch.zeros(4672, dtype=torch.int8)
+        action_mask[torch.tensor(legal_moves)] = 1
 
-        return {"observation": torch.tensor(observation), "action_mask": torch.tensor(action_mask)}
+        return {"observation": torch.tensor(observation), "action_mask": action_mask}
     
 class DeepChessRLConfig(ModelConfig):
     ACTIVATIONS = {

@@ -84,7 +84,7 @@ class TestDeepChessAlphaBeta:
             Board('rnbqkbnr/pppppppp/8/8/7P/8/PPPPPPP1/RNBQKBNR b KQkq - 0 1'),
         ]
         moves = chess_utils.legal_moves(board)
-        results = [self.model.simulate_move(board, a, self.model.max_player()) for a in moves]
+        results = [Chess.simulate_move(board, a, self.model.max_player()) for a in moves]
         for result in results:
             assert result in next_boards
             next_boards.remove(result)
@@ -139,16 +139,16 @@ class TestDeepChessAlphaBeta:
         ]
         next_next_boards = [Board(nnbb+'/'+nnbw.format(i+j if j else j)) for nnbw, i in next_next_boards_white for nnbb, j in next_next_boards_black]
         moves = chess_utils.legal_moves(init_board)
-        next_boards = [self.model.simulate_move(init_board, a, self.model.max_player()) for a in moves]
+        next_boards = [Chess.simulate_move(init_board, a, self.model.max_player()) for a in moves]
         for board in next_boards:
             moves = chess_utils.legal_moves(board)
-            results = [self.model.simulate_move(board, a, self.model.min_player()) for a in moves]
+            results = [Chess.simulate_move(board, a, self.model.min_player()) for a in moves]
             for result in results:
                 assert result in next_next_boards
                 next_next_boards.remove(result)
         assert next_next_boards == []
     
-    def create_observation_from_board(self, board:Board):
+    def __create_observation_from_board(self, board:Board):
         board_str = board.fen()
         board_strs = board_str.split(' ')
         obs = []
@@ -165,7 +165,10 @@ class TestDeepChessAlphaBeta:
 
         clock = torch.zeros(64)
         clock[int(board_strs[4])//2] = 1
-        obs.append(clock.reshape(8,8,1).flip(0))
+        clock = clock.reshape(8,8,1)
+        if self.model.curr_player == chess.BLACK:
+            clock = clock.flip(0)
+        obs.append(clock)
 
         pad = torch.ones(8,8,1)
         obs.append(pad)
@@ -191,7 +194,7 @@ class TestDeepChessAlphaBeta:
             mask = board_array == ord(p)
             ob[mask] = 1
             black_pieces.append(ob)
-        if self.model.curr_player == chess.BLACK:
+        if self.model.curr_player != chess.BLACK:
             black_pieces = [b_p.flip(0) for b_p in black_pieces]
             white_pieces = [w_p.flip(0) for w_p in white_pieces]
             obs.extend(black_pieces)
@@ -204,18 +207,56 @@ class TestDeepChessAlphaBeta:
         # observation indicates a repeat.
         obs.append(torch.zeros(8,8,1))
 
-        return torch.cat([*obs, self.base_observation['observation'][:,:,7:-13]], -1)
+        a_m = torch.zeros(4672)
+        a_m[chess_utils.legal_moves(board)] = 1
+
+        return {
+            "observation":torch.cat([*obs, self.base_observation['observation'][:,:,7:-13]], -1),
+            "action_mask":a_m
+        }
+
+    def __compare_obs(self, result_obs, target_obs):
+        assert not result_obs["observation"].isnan().any()
+        assert (result_obs["action_mask"] == target_obs["action_mask"]).all()
+        assert result_obs["observation"].shape[-1] == target_obs["observation"].shape[-1]
+        for chan in range(target_obs["observation"].shape[-1]):
+            # broken for more granular testing
+            assert (result_obs["observation"][:,:,chan] == target_obs["observation"][:,:,chan]).all(), "failed at {}".format(chan)
+
 
     def __test_sim_obs(self, board:Board):
         self.model.update_curr_player(board)
-        result = self.model.simulate_observation(board, self.base_observation)
-        legal_moves = chess_utils.legal_moves(board)
-        assert not result["observation"].isnan().any()
-        assert result["action_mask"].nonzero().flatten().tolist() == sorted(legal_moves)
-        observation = self.create_observation_from_board(board)
-        for chan in range(111):
-            # broken for more granular testing
-            assert (result["observation"][:,:,chan] == observation[:,:,chan]).all(), "failed at {}".format(chan)
+        result = Chess.simulate_observation(board, self.base_observation, self.model.curr_player)
+        observation = self.__create_observation_from_board(board)
+        self.__compare_obs(result, observation)
+
+    def test_simulate_observation_0(self):
+        """
+        To confirm test observations align with petting zoo chess environment
+        observations.
+        """
+        # First with white's play and black's observation
+        observation, *_ = self.environment.step({"player_0":77})
+        self.model.update_curr_player(self.environment.env.board)
+        observation = observation["player_1"]
+        for r in observation:
+            observation[r] = torch.from_numpy(observation[r].copy())
+        result = self.__create_observation_from_board(self.environment.env.board)
+        observation["observation"] = observation["observation"][:,:,:20]
+        result["observation"] = result["observation"][:,:,:20]
+        self.__compare_obs(result, observation)
+
+        # Then black's play and white's observation
+        observation, *_ = self.environment.step({"player_1":661})
+        self.model.update_curr_player(self.environment.env.board)
+        observation = observation["player_0"]
+        for r in observation:
+            observation[r] = torch.from_numpy(observation[r].copy())
+        result = self.__create_observation_from_board(self.environment.env.board)
+        observation["observation"] = observation["observation"][:,:,:20]
+        result["observation"] = result["observation"][:,:,:20]
+        self.__compare_obs(result, observation)
+
 
     def test_simulate_observation_1(self):
         self.__test_sim_obs(Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'))

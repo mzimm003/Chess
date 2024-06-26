@@ -229,6 +229,7 @@ class DeepChessAlphaBetaConfig(ModelConfig):
         self.move_sort = move_sort
     
 class DeepChessAlphaBeta(Model):
+    WHITE, BLACK = [False, True] # to match pettingzoo, opposite "chess" library
     def __init__(
         self,
         input_sample:Union[TensorType, Dict],
@@ -254,13 +255,13 @@ class DeepChessAlphaBeta(Model):
         self.move_sort = self.config.move_sort
 
     def max_player(self):
-        return int(self.curr_player == chess.BLACK)
+        return int(self.curr_player == DeepChessAlphaBeta.BLACK)
     
     def min_player(self):
-        return int(self.curr_player == chess.WHITE)
+        return int(self.curr_player == DeepChessAlphaBeta.WHITE)
     
     def update_curr_player(self, board:Board):
-        self.curr_player = board.turn == chess.WHITE
+        self.curr_player = board.turn == DeepChessAlphaBeta.WHITE
     
     def compare_boards(self, obs1, obs2):
         comp = self.be(torch.stack([obs1, obs2],dim=-4))
@@ -343,8 +344,8 @@ class DeepChessAlphaBeta(Model):
         act = None
         val = None
         moves = chess_utils.legal_moves(board)
-        next_boards = [self.simulate_move(board, a, self.max_player()) for a in moves]
-        next_obs = [self.simulate_observation(b, input) for b in next_boards]
+        next_boards = [Chess.simulate_move(board, a, self.max_player()) for a in moves]
+        next_obs = [Chess.simulate_observation(b, input, self.max_player()) for b in next_boards]
 
         board_key = str(board).replace(' ','')+str(self.max_player())+str(moves).replace(', ','.').lstrip('[').rstrip(']')
         if not board_key in self.heur_obs:
@@ -412,8 +413,8 @@ class DeepChessAlphaBeta(Model):
         act = None
         val = None
         moves = chess_utils.legal_moves(board)
-        next_boards = [self.simulate_move(board, a, self.min_player()) for a in moves]
-        next_obs = [self.simulate_observation(b, input) for b in next_boards]
+        next_boards = [Chess.simulate_move(board, a, self.min_player()) for a in moves]
+        next_obs = [Chess.simulate_observation(b, input, self.min_player()) for b in next_boards]
 
         board_key = str(board).replace(' ','')+str(self.min_player())+str(moves).replace(', ','.').lstrip('[').rstrip(']')
         if not board_key in self.heur_obs:
@@ -470,26 +471,26 @@ class DeepChessAlphaBeta(Model):
         return board.is_game_over(claim_draw=True)
     
     def utility(self, board:Board):
-        black_modifier = -1 if self.curr_player == chess.BLACK else 1
+        black_modifier = -1 if self.curr_player == DeepChessAlphaBeta.BLACK else 1
         return chess_utils.result_to_int(board.result(claim_draw=True)) * black_modifier
     
-    def simulate_move(self, board:Board, action, player):
-        board = board.copy()
-        move = chess_utils.action_to_move(board, action, player)
-        board.push(move)
-        return board
+    # def simulate_move(self, board:Board, action, player):
+    #     board = board.copy()
+    #     move = chess_utils.action_to_move(board, action, player)
+    #     board.push(move)
+    #     return board
     
-    def simulate_observation(self, board, input):
-        """Taken from Petting Zoo Chess Environment - modified as needed"""
-        board_history = input["observation"]
+    # def simulate_observation(self, board, input):
+    #     """Taken from Petting Zoo Chess Environment - modified as needed"""
+    #     board_history = input["observation"]
 
-        observation = chess_utils.get_observation(board, self.max_player())
-        observation = np.dstack((observation, board_history[:, :, 7:-13]))
-        legal_moves = chess_utils.legal_moves(board)
-        action_mask = torch.zeros(4672, dtype=torch.int8)
-        action_mask[torch.tensor(legal_moves)] = 1
+    #     observation = chess_utils.get_observation(board, self.max_player())
+    #     observation = np.dstack((observation, board_history[:, :, 7:-13]))
+    #     legal_moves = chess_utils.legal_moves(board)
+    #     action_mask = torch.zeros(4672, dtype=torch.int8)
+    #     action_mask[torch.tensor(legal_moves)] = 1
 
-        return {"observation": torch.tensor(observation), "action_mask": action_mask}
+    #     return {"observation": torch.tensor(observation), "action_mask": action_mask}
     
 class DeepChessRLConfig(ModelConfig):
     ACTIVATIONS = {

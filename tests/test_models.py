@@ -9,6 +9,7 @@ import chess
 
 from my_chess.learner.models import Model, ModelConfig, DeepChessAlphaBeta, DeepChessAlphaBetaConfig
 from my_chess.learner.environments import Chess
+from my_chess.learner.models.deepchess import NextPositionsGenerator
 
 class TestDeepChessAlphaBeta:
     class DummyEvaluatorConfig(ModelConfig):
@@ -265,3 +266,103 @@ class TestDeepChessAlphaBeta:
         board = Board('rnbqkbnr/pppppppp/8/8/8/7N/PPPPPPPP/RNBQKB1R b KQkq - 1 1')
         self.model.update_curr_player(board)
         self.__test_sim_obs(board)
+
+    def test_simulate_observation_3(self):
+        board = Board('rnbqkbnr/pppppppp/8/8/8/7N/PPPPPPPP/RNBQKB1R b KQkq - 1 1')
+        self.__test_sim_obs(board)
+
+    def test_max_player_0(self):
+        board = Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
+        self.model.update_curr_player(board)
+        assert self.model.max_player() == 0
+
+    def test_max_player_1(self):
+        board = Board('rnbqkbnr/pppppppp/8/8/8/7N/PPPPPPPP/RNBQKB1R b KQkq - 1 1')
+        self.model.update_curr_player(board)
+        assert self.model.max_player() == 1
+
+    def test_min_player_0(self):
+        board = Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
+        self.model.update_curr_player(board)
+        assert self.model.min_player() == 1
+
+    def test_min_player_1(self):
+        board = Board('rnbqkbnr/pppppppp/8/8/8/7N/PPPPPPPP/RNBQKB1R b KQkq - 1 1')
+        self.model.update_curr_player(board)
+        assert self.model.min_player() == 0
+    
+    def test_compare_boards(self):
+        board1 = Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
+        board2 = Board('rnbqkbnr/pppppppp/8/8/8/7N/PPPPPPPP/RNBQKB1R b KQkq - 1 1')
+        ob1 = self.__create_observation_from_board(board1)
+        ob2 = self.__create_observation_from_board(board2)
+        assert (self.model.compare_boards(ob1["observation"], ob2["observation"]) == 0).all()
+
+    def test_utility_1(self):
+        board = Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
+        self.model.update_curr_player(board)
+
+        end_board = Board('r2qkbnr/pbpppQpp/1pn5/8/2B5/4P3/PPPP1PPP/RNB1K1NR b KQkq - 0 4')
+
+        assert self.model.utility(end_board) == 1
+
+    def test_utility_2(self):
+        board = Board('rnbqkbnr/pppppppp/8/8/8/7N/PPPPPPPP/RNBQKB1R b KQkq - 1 1')
+        self.model.update_curr_player(board)
+
+        end_board = Board('r2qkbnr/pbpppQpp/1pn5/8/2B5/4P3/PPPP1PPP/RNB1K1NR b KQkq - 0 4')
+
+        assert self.model.utility(end_board) == -1
+
+    def test_utility_3(self):
+        board = Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
+        self.model.update_curr_player(board)
+
+        end_board = Board('8/5k2/3p4/1p1Pp2p/pP2Pp1P/P4P1K/8/8 b - - 99 50')
+
+        assert self.model.utility(end_board) == 0
+
+    def test_utility_4(self):
+        board = Board('rnbqkbnr/pppppppp/8/8/8/7N/PPPPPPPP/RNBQKB1R b KQkq - 1 1')
+        self.model.update_curr_player(board)
+
+        end_board = Board('8/5k2/3p4/1p1Pp2p/pP2Pp1P/P4P1K/8/8 b - - 99 50')
+
+        assert self.model.utility(end_board) == 0
+
+    def test_min_max_observations1(self, short_game_data):
+        board = Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
+        self.model.update_curr_player(board)
+        game = [Board('rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1'),
+            Board('rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2'),
+            Board('rnbqkbnr/pppp1ppp/4p3/8/3PP3/8/PPP2PPP/RNBQKBNR b KQkq d3 0 2'),
+            Board('rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq d6 0 3'),
+            Board('rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/8/PPPN1PPP/R1BQKBNR b KQkq - 1 3'),
+            Board('rnbqkbnr/pp3ppp/4p3/2pp4/3PP3/8/PPPN1PPP/R1BQKBNR w KQkq c6 0 4'),
+            Board('rnbqkbnr/pp3ppp/4p3/2pP4/3P4/8/PPPN1PPP/R1BQKBNR b KQkq - 0 4'),
+            Board('rnbqkbnr/pp3ppp/8/2pp4/3P4/8/PPPN1PPP/R1BQKBNR w KQkq - 0 5'),
+            Board('rnbqkbnr/pp3ppp/8/2Pp4/8/8/PPPN1PPP/R1BQKBNR b KQkq - 0 5'),
+            Board('rnbqk1nr/pp3ppp/8/2bp4/8/8/PPPN1PPP/R1BQKBNR w KQkq - 0 6'),
+            Board('rnbqk1nr/pp3ppp/8/2bp4/8/8/PPPNNPPP/R1BQKB1R b KQkq - 1 6'),
+            Board('rnb1k1nr/pp3ppp/1q6/2bp4/8/8/PPPNNPPP/R1BQKB1R w KQkq - 2 7')]
+        
+        npg = NextPositionsGenerator('none')
+        lat_observ = {k:torch.zeros_like(v) for k,v in self.base_observation.items()}
+        for i, state in enumerate(game):
+            nps = npg.generate_next_positions(
+                board=board,
+                latest_observation=lat_observ,
+                turn_player=self.model.max_player() if i%2==0 else self.model.min_player(),
+                perspective_player=self.model.min_player() if i%2==0 else self.model.max_player())
+            for a, b, obs in nps:
+                if b == state:
+                    board = b
+                    lat_observ = obs
+                    curr_observation, *_ = self.environment.step({self.environment.env.agent_selection:a})
+                    curr_observation = {k:torch.tensor(v.copy()) for k,v in list(curr_observation.values())[0].items()}
+                    next_observation, *_ = self.environment.env.last()
+                    next_observation = {k:torch.tensor(v.copy()) for k,v in next_observation.items()}
+                    for k in lat_observ:
+                        assert (lat_observ[k] == curr_observation[k]).all()
+                    for k in lat_observ:
+                        assert (lat_observ[k] == next_observation[k]).all()

@@ -3,7 +3,7 @@ from my_chess.learner.environments import Chess
 from pettingzoo.classic.chess_v6 import raw_env as r_e
 from pettingzoo.utils import wrappers
 from pettingzoo.classic.chess import chess_utils
-from typing import Tuple, Union, List, Dict
+from typing import Tuple, Union, Literal, List, Dict
 from pathlib import Path
 import shutil
 import pickle
@@ -135,14 +135,28 @@ class raw_env(r_e):
     def observation_to_fen(cls, observation:torch.tensor, board_state=0):
         """For Visualizing purposes only. Will not fully capture moves, castling rights, etc."""
         observation = observation.int().moveaxis(-1,1)
+        is_black_perspectives = [obs[4].all() for obs in observation]
         white_piece_ints = [ord('P'),ord('N'),ord('B'),ord('R'),ord('Q'),ord('K'),]
         black_piece_ints = [ord('p'),ord('n'),ord('b'),ord('r'),ord('q'),ord('k'),]
-        piece_ints = torch.tensor([white_piece_ints+black_piece_ints if obs[5].all() else black_piece_ints+white_piece_ints for obs in observation])
+        piece_ints = torch.tensor([white_piece_ints+black_piece_ints if not black_persp else black_piece_ints+white_piece_ints for black_persp in is_black_perspectives])
         observation = observation[:, 7 + board_state * 13:19 + board_state * 13]
+
+        #potential en passant pawns are represented on back ranks and need adjustment
+        observation[:,0,3] = torch.logical_or(observation[:,0,3], observation[:,0,0])
+        observation[:,0,0] = False
+        observation[:,0,4] = torch.logical_or(observation[:,0,4], observation[:,0,7])
+        observation[:,0,7] = False
+        observation[:,6,3] = torch.logical_or(observation[:,6,3], observation[:,6,0])
+        observation[:,6,0] = False
+        observation[:,6,4] = torch.logical_or(observation[:,6,4], observation[:,6,7])
+        observation[:,6,7] = False
+
         boards = (observation * piece_ints[:,:,None,None]).sum(1)
 
         fens = []
-        for board in boards:
+        for i, board in enumerate(boards):
+            if is_black_perspectives[i]:
+                board = board.flip(0)
             fen = ''
             for row in board:
                 empty_space_count = 0
@@ -157,7 +171,7 @@ class raw_env(r_e):
                 if empty_space_count != 0:
                     fen += str(empty_space_count)
                 fen += '/'
-            fen = fen.rstrip('/') + ' w KQkq - 0 1'
+            fen = fen.rstrip('/') + ' w - - 0 1'
             fens.append(fen)
         return fens
 
@@ -169,25 +183,135 @@ def env(**kwargs):
     return env
 
 
-class ChessData(Dataset):
+class PGNGamesItr:
     def __init__(
             self,
-            dataset_dir,
-            seed=None,
-            apply_deepchess_rules=True,
-            render_mode=None,
-            reset=False,
-            max_games_per_file=14000,
-            subset=None) -> None:
+            directory:Union[Path, str],
+            subset:int=None,
+            drop_draws:bool=True,
+            seed:int=None) -> None:
+        if isinstance(directory, str):
+            directory = Path(directory)
+
+        self.current = -1
+        self.file_data = pd.DataFrame()
+
+        for i, file in enumerate(directory.glob("*.pgn")):
+            file_copy = None
+            with open(file, 'r') as f:
+                file_copy = f.readlines()
+            self.file_data = self.file_data.append(pd.DataFrame(file_copy))
+        
+        self.__set_group_index()
+        if drop_draws:
+            draw_mask = self.file_data.loc[:,0].str.contains('Result "1/2-1/2"')
+            draw_idxs = self.file_data.index[draw_mask]
+            self.file_data = self.file_data.drop(index=draw_idxs.append(draw_idxs+1))
+            self.__set_group_index()
+        self.total_games = (self.file_data.index[-1] + 1) // 2
+        self.game_idxs = np.arange(self.total_games)
+
+        if subset:
+            rng = np.random.default_rng(seed)
+
+            subset_idxs = rng.choice(
+                np.arange(self.total_games),
+                subset,
+                replace=False,
+                shuffle=False)
+            subset_idxs.sort()
+            kept_idxs = np.empty((subset_idxs.size * 2,), dtype=subset_idxs.dtype)
+            kept_idxs[0::2] = subset_idxs * 2
+            kept_idxs[1::2] = subset_idxs * 2 + 1
+
+            self.file_data = self.file_data.loc[kept_idxs]
+            self.__set_group_index()
+            self.total_games = (self.file_data.index[-1] + 1) // 2
+            self.game_idxs = np.arange(self.total_games)
+
+    def __set_group_index(self):
+        file_idxs = (self.file_data=='\n').cumsum().shift(fill_value=0)
+        self.file_data.set_index(file_idxs[0], inplace=True)
+    
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        self.current += 1
+        if self.current < len(self.game_idxs):
+            game_idx = self.game_idxs[self.current]
+            meta_idx = game_idx * 2
+            move_idx = meta_idx + 1
+            return (
+                game_idx,
+                pd.Series(self.file_data.loc[meta_idx,0]),
+                pd.Series(self.file_data.loc[move_idx,0]))
+        raise StopIteration
+
+class ChessData(Dataset):
+    """
+    A database of chess board observations separated by labels and data.
+
+    To create a database, simply provide as many Portable Game Notation (PGN)
+    files as desired and create a class instance with the directory containing
+    your PGNs as the "dataset_dir". The PGNs will be parsed and the database
+    will be created. If a database has already been created in the directory
+    given, the database will be quickly loaded by the instance, without
+    reprocessing the PGNs.
+
+    Note: Games may not play to completion when creating the database. That is, 
+    rules are dictated by `PettingZoo's Chess Environment <https://pettingzoo.farama.org/environments/classic/chess/>`_
+    supported by `Python Chess <https://python-chess.readthedocs.io/en/latest/>`_
+    which may be different than the rules used in the game provided by the PGN.
+    If the chess environment deems the game over before the PGN file, further
+    observations cannot be created for the database.
+    """
+    def __init__(
+            self,
+            dataset_dir:Union[Path, str],
+            seed:int=None,
+            apply_deepchess_rules:bool=True,
+            render_mode:Literal[None, "human", "ansi", "rgb_array"]=None,
+            reset:bool=False,
+            max_games_per_file:int=14000,
+            states_per_game:int=10,
+            subset:int=None,
+            debug:bool=False) -> None:
+        """
+        Args:
+            dataset_dir: The directory of an existing chess database, or where 
+              one should be created based on the PGN files therein contained.
+            seed: Seed for reproducibility in randomizing components.
+            apply_deepchess_rules: Whether to create a database which includes
+              all positions in the PGN files, or to exclude games which drew, 
+              exclude positions before the first 5 moves, exclude positions
+              immediately after a piece capture, and limit observations to 10 
+              positions per game, as done in the research paper DeepChess.
+            render_mode: Whether to render the game boards as the database is 
+              created (slow).
+            reset: Whether to overwrite an existing database by reprocessing
+              PGNs in the directory.
+            max_games_per_file: Controls how the data labels will be broken up
+              determining how much will be loaded into RAM at once.
+            states_per_game: The number of board positions for which
+              observations will be saved, per game. Only applicable if
+              `apply_deepchess_rules` is True.
+            subset: The number of games to randomly select as some subset of 
+              those in the PGN file. To help control the size of the database as
+              it will be several orders of magnitude larger than the PGN.
+        """
         super().__init__(
             dataset_dir=dataset_dir,
             seed=seed,
             reset=reset,
             )
         self.apply_deepchess_rules = apply_deepchess_rules
+        self.states_per_game = states_per_game
         self.render_mode = render_mode
         self.max_games_per_file = max_games_per_file
         self.subset:int = subset
+        self.rng = np.random.default_rng(seed)
+        self.debug = debug
 
         self.create_structure()
         
@@ -282,41 +406,16 @@ class ChessData(Dataset):
         return torch.tensor(ob), torch.tensor(label)
     
     def create_database(self):
-        if self.subset:
-            rng = np.random.default_rng(self.seed)
-            total_games = 0
-            file_game_counts = []
-            for file in self.dataset_dir.glob("*.pgn"):
-                with open(file, 'r') as f:
-                    num_games = f.readlines().count('\n')//2
-                    file_game_counts.append(num_games)
-                    total_games += num_games
-            subset_idxs = rng.choice(np.arange(total_games), self.subset, replace=False, shuffle=False)
-            subset_idxs.sort()
-            cumulative_counts = np.cumsum(file_game_counts)
-            split_idxs = np.sum(np.repeat(subset_idxs[None,:], len(cumulative_counts), axis=0) < cumulative_counts[:,None], axis=1)
-            subset_idxs_by_file = np.split(subset_idxs, split_idxs)
-            subset_offsets_by_file = [0]+cumulative_counts.tolist()
-
-        for i, file in enumerate(self.dataset_dir.glob("*.pgn")):
-            subset = None
-            if self.subset:
-                subset = subset_idxs_by_file[i]
-                subset -= subset_offsets_by_file[i]
-
-            self.__create_database_from_pgn(file, subset=subset)
-    
-    def __create_database_from_pgn(self, file:str, subset:List[int]=None):
         """
         Custom parser for files from http://computerchess.org.uk/ccrl/404/games.html, provided in pgn
         DeepChess suggests draw games are not useful, and will be excluded if apply_deepchess_rules=True.
         """
         ray.init()
         pool = Pool()
-        games_text = self.__separate_games_text(file, pool, subset)
+        games_text = self.__separate_games_text(pool)
         self.__generate_obs_and_labels(games_text, pool)
         ray.shutdown()
-
+    
     def __generate_obs_and_labels(self, games_text:Tuple[int, Dict[str,List[str]]], pool:Pool):
         def process_game(game:Tuple[int, Dict[str,List[str]]]):
             game_idx = game[0]
@@ -354,64 +453,36 @@ class ChessData(Dataset):
                        self.label_data[Dataset.LBL_FILE_COUNT]+(len(games_text)//self.max_games_per_file)+1)):
             file_start_idx = i*self.max_games_per_file
             file_end_idx = (i+1)*self.max_games_per_file
-            gs = pool.map(process_game, games_text[file_start_idx:file_end_idx])
-            # gs = list(tqdm(pool.imap(process_game, games_text), total=len(games_text))) #tqdm causes cpu under utilization
+            gs = None
+            if self.debug:
+                gs = [process_game(g) for g in games_text[file_start_idx:file_end_idx]]
+            else:
+                gs = pool.map(process_game, games_text[file_start_idx:file_end_idx])
             gs = [j for k in gs if k for j in k]
             self.label_data[Dataset.LBL_COUNT] += len(gs)
             self.label_data[Dataset.LBL_COUNT_BY_FILE].append(len(gs))
             self.label_data[Dataset.LBL_FILE_COUNT] += 1
             pd.DataFrame(gs).to_json(self.label_dir/"{}-{}.json".format(ChessData.AUTONAME, file_idx), orient='records')
     
-    def __separate_games_text(self, file:str, pool:Pool, subset:List[int]=None):
-        file_copy = None
-        with open(file, 'r') as f:
-            file_copy = f.readlines()
-        class GamesItr:
-            def __init__(self, file_copy:List[str], subset:List[int]=None) -> None:
-                self.current = -1
-                self.file_data = pd.DataFrame(file_copy)
-                file_idxs = (self.file_data=='\n').cumsum().shift(fill_value=0)
-                self.file_data.set_index(file_idxs[0], inplace=True)
-                self.total_games = file_copy.count('\n')//2
-                self.game_idxs = np.arange(self.total_games)
-                if not subset is None:
-                    self.game_idxs = self.game_idxs[subset]
-            
-            def __iter__(self):
-                return self
-
-            def __next__(self):
-                self.current += 1
-                if self.current < len(self.game_idxs):
-                    game_idx = self.game_idxs[self.current]
-                    meta_idx = game_idx * 2
-                    move_idx = meta_idx + 1
-                    return game_idx, self.file_data.loc[meta_idx,0], self.file_data.loc[move_idx,0]
-                raise StopIteration
-
+    def __separate_games_text(self, pool:Pool):
         def fill_games_text(game_info:Tuple[int, pd.DataFrame, pd.DataFrame]):
             game_count = game_info[0]
             metadata = game_info[1].tolist()[:-1] #Removes trailing '\n'
             moves = game_info[2].tolist()[:-1] #Removes trailing '\n'
             return game_count, {'metadata':metadata, 'moves':moves}
 
-        game_itr = GamesItr(file_copy=file_copy, subset=subset)
-        # games_text = list(tqdm(pool.imap(fill_games_text, game_itr), total=game_itr.total_games)) #tqdm causes cpu under utilization
-        games_text = pool.map(fill_games_text, game_itr)
+        game_itr = PGNGamesItr(
+            directory=self.dataset_dir,
+            subset=self.subset,
+            drop_draws=self.apply_deepchess_rules,
+            seed=self.seed)
+        games_text = None
+        if self.debug:
+            games_text = [fill_games_text(g) for g in game_itr]
+        else:
+            games_text = pool.map(fill_games_text, game_itr)
         print('Game File Read')
         return games_text
-
-    def __transform_games_moves_to_obs(self, games, environment=None):
-        """
-        DeepChess suggests initial 5 moves and capture moves are not useful positions, and will be excluded if apply_deepchess_rules=True.
-        """
-        if environment is None:
-            environment = env()
-        for game in games:
-            environment.reset()
-            self.__transform_game_moves_to_obs(game, environment=environment)
-        environment.close()
-        return games
 
     def __transform_game_moves_to_obs(self, game, environment=None):
         """
@@ -427,14 +498,30 @@ class ChessData(Dataset):
         # board_strs = []
         move_idx = 0
         store_obs = True
+
+        move_idxs = game["moves"][6:]
+        move_idxs = np.arange(len(move_idxs))+6
+        capture_mask = pd.Series(game["moves"][6:]).str.contains("x")
+        save_move_idxs = self.rng.choice(
+            move_idxs[np.logical_not(capture_mask)],
+            min(self.states_per_game, len(move_idxs[np.logical_not(capture_mask)])),
+            replace=False,
+            shuffle=False)
         if self.apply_deepchess_rules:
             store_obs = False
 
         for agent in environment.agent_iter():
             observation, reward, termination, truncation, info = environment.last()
             if store_obs:
-                observations.append(observation)
-                agent_perspective.append(agent)
+                observations.extend([
+                    environment.observe('player_0'),
+                    environment.observe('player_1')])
+                agent_perspective.extend([
+                    'player_0',
+                    'player_1'])
+                
+            if move_idx >= len(game["moves"]):
+                break
 
             if termination or truncation:
                 action = None
@@ -445,7 +532,9 @@ class ChessData(Dataset):
                     move=game["moves"][move_idx])
                 
                 if self.apply_deepchess_rules:
-                    if move_idx > 5 and not 'x' in game["moves"][move_idx]:
+                    if (move_idx > 5 and
+                        not 'x' in game["moves"][move_idx] and
+                        move_idx in save_move_idxs):
                         store_obs = True
                     else:
                         store_obs = False
@@ -456,8 +545,6 @@ class ChessData(Dataset):
             environment.step(action)
 
             move_idx += 1
-            if move_idx >= len(game["moves"]):
-                break
         
         game["observations"] = observations
         game["agent_perspective"] = agent_perspective
@@ -626,6 +713,9 @@ class ChessDataWinLossPairs(ChessData):
             reset,
             max_games_per_file,
             subset)
+        self.gen = torch.Generator()
+        if self.seed:
+            self.gen.manual_seed(self.seed)
         self.idx_partners = None
         if static_partners:
             partners = self.get_static_random_idx_partners()

@@ -11,7 +11,7 @@ from pettingzoo.classic.chess import chess_utils
 from chess import Board
 import chess
 
-from typing import Dict, List, Union, Type, Tuple, Literal
+from typing import Dict, List, Union, Type, Tuple, Literal, Callable
 from pathlib import Path
 from functools import cmp_to_key, partial
 from itertools import product
@@ -210,6 +210,107 @@ class DeepChessEvaluator(Model):
         probs = self.probs(logits)
         return probs
 
+class NextPositions:
+    def __init__(
+            self,
+            board:Board,
+            latest_observation:torch.tensor,
+            turn_player:int,
+            perspective_player:int,
+            maximizing:bool=True,
+            move_sort:Literal['none', 'random', 'evaluation'] = 'evaluation',
+            evaluator:Callable = None) -> None:
+        self.move_sort = move_sort
+        self.evaluator = evaluator
+        self.maximizing = maximizing
+        self.moves = chess_utils.legal_moves(board)
+        self.next_boards = []
+        self.next_observations = []
+        self.heuristic_observations = []
+        for move in self.moves:
+            next_board = Chess.simulate_move(
+                board,
+                move,
+                turn_player)
+            self.next_boards.append(next_board)
+            next_obs = Chess.simulate_observation(
+                next_board,
+                latest_observation,
+                perspective_player)
+            self.next_observations.append(next_obs)
+            self.heuristic_observations.append(next_obs['observation'])
+        self.sorted_idxs = self.get_move_argsort(self.maximizing)
+        self.current_idx = -1
+
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        self.current_idx += 1
+        if self.current_idx < len(self.moves):
+            return (
+                self.moves[self.sorted_idxs[self.current_idx]],
+                self.next_boards[self.sorted_idxs[self.current_idx]],
+                self.next_observations[self.sorted_idxs[self.current_idx]]
+                )
+        else:
+            raise StopIteration
+
+    def get_move_argsort(self, best_to_worst=True):
+        idxs = [0]
+        if len(self.moves) > 1:
+            if self.move_sort == 'none':
+                idxs = torch.arange(len(self.moves))
+            elif self.move_sort == 'random':
+                idxs = torch.randperm(len(self.moves))
+            elif self.move_sort == 'evaluation':
+                combinations = torch.combinations(torch.arange(len(self.heuristic_observations)))
+                obs = torch.stack(self.heuristic_observations)[combinations]
+                heurs = torch.nn.Softmax(dim=-1)(self.evaluator(obs))
+                heurs_resolved = heurs[...,0]-heurs[...,1]
+
+                mask = torch.triu(torch.ones((len(self.moves),len(self.moves)), dtype=bool), diagonal=1)
+                comp_table_idxs = torch.cumsum(mask.reshape((-1,)),0).reshape((len(self.moves),len(self.moves)))-1
+                comp_table_upr = heurs_resolved[comp_table_idxs]
+                comp_table_upr[torch.logical_not(mask)] = 0
+                comp_table_lwr = heurs_resolved[comp_table_idxs.T]
+                comp_table_lwr[torch.logical_not(mask.T)] = 0
+                comp_table = comp_table_upr-comp_table_lwr
+
+                idxs = torch.argsort((comp_table>0).sum(-1), descending=best_to_worst)
+        return idxs
+
+class NextPositionsGenerator:
+    """
+    Controls generation of next positions for MiniMax Search.
+
+    This includes how they will be sorted and making use of a hash table.
+    """
+    def __init__(
+            self,
+            move_sort:Literal['none', 'random', 'evaluation'] = 'evaluation',
+            evaluator:Callable = None):
+        self.move_sort = move_sort
+        self.evaluator = evaluator
+        if self.evaluator is None:
+            assert self.move_sort != 'evaluation'
+    
+    def generate_next_positions(self,
+            board:Board,
+            latest_observation:torch.tensor,
+            turn_player:int,
+            perspective_player:int,
+            maximizing:bool=True) -> None:
+        return NextPositions(
+            board = board,
+            latest_observation = latest_observation,
+            turn_player = turn_player,
+            perspective_player = perspective_player,
+            maximizing = maximizing,
+            move_sort = self.move_sort,
+            evaluator = self.evaluator,)
+
+
 class DeepChessAlphaBetaConfig(ModelConfig):
     def __init__(
             self,
@@ -253,6 +354,9 @@ class DeepChessAlphaBeta(Model):
         self.curr_player = None
         self.positions_analyzed = 0
         self.move_sort = self.config.move_sort
+        self.next_pos_gen = NextPositionsGenerator(
+            move_sort=self.move_sort,
+            evaluator=self.be)
 
     def max_player(self):
         return int(self.curr_player == DeepChessAlphaBeta.BLACK)
@@ -269,33 +373,7 @@ class DeepChessAlphaBeta(Model):
     
     def parse_compare(self, comp1, comp2, board_key):
         return self.compare_boards(self.heur_obs[board_key][comp1[0]], self.heur_obs[board_key][comp2[0]])
-    
-    def get_move_argsort(self, moves, board_key, best_to_worst=True):
-        idxs = None
-        if self.move_sort == 'none':
-            idxs = torch.arange(len(moves))
-        elif self.move_sort == 'random':
-            idxs = torch.randperm(len(moves))
-        elif self.move_sort == 'evaluation':
-            obs = []
-            for i, m1 in enumerate(moves):
-                for m2 in moves[i+1:]:
-                    obs.append(torch.stack([self.heur_obs[board_key][m1], self.heur_obs[board_key][m2]],dim=-4))
-            obs = torch.stack(obs, dim=-5)
-            heurs = self.be(obs)
-            heurs_resolved = heurs[...,0]-heurs[...,1]
-
-            mask = torch.triu(torch.ones((len(moves),len(moves)), dtype=bool), diagonal=1)
-            comp_table_idxs = torch.cumsum(mask.reshape((-1,)),0).reshape((len(moves),len(moves)))-1
-            comp_table_upr = heurs_resolved[comp_table_idxs]
-            comp_table_upr[torch.logical_not(mask)] = 0
-            comp_table_lwr = heurs_resolved[comp_table_idxs.T]
-            comp_table_lwr[torch.logical_not(mask.T)] = 0
-            comp_table = comp_table_upr-comp_table_lwr
-
-            idxs = torch.argsort((comp_table>0).sum(-1), descending=best_to_worst)
-        return idxs
-
+  
     def forward(self, board:Board, input):
         self.positions_analyzed = 0
         start_time = time.clock_gettime(time.CLOCK_MONOTONIC)
@@ -328,12 +406,114 @@ class DeepChessAlphaBeta(Model):
             self.curr_depth += 1
         return act
 
+    def val_act_update(
+        self,
+        result:Tuple[int, torch.Tensor],
+        act:int,
+        heur_comp:torch.Tensor,
+        ret_val:Tuple[int, torch.Tensor],
+        ret_act:int,
+        minimize:bool = True):
+        if minimize:
+            if not result[0] is None:
+                result = (result[0]*-1, result[1])
+            heur_comp = heur_comp * -1
+        update_val = (
+            ret_val is None or
+            result[0] == 1 or
+            (result[0] != 0 and result[0] != -1 and heur_comp[0] > heur_comp[1])
+        )
+        if update_val:
+            ret_val = result[1]
+            ret_act = act
+        return ret_val, ret_act
+
+    def return_early(
+        self,
+        heur_comp:torch.Tensor,
+        alpha:torch.Tensor,
+        beta:torch.Tensor,
+        minimize:bool = True):
+        ret_determiner = beta
+        if minimize:
+            ret_determiner = alpha
+            heur_comp = heur_comp * -1
+        return (
+            not ret_determiner is None and
+            heur_comp[0] >= heur_comp[1]
+            )
+    
+    def alpha_beta_update(
+        self,
+        heur_comp:torch.Tensor,
+        ret_val:Tuple[int, torch.Tensor],
+        alpha:torch.Tensor,
+        beta:torch.Tensor,
+        minimize:bool = True):
+        ret = {
+            'alpha':alpha,
+            'beta':beta
+        }
+        update_val = 'alpha'
+        if minimize:
+            update_val = 'beta'
+            heur_comp = heur_comp * -1
+
+        if (
+            ret[update_val] is None or
+            heur_comp[0] > heur_comp[1]
+            ):
+            ret[update_val] = ret_val
+            alpha = ret_val
+        return (ret['alpha'], ret['beta'])
+    
+    def update_values(
+        self,
+        result:Tuple[int, torch.Tensor],
+        act:int,
+        ret_val:Tuple[int, torch.Tensor],
+        ret_act:int,
+        beta:torch.Tensor,
+        alpha:torch.Tensor,
+        minimize:bool = True):
+        _, v = result
+        comps = self.be(torch.stack([
+            torch.stack([v[1], ret_val if not ret_val is None else torch.zeros_like(v[1])],dim=-4),
+            torch.stack([v[1], beta if not beta is None else torch.zeros_like(v[1])],dim=-4),
+            torch.stack([v[1], alpha if not alpha is None else torch.zeros_like(v[1])],dim=-4),
+            ], dim=-5))
+        
+        ret_val, ret_act = self.val_act_update(
+            result=v,
+            act=act,
+            heur_comp=comps[0],
+            ret_val=ret_val,
+            ret_act=ret_act,
+            minimize=minimize
+        )
+
+        if self.return_early(
+            heur_comp=comps[1],
+            alpha=alpha,
+            beta=beta,
+            minimize=minimize
+        ):
+            return True, ret_val, ret_act, alpha, beta
+        
+        alpha, beta = self.alpha_beta_update(
+            heur_comp=comps[0],
+            ret_val=ret_val,
+            alpha=alpha,
+            beta=beta,
+            minimize=minimize
+        )
+
+        return False, ret_val, ret_act, alpha, beta
 
     def max_value(self, board:Board, input, alpha, beta, depth=1) -> Tuple[int, Tuple[float, TensorType]]:
         '''
         returns: action integer, (terminal value, observation tensor)
         '''
-        # print(depth, end="")
         if self.terminal_test(board):
             self.positions_analyzed += 1
             return None, (self.utility(board), input['observation'])
@@ -343,66 +523,33 @@ class DeepChessAlphaBeta(Model):
 
         act = None
         val = None
-        moves = chess_utils.legal_moves(board)
-        next_boards = [Chess.simulate_move(board, a, self.max_player()) for a in moves]
-        next_obs = [Chess.simulate_observation(b, input, self.max_player()) for b in next_boards]
-
-        board_key = str(board).replace(' ','')+str(self.max_player())+str(moves).replace(', ','.').lstrip('[').rstrip(']')
-        if not board_key in self.heur_obs:
-            self.heur_obs[board_key] = {}
-            for a, o in zip(moves, next_obs):
-                self.heur_obs[board_key][a] = o['observation']
-
-        next_positions = list(zip(moves, next_boards, next_obs))
-        next_pos_sorted_idxs = None
-        if len(next_positions) > 1:
-            next_pos_sorted_idxs = self.get_move_argsort(moves, board_key)
-        else:
-            next_pos_sorted_idxs = [0]
-
-        for i in next_pos_sorted_idxs:
-            a, b, obs = next_positions[i]
-            update_val = False
-            # b = self.simulate_move(board, a, self.max_player())
-            # obs = self.simulate_observation(b, input)
-            _, v = self.min_value(b, obs, alpha, beta, depth=depth+1)
-            self.heur_obs[board_key][a] = v[1]
-
-            comps = self.be(torch.stack([
-                torch.stack([v[1], val if not val is None else torch.zeros_like(v[1])],dim=-4),
-                torch.stack([v[1], beta if not beta is None else torch.zeros_like(v[1])],dim=-4),
-                torch.stack([v[1], alpha if not alpha is None else torch.zeros_like(v[1])],dim=-4),
-                ], dim=-5))
-
-            if val is None:
-                update_val = True
-            else:
-                if v[0] == 1:
-                    update_val = True
-                elif v[0] != 0 and v[0] != -1:
-                    if comps[0][0] > comps[0][1]:
-                        update_val = True
-            if update_val:
-                val = v[1]
-                act = a
-
-            if not beta is None and update_val:
-                if comps[1][0] >= comps[1][1]:
-                    # print('p', end='')
-                    return act, (None, val)
-            
-            if alpha is None:
-                alpha = val
-            elif update_val and comps[2][0] > comps[2][1]:
-                alpha = val
-        # print()
+        next_positions = self.next_pos_gen.generate_next_positions(
+            board=board,
+            latest_observation=input,
+            turn_player=self.max_player(),
+            perspective_player=self.min_player())
+        
+        for a, b, obs in next_positions:
+            result = self.min_value(b, obs, alpha, beta, depth=depth+1)
+            #TODO add heuristic obs to next_pos_gen?
+            # self.heur_obs[board_key][a] = v[1]
+            ret_early, val, act, alpha, beta = self.update_values(
+                result=result,
+                act=a,
+                ret_val=val,
+                ret_act=act,
+                beta=beta,
+                alpha=alpha,
+                minimize=False
+            )
+            if ret_early:
+                break
         return act, (None, val)
     
     def min_value(self, board:Board, input, alpha, beta, depth=1) -> Tuple[int, Tuple[float, TensorType]]:
         '''
         returns: action integer, (terminal value, observation tensor)
         '''
-        # print(depth, end="")
         if self.terminal_test(board):
             self.positions_analyzed += 1
             return None, (self.utility(board), input['observation'])
@@ -412,59 +559,27 @@ class DeepChessAlphaBeta(Model):
 
         act = None
         val = None
-        moves = chess_utils.legal_moves(board)
-        next_boards = [Chess.simulate_move(board, a, self.min_player()) for a in moves]
-        next_obs = [Chess.simulate_observation(b, input, self.min_player()) for b in next_boards]
-
-        board_key = str(board).replace(' ','')+str(self.min_player())+str(moves).replace(', ','.').lstrip('[').rstrip(']')
-        if not board_key in self.heur_obs:
-            self.heur_obs[board_key] = {}
-            for a, o in zip(moves, next_obs):
-                self.heur_obs[board_key][a] = o['observation']
-
-        next_positions = list(zip(moves, next_boards, next_obs))
-        next_pos_sorted_idxs = None
-        if len(next_positions) > 1:
-            next_pos_sorted_idxs = self.get_move_argsort(moves, board_key, best_to_worst=False)
-        else:
-            next_pos_sorted_idxs = [0]
-
-        for i in next_pos_sorted_idxs:
-            a, b, obs = next_positions[i]
-            update_val = False
-            # b = self.simulate_move(board, a, self.min_player())
-            # obs = self.simulate_observation(b, input)
-            _, v = self.max_value(b, obs, alpha, beta, depth=depth+1)
-            self.heur_obs[board_key][a] = v[1]
-
-            comps = self.be(torch.stack([
-                torch.stack([v[1], val if not val is None else torch.zeros_like(v[1])],dim=-4),
-                torch.stack([v[1], alpha if not alpha is None else torch.zeros_like(v[1])],dim=-4),
-                torch.stack([v[1], beta if not beta is None else torch.zeros_like(v[1])],dim=-4),
-                ], dim=-5))
-
-            if val is None:
-                update_val = True
-            else:
-                if v[0] == -1:
-                    update_val = True
-                elif v[0] != 0 and v[0] != 1:
-                    if comps[0][0] < comps[0][1]:
-                        update_val = True
-            if update_val:
-                val = v[1]
-                act = a
-
-            if not alpha is None and update_val:
-                if comps[1][0] <= comps[1][1]:
-                    # print('p', end='')
-                    return act, (None, val)
-
-            if beta is None:
-                beta = val
-            elif update_val and comps[2][0] < comps[2][1]:
-                beta = val
-        # print()
+        next_positions = self.next_pos_gen.generate_next_positions(
+            board=board,
+            latest_observation=input,
+            turn_player=self.min_player(),
+            perspective_player=self.max_player())
+        
+        for a, b, obs in next_positions:
+            result = self.max_value(b, obs, alpha, beta, depth=depth+1)
+            #TODO add heuristic obs to next_pos_gen?
+            # self.heur_obs[board_key][a] = v[1]
+            ret_early, val, act, alpha, beta = self.update_values(
+                result=result,
+                act=a,
+                ret_val=val,
+                ret_act=act,
+                beta=beta,
+                alpha=alpha,
+                minimize=True
+            )
+            if ret_early:
+                break
         return act, (None, val)
 
     def terminal_test(self, board:Board):

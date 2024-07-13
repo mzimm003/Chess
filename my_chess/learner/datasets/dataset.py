@@ -21,16 +21,13 @@ class Dataset(DatasetTorch):
     LBL_BINS = "_cum_label_counts"
     def __init__(
             self,
-            dataset_dir,
-            seed=None,
-            reset=False,
-            max_labels_per_file=800000
+            dataset_dir:Union[Path, str],
+            seed:int=None,
+            reset:bool=False,
+            max_labels_per_file:int=800000
             ) -> None:
         super().__init__()
         self.seed = seed
-        self.gen = torch.Generator()
-        if self.seed:
-            self.gen.manual_seed(self.seed)
         self.reset = reset
         self.dataset_dir = Path(dataset_dir)
         self.label_dir = self.dataset_dir/'labels'

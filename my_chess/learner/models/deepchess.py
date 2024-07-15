@@ -12,13 +12,14 @@ from chess import Board
 import chess
 
 from typing import Dict, List, Union, Type, Tuple, Literal, Callable
+from typing_extensions import override
 from pathlib import Path
 from functools import cmp_to_key, partial
 from itertools import product
 from collections import OrderedDict
 import time
 
-from my_chess.learner.models import ModelRLLIB, ModelRRLIBConfig, Model, ModelConfig
+from my_chess.learner.models import ModelRLLIB, ModelRRLIBConfig, Model, ModelConfig, ModelAutoEncodable
 from my_chess.learner.environments import Chess
 
 
@@ -58,7 +59,7 @@ class DeepChessFEConfig(ModelConfig):
     def __str__(self) -> str:
         return "Shape<{}>".format(self.hidden_dims)
 
-class DeepChessFE(Model):
+class DeepChessFE(ModelAutoEncodable):
     """
     Feature extractor portion of DeepChess model.
 
@@ -99,6 +100,10 @@ class DeepChessFE(Model):
             ff.append(nn.Sequential(*lyr))
         self.preprocess = nn.Flatten(-3)
         self.body = nn.Sequential(*ff)
+        
+    @override
+    def __getitem__(self, key):
+        return nn.Sequential(self.preprocess, *self.body[key])
     
     def forward(
         self,
@@ -134,10 +139,18 @@ class DeepChessFE(Model):
             lyr.append(nn.Sequential(*post_processing))
             dec.append(nn.Sequential(*lyr))
         postprocess.append(nn.Unflatten(-1, (*self.input_shape, 2)))
-        # postprocess.append(nn.Softmax(-1))
-        return nn.Sequential(
-            OrderedDict([('body',nn.Sequential(*dec)),
-                         ('postprocess',nn.Sequential(*postprocess))]))
+        class Decoder(nn.Module):
+            def __init__(slf) -> None:
+                super().__init__()
+                slf.body = nn.Sequential(*dec)
+                slf.postprocess = nn.Sequential(*postprocess)
+            def __getitem__(slf, key):
+                return nn.Sequential(*slf.body[key], slf.postprocess)
+            def forward(slf, x):
+                slf.to(device=x.device)
+                return slf.postprocess(slf.body(x))
+
+        return Decoder()
 
 class DeepChessEvaluatorConfig(ModelConfig):
     ACTIVATIONS = {

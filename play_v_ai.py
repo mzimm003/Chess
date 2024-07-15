@@ -8,7 +8,7 @@ from pathlib import Path
 
 def main(kwargs=None):
     # best_model_dir = Path("./results/DeepChessEvaluator/ChessEvaluation_d8721_00002_2_batch_size=256,learning_rate_scheduler_config=milestones___ref_ph_33c73b19_gamma_0_75,model_config=r_2024-03-13_10-19-29").resolve()
-    best_model_dir = Path("/opt/ray/results/DeepChessEvaluator/ChessEvaluation_e6124_00000_0_learning_rate_scheduler_config=step_size_200_gamma_0_9,model_config=ref_ph_a52f5213,lr=0.1000_2024-06-14_08-51-01").resolve()
+    best_model_dir = Path("/opt/ray/results/DeepChessEvaluator/ChessEvaluation_9866d_00000_0_learning_rate_scheduler_config=step_size_200_gamma_0_9,model_config=ref_ph_a52f5213,lr=0.1000_2024-07-13_09-18-52").resolve()
     best_model_class = None
     best_model_config = None
     with open(best_model_dir/"params.pkl",'rb') as f:

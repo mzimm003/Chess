@@ -29,10 +29,14 @@ class DeepChessFEConfig(ModelConfig):
         
     See :py:class:`DeepChessFE` for detail on model inner workings.
     """
-    ACTIVATIONS = {
+    __ACTIVATIONS = {
         'relu':nn.ReLU,
         'sigmoid':nn.Sigmoid
     }
+    ACTIVATIONS = lambda x: (
+        DeepChessFEConfig.__ACTIVATIONS[x]
+        if x in DeepChessFEConfig.__ACTIVATIONS
+        else x)
     def __init__(
             self,
             hidden_dims:Union[int, List[int]]=[4096, 1024, 256, 128],
@@ -51,9 +55,9 @@ class DeepChessFEConfig(ModelConfig):
         """
         super().__init__()
         self.hidden_dims = hidden_dims
-        self.activations = ([DeepChessFEConfig.ACTIVATIONS[a] for a in activations]
+        self.activations = ([DeepChessFEConfig.ACTIVATIONS(a) for a in activations]
                             if isinstance(activations, list)
-                            else [DeepChessFEConfig.ACTIVATIONS[activations] for i in range(len(hidden_dims)-1)])
+                            else [DeepChessFEConfig.ACTIVATIONS(activations) for i in range(len(hidden_dims)-1)])
         self.batch_norm = batch_norm
         
     def __str__(self) -> str:
@@ -153,13 +157,17 @@ class DeepChessFE(ModelAutoEncodable):
         return Decoder()
 
 class DeepChessEvaluatorConfig(ModelConfig):
-    ACTIVATIONS = {
+    __ACTIVATIONS = {
         'relu':nn.ReLU,
         'sigmoid':nn.Sigmoid
     }
+    ACTIVATIONS = lambda x: (
+        DeepChessEvaluatorConfig.__ACTIVATIONS[x]
+        if x in DeepChessEvaluatorConfig.__ACTIVATIONS
+        else x)
     def __init__(
             self,
-            feature_extractor:Type[Model]=None,
+            feature_extractor:Union[Type[Model],Model]=None,
             feature_extractor_config:ModelConfig=None,
             feature_extractor_param_dir:Union[str, Path]=None,
             hidden_dims:Union[int, List[int]]=[512, 252, 128],
@@ -171,9 +179,9 @@ class DeepChessEvaluatorConfig(ModelConfig):
         self.feature_extractor_config = feature_extractor_config
         self.feature_extractor_param_dir = feature_extractor_param_dir
         self.hidden_dims = hidden_dims
-        self.activations = ([DeepChessFEConfig.ACTIVATIONS[a] for a in activations]
+        self.activations = ([DeepChessEvaluatorConfig.ACTIVATIONS(a) for a in activations]
                             if isinstance(activations, list)
-                            else [DeepChessFEConfig.ACTIVATIONS[activations] for i in range(len(hidden_dims))])
+                            else [DeepChessEvaluatorConfig.ACTIVATIONS(activations) for i in range(len(hidden_dims))])
         self.batch_norm = batch_norm
         
     def __str__(self) -> str:
@@ -187,9 +195,13 @@ class DeepChessEvaluator(Model):
         super().__init__()
         self.config = config
         self.flatten = nn.Flatten(1)
-        self.fe = self.config.feature_extractor(input_sample=input_sample, config=self.config.feature_extractor_config)
-        if self.config.feature_extractor_param_dir:
-            self.fe.load_state_dict(torch.load(self.config.feature_extractor_param_dir, map_location=torch.device("cuda" if torch.cuda.is_available() else "cpu")))
+        self.fe = None
+        if isinstance(self.config.feature_extractor, Model):
+            self.fe = self.config.feature_extractor
+        else:
+            self.fe = self.config.feature_extractor(input_sample=input_sample, config=self.config.feature_extractor_config)
+            if self.config.feature_extractor_param_dir:
+                self.fe.load_state_dict(torch.load(self.config.feature_extractor_param_dir, map_location=torch.device("cuda" if torch.cuda.is_available() else "cpu")))
 
         fe_params = next(iter(self.fe.parameters()))
         input_sample = input_sample.to(dtype=fe_params.dtype, device=fe_params.device)
@@ -327,7 +339,7 @@ class NextPositionsGenerator:
 class DeepChessAlphaBetaConfig(ModelConfig):
     def __init__(
             self,
-            board_evaluator:Type[Model]=None,
+            board_evaluator:Union[Type[Model],Model]=None,
             board_evaluator_config:ModelConfig=None,
             board_evaluator_param_dir:Union[str, Path]=None,
             max_depth:int = 8,
@@ -350,18 +362,25 @@ class DeepChessAlphaBeta(Model):
         config:DeepChessAlphaBetaConfig = None) -> None:
         super().__init__()
         self.config = config
+        if isinstance(self.config, dict):
+            self.config = DeepChessAlphaBetaConfig(**self.config)
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         if isinstance(input_sample, dict):
             input_sample = input_sample['observation']
         input_sample = torch.stack([torch.tensor(input_sample), torch.tensor(input_sample)], -4)
-        self.be = self.config.board_evaluator(input_sample=input_sample, config=self.config.board_evaluator_config)
-        if self.config.board_evaluator_param_dir:
-            self.be.load_state_dict(torch.load(self.config.board_evaluator_param_dir))
+
+        self.be = None
+        if isinstance(self.config.board_evaluator, Model):
+            self.be = self.config.board_evaluator
+        else:
+            self.be = self.config.board_evaluator(input_sample=input_sample, config=self.config.board_evaluator_config)
+            if self.config.board_evaluator_param_dir:
+                self.be.load_state_dict(torch.load(self.config.board_evaluator_param_dir))
         self.be.to(device=device)
         self.be.eval()
         # self.be = lambda x: torch.ones(x.shape[0])[:,None]*torch.tensor([1,0])
-        self.max_depth = config.max_depth
-        self.iter_depths = config.iterate_depths
+        self.max_depth = self.config.max_depth
+        self.iter_depths = self.config.iterate_depths
         self.curr_depth = 1
         self.heur_obs = {}
         self.curr_player = None
@@ -621,9 +640,14 @@ class DeepChessAlphaBeta(Model):
     #     return {"observation": torch.tensor(observation), "action_mask": action_mask}
     
 class DeepChessRLConfig(ModelConfig):
-    ACTIVATIONS = {
-        'relu':nn.ReLU
+    __ACTIVATIONS = {
+        'relu':nn.ReLU,
+        'sigmoid':nn.Sigmoid
     }
+    ACTIVATIONS = lambda x: (
+        DeepChessRLConfig.__ACTIVATIONS[x]
+        if x in DeepChessRLConfig.__ACTIVATIONS
+        else x)
     def __init__(
             self,
             feature_extractor:Type[Model]=None,
@@ -637,9 +661,9 @@ class DeepChessRLConfig(ModelConfig):
         self.feature_extractor_config = feature_extractor_config
         self.feature_extractor_param_dir = feature_extractor_param_dir
         self.hidden_dims = hidden_dims
-        self.activations = ([DeepChessFEConfig.ACTIVATIONS[a] for a in activations]
+        self.activations = ([DeepChessRLConfig.ACTIVATIONS(a) for a in activations]
                             if isinstance(activations, list)
-                            else [DeepChessFEConfig.ACTIVATIONS[activations] for i in range(len(hidden_dims))])
+                            else [DeepChessRLConfig.ACTIVATIONS(activations) for i in range(len(hidden_dims))])
         
     def __str__(self) -> str:
         return "Shape<{}>".format(self.hidden_dims)

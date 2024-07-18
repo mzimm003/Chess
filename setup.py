@@ -1,3 +1,3 @@
 import setuptools
 
-setuptools.setup(name='my_chess')
+setuptools.setup(packages=['my_chess'])

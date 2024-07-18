@@ -303,7 +303,11 @@ class HumanVsBot(Test):
             if not isinstance(self.model, list):
                 self.model = [self.model]
                 self.model_config = [self.model_config]
-            self.policies = [m(input_sample=input_sample, config=m_c) for m, m_c in zip(self.model, self.model_config)]
+            self.policies = [
+                m(input_sample=input_sample, config=m_c)
+                if isinstance(m, Type[Model]) else
+                m
+                for m, m_c in zip(self.model, self.model_config)]
             for p in self.policies:
                 p.eval()
         

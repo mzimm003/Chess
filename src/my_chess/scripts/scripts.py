@@ -67,7 +67,7 @@ from my_chess.learner.models import (
 MODELS = {k:v for k,v in inspect.getmembers(my_chess.learner.models, inspect.isclass) if not "Config" in k}
 MODELCONFIGS = {k:v for k,v in inspect.getmembers(my_chess.learner.models, inspect.isclass) if "Config" in k}
 
-from my_chess.learner.callbacks import DefaultCallbacks
+from my_chess.learner.callbacks.callbacks import DefaultCallbacks
 
 import chess
 from pettingzoo.classic.chess import chess_utils

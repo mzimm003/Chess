@@ -1,4 +1,4 @@
-from my_chess.scripts import Train
+from my_chess.scripts.scripts import Train
 from my_chess.learner.models import DeepChessFEConfig
 from my_chess.learner.algorithms import ModelDistillConfig
 

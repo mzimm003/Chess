@@ -1,10 +1,10 @@
-from my_chess.scripts import Train
+from my_chess.scripts.scripts import Train
 from my_chess.learner.algorithms import (
     PPO,
     PPOConfig,
     CrossEntropyLoss
 )
-from my_chess.learner.callbacks import SelfPlayCallback
+from my_chess.learner.callbacks.callbacks import SelfPlayCallback
 from my_chess.learner.models import ToBeNamed, DeepChessFEConfig, TransformerChessFEConfig
 from my_chess.learner.policies import PPOPolicy
 from my_chess.learner.algorithms import AutoEncoderConfig

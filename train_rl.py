@@ -1,9 +1,9 @@
-from my_chess.scripts import Train
+from my_chess.scripts.scripts import Train
 from my_chess.learner.algorithms import (
     PPO,
     PPOConfig,
 )
-from my_chess.learner.callbacks import SelfPlayCallback
+from my_chess.learner.callbacks.callbacks import SelfPlayCallback
 from my_chess.learner.models import DeepChessRLConfig
 from my_chess.learner.policies import PPOPolicy
 

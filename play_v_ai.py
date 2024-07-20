@@ -1,4 +1,4 @@
-from my_chess.scripts import HumanVsBot
+from my_chess.scripts.scripts import HumanVsBot
 from my_chess.learner.models import DeepChessAlphaBeta, DeepChessAlphaBetaConfig
 from my_chess.learner.environments import Chess
 

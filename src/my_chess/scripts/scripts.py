@@ -295,10 +295,6 @@ class HumanVsBot(Test):
         input_sample = next(iter(input_sample.values()))
         self.extra_model_environment_context = extra_model_environment_context if extra_model_environment_context else lambda x: {}
         if self.model:
-            if isinstance(self.model, list):
-                assert len(self.model) == len(self.model_config)
-            else:
-                assert isinstance(self.model_config, ModelConfig)
             if not isinstance(self.model, list):
                 self.model = [self.model]
                 self.model_config = [self.model_config]

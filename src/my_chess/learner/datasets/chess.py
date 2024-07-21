@@ -18,7 +18,6 @@ from torch.multiprocessing import Manager, Queue
 from functools import partial
 from io import TextIOWrapper
 import gc
-from tqdm import tqdm
 
 from itertools import islice
 

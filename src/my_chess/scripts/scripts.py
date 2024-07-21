@@ -291,7 +291,6 @@ class HumanVsBot(Test):
         super().__init__(checkpoint=checkpoint, environment=environment, **kwargs)
         self.model = model
         self.model_config = model_config
-        assert self.environment.render_mode == "human"
         input_sample, _ = self.environment.reset()
         input_sample = next(iter(input_sample.values()))
         self.extra_model_environment_context = extra_model_environment_context if extra_model_environment_context else lambda x: {}

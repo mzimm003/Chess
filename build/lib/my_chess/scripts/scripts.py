@@ -71,7 +71,6 @@ from my_chess.learner.callbacks.callbacks import DefaultCallbacks
 
 import chess
 from pettingzoo.classic.chess import chess_utils
-from streamlit_image_coordinates import streamlit_image_coordinates
 
 class ArgumentCollector:
     DOCSTRARGSHEAD = "Args:"
@@ -273,90 +272,6 @@ class Test(Script):
                 time.sleep(.3)
 
 class HumanVsBot(Test):
-    class HumanInputHandler:
-        def __init__(
-                self,
-                ui:str,
-                board_return:dict,
-                ):
-            self.ui = ui
-            self.board_return = board_return
-
-        def window_size(self):
-            ws = {
-                "pygame": pygame.display.get_surface().get_size(),
-                "streamlit": lambda x: (self.board_return["width"], self.board_return["height"])}
-            return ws[self.ui]
-
-        def pos_to_square(self, x, y):
-            window_size = self.window_size()
-            square_width = window_size[0] // 8
-            square_height = window_size[1] // 8
-            return x // square_width, (window_size[1] - y) // square_height
-
-        def get(self, observation, **kwargs):
-            #RANDOM PLAYER
-            # options = torch.arange(observation['action_mask'].size)[observation['action_mask'].astype(bool)]
-            # choice = torch.randint(options.numel(), (1,))
-            # return options[choice].item()
-            action = None
-            from_coord = None
-            legal_actions = chess_utils.legal_moves(self.environment.env.board)
-            legal_moves = [str(chess_utils.action_to_move(self.environment.env.board, x, self.human_player)) for x in legal_actions]
-            legally_moved = False
-            while not legally_moved:
-                if self.ui == "pygame":
-                    ev = pygame.event.get()
-                    for event in ev:
-                        if event.type == pygame.MOUSEBUTTONDOWN:
-                            x, y = event.pos
-                            from_coord = self.pos_to_square(x, y)
-                        if event.type == pygame.MOUSEBUTTONUP:
-                            x, y = event.pos
-                            to_coord = self.pos_to_square(x, y)
-                            if to_coord == from_coord:
-                                # clicked to pick piece
-                                attempted_move = False
-                                while not attempted_move:
-                                    ev = pygame.event.get()
-                                    for event in ev:
-                                        if event.type == pygame.MOUSEBUTTONDOWN:
-                                            x, y = event.pos
-                                            to_coord = self.pos_to_square(x, y)
-                                        if event.type == pygame.MOUSEBUTTONUP:
-                                            x, y = event.pos
-                                            if self.pos_to_square(x, y) == to_coord:
-                                                attempted_move = True
-                                                move = self.squares_to_move(from_coord, to_coord)
-                                                if not move in legal_moves:
-                                                    move = move + 'q' #hack to incorporate promoting to queen
-                                                if move in legal_moves:
-                                                    action = legal_actions[legal_moves.index(move)]
-                                                    legally_moved = True
-                            else:
-                                # dragged piece
-                                move = self.squares_to_move(from_coord, to_coord)
-                                if not move in legal_moves:
-                                    move = move + 'q' #hack to incorporate promoting to queen
-                                if move in legal_moves:
-                                    action = legal_actions[legal_moves.index(move)]
-                                    legally_moved = True
-                else:
-                    if 'x1' in self.board_return:
-                        # mouse was dragged
-                        from_coord = (self.board_return["x1"], self.board_return["y1"])
-                        to_coord = (self.board_return["x2"], self.board_return["y2"])
-                        move = self.squares_to_move(from_coord, to_coord)
-                        if not move in legal_moves:
-                            move = move + 'q' #hack to incorporate promoting to queen
-                        if move in legal_moves:
-                            action = legal_actions[legal_moves.index(move)]
-                            legally_moved = True
-                    else:
-                        # piece was clicked
-                        pass
-            return action
-
     def __init__(
             self,
             checkpoint:List[Union[str,Path]]=None,
@@ -376,16 +291,7 @@ class HumanVsBot(Test):
         super().__init__(checkpoint=checkpoint, environment=environment, **kwargs)
         self.model = model
         self.model_config = model_config
-        self.board = None
-        self.image_return = None
         input_sample, _ = self.environment.reset()
-        if environment.render_mode != "human":
-            self.board = np.zeros_like(self.environment.render())
-            self.board[:] = self.environment.render()
-            self.image_return = streamlit_image_coordinates(self.board, key="board")
-        self.human_input = HumanVsBot.HumanInputHandler(
-            ui = "pygame" if environment.render_mode == "human" else "streamlit",
-            board_return = self.image_return)
         input_sample = next(iter(input_sample.values()))
         self.extra_model_environment_context = extra_model_environment_context if extra_model_environment_context else lambda x: {}
         if self.model:
@@ -402,14 +308,20 @@ class HumanVsBot(Test):
         
         assert len(self.policies) == len(self.environment.agents) - 1
         pols = [partial(self.get_ai_input, model=mod) for mod in self.policies]
-        pols.append(self.human_input.get())
+        pols.append(self.get_human_input)
         agent_assignment = np.random.choice(len(pols), len(self.environment.agents), replace=False)
         self.action_map = {}
         self.human_player = None
         for i, j in enumerate(agent_assignment):
             self.action_map[self.environment.agents[i]] = pols[j]
-            if pols[j] == self.human_input.get():
+            if pols[j] == self.get_human_input:
                 self.human_player = i
+
+    def pos_to_square(self, x, y):
+        window_size = pygame.display.get_surface().get_size()
+        square_width = window_size[0] // 8
+        square_height = window_size[1] // 8
+        return x // square_width, (window_size[1] - y) // square_height
 
     def square_num(self, x, y):
         return y * 8 + x
@@ -422,6 +334,54 @@ class HumanVsBot(Test):
     
     def squares_to_move(self, f, t):
         return self.square_to_coord(*f) + self.square_to_coord(*t)
+
+    def get_human_input(self, observation, **kwargs):
+        #RANDOM PLAYER
+        # options = torch.arange(observation['action_mask'].size)[observation['action_mask'].astype(bool)]
+        # choice = torch.randint(options.numel(), (1,))
+        # return options[choice].item()
+        action = None
+        from_coord = None
+        legal_actions = chess_utils.legal_moves(self.environment.env.board)
+        legal_moves = [str(chess_utils.action_to_move(self.environment.env.board, x, self.human_player)) for x in legal_actions]
+        legally_moved = False
+        while not legally_moved:
+            ev = pygame.event.get()
+            for event in ev:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    x, y = event.pos
+                    from_coord = self.pos_to_square(x, y)
+                if event.type == pygame.MOUSEBUTTONUP:
+                    x, y = event.pos
+                    to_coord = self.pos_to_square(x, y)
+                    if to_coord == from_coord:
+                        # clicked to pick piece
+                        attempted_move = False
+                        while not attempted_move:
+                            ev = pygame.event.get()
+                            for event in ev:
+                                if event.type == pygame.MOUSEBUTTONDOWN:
+                                    x, y = event.pos
+                                    to_coord = self.pos_to_square(x, y)
+                                if event.type == pygame.MOUSEBUTTONUP:
+                                    x, y = event.pos
+                                    if self.pos_to_square(x, y) == to_coord:
+                                        attempted_move = True
+                                        move = self.squares_to_move(from_coord, to_coord)
+                                        if not move in legal_moves:
+                                            move = move + 'q' #hack to incorporate promoting to queen
+                                        if move in legal_moves:
+                                            action = legal_actions[legal_moves.index(move)]
+                                            legally_moved = True
+                    else:
+                        # dragged piece
+                        move = self.squares_to_move(from_coord, to_coord)
+                        if not move in legal_moves:
+                            move = move + 'q' #hack to incorporate promoting to queen
+                        if move in legal_moves:
+                            action = legal_actions[legal_moves.index(move)]
+                            legally_moved = True
+        return action
 
     def get_ai_input(self, observation, env, model:Union[Policy, Model]):
         act = None
@@ -437,8 +397,6 @@ class HumanVsBot(Test):
         """
         done = False
         while not done:
-            if self.environment.render_mode == "rgb_array":
-                self.board[:] = self.environment.render()
             observation, reward, termination, truncation, info = self.environment.env.last()
             done = termination or truncation
             if not done:

@@ -75,6 +75,9 @@ class Environment(PettingZooEnv):
     def agents(self) -> str:
         return self.env.agents
     
+    def render(self):
+        return self.env.render()
+
     def getName(self):
         return self.__class__.__name__
     

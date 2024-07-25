@@ -281,6 +281,10 @@ class HumanVsBot(Test):
                 ):
             self.ui = ui
             self.board_return = board_return
+            self.player_num = None
+
+        def set_player_num(self, num):
+            self.player_num = num
 
         def window_size(self):
             ws = {
@@ -294,15 +298,15 @@ class HumanVsBot(Test):
             square_height = window_size[1] // 8
             return x // square_width, (window_size[1] - y) // square_height
 
-        def get(self, observation, **kwargs):
+        def get(self, observation, env, **kwargs):
             #RANDOM PLAYER
             # options = torch.arange(observation['action_mask'].size)[observation['action_mask'].astype(bool)]
             # choice = torch.randint(options.numel(), (1,))
             # return options[choice].item()
             action = None
             from_coord = None
-            legal_actions = chess_utils.legal_moves(self.environment.env.board)
-            legal_moves = [str(chess_utils.action_to_move(self.environment.env.board, x, self.human_player)) for x in legal_actions]
+            legal_actions = chess_utils.legal_moves(env.board)
+            legal_moves = [str(chess_utils.action_to_move(env.board, x, self.human_player)) for x in legal_actions]
             legally_moved = False
             while not legally_moved:
                 if self.ui == "pygame":
@@ -380,9 +384,9 @@ class HumanVsBot(Test):
         self.image_return = None
         input_sample, _ = self.environment.reset()
         if environment.render_mode != "human":
-            self.board = np.zeros_like(self.environment.render())
+            self.board = np.zeros_like(self.environment.env.render())
             self.board[:] = self.environment.render()
-            self.image_return = streamlit_image_coordinates(self.board, key="board")
+            self.image_return = streamlit_image_coordinates(self.board, key="board", click_and_drag=True)
         self.human_input = HumanVsBot.HumanInputHandler(
             ui = "pygame" if environment.render_mode == "human" else "streamlit",
             board_return = self.image_return)
@@ -402,14 +406,13 @@ class HumanVsBot(Test):
         
         assert len(self.policies) == len(self.environment.agents) - 1
         pols = [partial(self.get_ai_input, model=mod) for mod in self.policies]
-        pols.append(self.human_input.get())
+        pols.append(self.human_input.get)
         agent_assignment = np.random.choice(len(pols), len(self.environment.agents), replace=False)
         self.action_map = {}
-        self.human_player = None
         for i, j in enumerate(agent_assignment):
             self.action_map[self.environment.agents[i]] = pols[j]
-            if pols[j] == self.human_input.get():
-                self.human_player = i
+            if pols[j] == self.human_input.get:
+                self.human_input.set_player_num(i)
 
     def square_num(self, x, y):
         return y * 8 + x

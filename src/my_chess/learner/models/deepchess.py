@@ -118,6 +118,7 @@ class DeepChessFE(ModelAutoEncodable):
         Args:
           input: Training data, batched or unbatched.
         """
+        input = input.to(dtype=next(self.parameters()).dtype, device=next(self.parameters()).device)
         if len(input.shape) < 4:
             input = input.unsqueeze(0)
         flt = self.preprocess(input)

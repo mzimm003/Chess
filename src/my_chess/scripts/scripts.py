@@ -415,8 +415,7 @@ class HumanVsBot(Test):
         assert len(self.policies) == len(self.environment.agents) - 1
         pols = [partial(self.get_ai_input, model=mod) for mod in self.policies]
         pols.append(self.human_input.get)
-        # agent_assignment = np.random.choice(len(pols), len(self.environment.agents), replace=False)
-        agent_assignment = np.array([0,1])
+        agent_assignment = np.random.choice(len(pols), len(self.environment.agents), replace=False)
         self.action_map = {}
         for i, j in enumerate(agent_assignment):
             self.action_map[self.environment.agents[i]] = pols[j]

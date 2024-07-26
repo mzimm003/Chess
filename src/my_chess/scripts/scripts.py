@@ -71,7 +71,7 @@ from my_chess.learner.callbacks.callbacks import DefaultCallbacks
 
 import chess
 from pettingzoo.classic.chess import chess_utils
-from streamlit_image_coordinates import streamlit_image_coordinates
+import streamlit as st
 
 class ArgumentCollector:
     DOCSTRARGSHEAD = "Args:"
@@ -277,20 +277,20 @@ class HumanVsBot(Test):
         def __init__(
                 self,
                 ui:str,
-                board_return:dict,
                 ):
             self.ui = ui
-            self.board_return = board_return
             self.player_num = None
 
         def set_player_num(self, num):
             self.player_num = num
 
         def window_size(self):
-            ws = {
-                "pygame": pygame.display.get_surface().get_size(),
-                "streamlit": lambda x: (self.board_return["width"], self.board_return["height"])}
-            return ws[self.ui]
+            res = None
+            if self.ui == "pygame":
+                res = pygame.display.get_surface().get_size()
+            elif self.ui == "streamlit":
+                res = (st.session_state["board"]["width"], st.session_state["board"]["height"])
+            return res
 
         def pos_to_square(self, x, y):
             window_size = self.window_size()
@@ -355,19 +355,24 @@ class HumanVsBot(Test):
                                     action = legal_actions[legal_moves.index(move)]
                                     legally_moved = True
                 else:
-                    if not self.board_return is None and 'x1' in self.board_return:
-                        # mouse was dragged
-                        from_coord = (self.board_return["x1"], self.board_return["y1"])
-                        to_coord = (self.board_return["x2"], self.board_return["y2"])
-                        move = self.squares_to_move(from_coord, to_coord)
-                        if not move in legal_moves:
-                            move = move + 'q' #hack to incorporate promoting to queen
-                        if move in legal_moves:
-                            action = legal_actions[legal_moves.index(move)]
-                            legally_moved = True
-                    else:
-                        # piece was clicked
-                        pass
+                    board_return = st.session_state["board"]
+                    if not board_return is None:
+                        x, y = (board_return["x1"], board_return["y1"])
+                        from_coord = self.pos_to_square(x, y)
+                        x, y = (board_return["x2"], board_return["y2"])
+                        to_coord = self.pos_to_square(x, y)
+
+                        if from_coord != to_coord:
+                            # mouse was dragged
+                            move = self.squares_to_move(from_coord, to_coord)
+                            if not move in legal_moves:
+                                move = move + 'q' #hack to incorporate promoting to queen
+                            if move in legal_moves:
+                                action = legal_actions[legal_moves.index(move)]
+                                legally_moved = True
+                        else:
+                            # piece was clicked
+                            pass
             return action
 
     def __init__(
@@ -389,16 +394,10 @@ class HumanVsBot(Test):
         super().__init__(checkpoint=checkpoint, environment=environment, **kwargs)
         self.model = model
         self.model_config = model_config
-        self.board = None
-        self.image_return = None
+        self.ui = "pygame" if environment.render_mode == "human" else "streamlit"
         input_sample, _ = self.environment.reset()
-        if environment.render_mode != "human":
-            self.board = np.zeros_like(self.environment.env.render())
-            self.board[:] = self.environment.render()
-            self.image_return = streamlit_image_coordinates(self.board, key="board", click_and_drag=True)
         self.human_input = HumanVsBot.HumanInputHandler(
-            ui = "pygame" if environment.render_mode == "human" else "streamlit",
-            board_return = self.image_return)
+            ui = self.ui)
         input_sample = next(iter(input_sample.values()))
         self.extra_model_environment_context = extra_model_environment_context if extra_model_environment_context else lambda x: {}
         if self.model:
@@ -416,7 +415,8 @@ class HumanVsBot(Test):
         assert len(self.policies) == len(self.environment.agents) - 1
         pols = [partial(self.get_ai_input, model=mod) for mod in self.policies]
         pols.append(self.human_input.get)
-        agent_assignment = np.random.choice(len(pols), len(self.environment.agents), replace=False)
+        # agent_assignment = np.random.choice(len(pols), len(self.environment.agents), replace=False)
+        agent_assignment = np.array([0,1])
         self.action_map = {}
         for i, j in enumerate(agent_assignment):
             self.action_map[self.environment.agents[i]] = pols[j]
@@ -434,19 +434,22 @@ class HumanVsBot(Test):
             act = model(input=observation, **self.extra_model_environment_context(env))
         return act
     
+    def render_board(self):
+        return self.environment.render()
+
     def run(self):
         """
         Args:
         """
         done = False
         while not done:
-            if self.environment.render_mode == "rgb_array":
-                self.board[:] = self.environment.render()
             observation, reward, termination, truncation, info = self.environment.env.last()
             done = termination or truncation
             if not done:
                 act = self.action_map[self.environment.env.agent_selection](observation=observation, env=self.environment.env)
                 self.environment.env.step(act)
+                if self.ui == "streamlit":
+                    st.rerun()
 
 class Train(Script):
     def __init__(

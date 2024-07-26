@@ -297,6 +297,15 @@ class HumanVsBot(Test):
             square_width = window_size[0] // 8
             square_height = window_size[1] // 8
             return x // square_width, (window_size[1] - y) // square_height
+        
+        def square_to_coord(self, x, y):
+            return ''.join((
+                chr(ord('a') + x),
+                str(y + 1)
+                ))
+        
+        def squares_to_move(self, f, t):
+            return self.square_to_coord(*f) + self.square_to_coord(*t)
 
         def get(self, observation, env, **kwargs):
             #RANDOM PLAYER
@@ -306,7 +315,7 @@ class HumanVsBot(Test):
             action = None
             from_coord = None
             legal_actions = chess_utils.legal_moves(env.board)
-            legal_moves = [str(chess_utils.action_to_move(env.board, x, self.human_player)) for x in legal_actions]
+            legal_moves = [str(chess_utils.action_to_move(env.board, x, self.player_num)) for x in legal_actions]
             legally_moved = False
             while not legally_moved:
                 if self.ui == "pygame":
@@ -346,7 +355,7 @@ class HumanVsBot(Test):
                                     action = legal_actions[legal_moves.index(move)]
                                     legally_moved = True
                 else:
-                    if 'x1' in self.board_return:
+                    if not self.board_return is None and 'x1' in self.board_return:
                         # mouse was dragged
                         from_coord = (self.board_return["x1"], self.board_return["y1"])
                         to_coord = (self.board_return["x2"], self.board_return["y2"])
@@ -416,15 +425,6 @@ class HumanVsBot(Test):
 
     def square_num(self, x, y):
         return y * 8 + x
-
-    def square_to_coord(self, x, y):
-        return ''.join((
-            chr(ord('a') + x),
-            str(y + 1)
-            ))
-    
-    def squares_to_move(self, f, t):
-        return self.square_to_coord(*f) + self.square_to_coord(*t)
 
     def get_ai_input(self, observation, env, model:Union[Policy, Model]):
         act = None

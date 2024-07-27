@@ -32,6 +32,7 @@ my\_chess.learner.algorithms
    my_chess.learner.algorithms.autoencoder
    my_chess.learner.algorithms.chessevaluation
    my_chess.learner.algorithms.distill
+   my_chess.learner.algorithms.loss
    my_chess.learner.algorithms.ppo_cust
    my_chess.learner.algorithms.trainable
    my_chess.learner.algorithms.util

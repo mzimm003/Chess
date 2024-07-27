@@ -16,17 +16,12 @@ my\_chess.learner.models.deepchess.DeepChessRLConfig
 
    .. autosummary::
    
+      ~DeepChessRLConfig.ACTIVATIONS
       ~DeepChessRLConfig.__init__
       ~DeepChessRLConfig.asDict
    
    
 
    
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-   
-      ~DeepChessRLConfig.ACTIVATIONS
    
    

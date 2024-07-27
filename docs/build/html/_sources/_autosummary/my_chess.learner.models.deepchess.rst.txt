@@ -27,6 +27,8 @@ my\_chess.learner.models.deepchess
       DeepChessFEConfig
       DeepChessRL
       DeepChessRLConfig
+      NextPositions
+      NextPositionsGenerator
    
    
 

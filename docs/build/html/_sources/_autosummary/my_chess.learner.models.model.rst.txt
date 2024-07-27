@@ -20,6 +20,7 @@ my\_chess.learner.models.model
       :template: custom-class-template.rst
    
       Model
+      ModelAutoEncodable
       ModelConfig
       ModelRLLIB
       ModelRRLIBConfig

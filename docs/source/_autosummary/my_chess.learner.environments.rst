@@ -9,27 +9,9 @@ my\_chess.learner.environments
 
    
    
-   .. rubric:: Functions
-
-   .. autosummary::
-      :toctree:
-   
-      env_creator
-   
    
 
    
-   
-   .. rubric:: Classes
-
-   .. autosummary::
-      :toctree:
-      :template: custom-class-template.rst
-   
-      Chess
-      Environment
-      PettingZooEnv
-      TicTacToe
    
    
 
@@ -38,4 +20,14 @@ my\_chess.learner.environments
    
 
 
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   my_chess.learner.environments.chess
+   my_chess.learner.environments.environment
 

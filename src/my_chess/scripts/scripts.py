@@ -284,6 +284,9 @@ class HumanVsBot(Test):
         def set_player_num(self, num):
             self.player_num = num
 
+        def get_player_num(self):
+            return self.player_num
+
         def window_size(self):
             res = None
             if self.ui == "pygame":
@@ -395,6 +398,7 @@ class HumanVsBot(Test):
         self.model = model
         self.model_config = model_config
         self.ui = "pygame" if environment.render_mode == "human" else "streamlit"
+        self.done = None
         input_sample, _ = self.environment.reset()
         self.human_input = HumanVsBot.HumanInputHandler(
             ui = self.ui)
@@ -422,6 +426,18 @@ class HumanVsBot(Test):
             if pols[j] == self.human_input.get:
                 self.human_input.set_player_num(i)
 
+    def get_human_player(self):
+        return self.environment.agents[self.human_input.get_player_num()]
+
+    def get_curr_player(self):
+        return self.environment.env.agent_selection
+    
+    def get_result(self):
+        return self.environment.env.board.result(claim_draw=True)
+    
+    def is_done(self):
+        return self.done
+
     def square_num(self, x, y):
         return y * 8 + x
 
@@ -440,15 +456,16 @@ class HumanVsBot(Test):
         """
         Args:
         """
-        done = False
-        while not done:
+        self.done = False
+        while not self.done:
             observation, reward, termination, truncation, info = self.environment.env.last()
-            done = termination or truncation
-            if not done:
-                act = self.action_map[self.environment.env.agent_selection](observation=observation, env=self.environment.env)
+            self.done = termination or truncation
+            if not self.done:
+                actor = self.environment.env.agent_selection
+                act = self.action_map[actor](observation=observation, env=self.environment.env)
                 self.environment.env.step(act)
-                if self.ui == "streamlit":
-                    st.rerun()
+            if self.ui == "streamlit":
+                st.rerun()
 
 class Train(Script):
     def __init__(

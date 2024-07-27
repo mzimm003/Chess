@@ -13,19 +13,6 @@ my\_chess.scripts
 
    
    
-   .. rubric:: Classes
-
-   .. autosummary::
-      :toctree:
-      :template: custom-class-template.rst
-   
-      ArgumentCollector
-      HumanVsBot
-      Script
-      ScriptChooser
-      Test
-      Train
-   
    
 
    
@@ -33,4 +20,13 @@ my\_chess.scripts
    
 
 
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   my_chess.scripts.scripts
 

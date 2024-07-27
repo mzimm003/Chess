@@ -28,6 +28,7 @@ my\_chess.learner.datasets.chess
    
       ChessData
       ChessDataWinLossPairs
+      PGNGamesItr
       SystemSemaphore
       raw_env
    

@@ -2,24 +2,23 @@
 
 <!doctype html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>tests &#8212; ChessBot 0.0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/bizstyle.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=649a27d8" />
+    <link rel="stylesheet" type="text/css" href="../_static/bizstyle.css?v=13b2ab6e" />
     
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/doctools.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=f6245a2f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="tests.test_algorithms" href="tests.test_algorithms.html" />
-    <link rel="prev" title="my_chess.scripts.Train" href="my_chess.scripts.Train.html" />
+    <link rel="next" title="tests.conftest" href="tests.conftest.html" />
+    <link rel="prev" title="my_chess.scripts.scripts.Train" href="my_chess.scripts.scripts.Train.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <!--[if lt IE 9]>
     <script src="_static/css3-mediaqueries.js"></script>
@@ -35,10 +34,10 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tests.test_algorithms.html" title="tests.test_algorithms"
+          <a href="tests.conftest.html" title="tests.conftest"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="my_chess.scripts.Train.html" title="my_chess.scripts.Train"
+          <a href="my_chess.scripts.scripts.Train.html" title="my_chess.scripts.scripts.Train"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">ChessBot 0.0.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">tests</a></li> 
@@ -51,7 +50,7 @@
           <div class="body" role="main">
             
   <section id="module-tests">
-<span id="tests"></span><h1>tests<a class="headerlink" href="#module-tests" title="Permalink to this headline">¶</a></h1>
+<span id="tests"></span><h1>tests<a class="headerlink" href="#module-tests" title="Permalink to this heading">¶</a></h1>
 <p>Module testing by PyTest.</p>
 <p class="rubric">Example</p>
 <p>Use by terminal:</p>
@@ -61,16 +60,21 @@ $ pytest ./tests/test_algorithms.py::test_measure_accuracy
 </pre></div>
 </div>
 <p class="rubric">Modules</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
+<table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="tests.test_algorithms.html#module-tests.test_algorithms" title="tests.test_algorithms"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tests.test_algorithms</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="tests.conftest.html#module-tests.conftest" title="tests.conftest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tests.conftest</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="tests.test_training.html#module-tests.test_training" title="tests.test_training"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tests.test_training</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="tests.test_algorithms.html#module-tests.test_algorithms" title="tests.test_algorithms"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tests.test_algorithms</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tests.test_datasets.html#module-tests.test_datasets" title="tests.test_datasets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tests.test_datasets</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="tests.test_models.html#module-tests.test_models" title="tests.test_models"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tests.test_models</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tests.test_training.html#module-tests.test_training" title="tests.test_training"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tests.test_training</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -84,12 +88,16 @@ $ pytest ./tests/test_algorithms.py::test_measure_accuracy
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="my_chess.scripts.Train.html"
-                        title="previous chapter">my_chess.scripts.Train</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="tests.test_algorithms.html"
-                        title="next chapter">tests.test_algorithms</a></p>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="my_chess.scripts.scripts.Train.html"
+                          title="previous chapter">my_chess.scripts.scripts.Train</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="tests.conftest.html"
+                          title="next chapter">tests.conftest</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -106,7 +114,7 @@ $ pytest ./tests/test_algorithms.py::test_measure_accuracy
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -121,18 +129,18 @@ $ pytest ./tests/test_algorithms.py::test_measure_accuracy
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tests.test_algorithms.html" title="tests.test_algorithms"
+          <a href="tests.conftest.html" title="tests.conftest"
              >next</a> |</li>
         <li class="right" >
-          <a href="my_chess.scripts.Train.html" title="my_chess.scripts.Train"
+          <a href="my_chess.scripts.scripts.Train.html" title="my_chess.scripts.scripts.Train"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">ChessBot 0.0.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">tests</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2024, Mark Zimmerman.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+    &#169; Copyright 2024, Mark Zimmerman.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
     </div>
   </body>
 </html>

@@ -1,4 +1,4 @@
-﻿my\_chess.learner.models.deepchess.DeepChessAlphaBeta
+my\_chess.learner.models.deepchess.DeepChessAlphaBeta
 =====================================================
 
 .. currentmodule:: my_chess.learner.models.deepchess
@@ -18,6 +18,7 @@
    
       ~DeepChessAlphaBeta.__init__
       ~DeepChessAlphaBeta.add_module
+      ~DeepChessAlphaBeta.alpha_beta_update
       ~DeepChessAlphaBeta.apply
       ~DeepChessAlphaBeta.bfloat16
       ~DeepChessAlphaBeta.buffers
@@ -25,7 +26,6 @@
       ~DeepChessAlphaBeta.compare_boards
       ~DeepChessAlphaBeta.cpu
       ~DeepChessAlphaBeta.cuda
-      ~DeepChessAlphaBeta.decoder
       ~DeepChessAlphaBeta.double
       ~DeepChessAlphaBeta.eval
       ~DeepChessAlphaBeta.extra_repr
@@ -34,7 +34,6 @@
       ~DeepChessAlphaBeta.getModelSpecificParams
       ~DeepChessAlphaBeta.get_buffer
       ~DeepChessAlphaBeta.get_extra_state
-      ~DeepChessAlphaBeta.get_move_argsort
       ~DeepChessAlphaBeta.get_parameter
       ~DeepChessAlphaBeta.get_submodule
       ~DeepChessAlphaBeta.half
@@ -61,17 +60,19 @@
       ~DeepChessAlphaBeta.register_module
       ~DeepChessAlphaBeta.register_parameter
       ~DeepChessAlphaBeta.requires_grad_
+      ~DeepChessAlphaBeta.return_early
       ~DeepChessAlphaBeta.set_extra_state
       ~DeepChessAlphaBeta.share_memory
-      ~DeepChessAlphaBeta.simulate_move
-      ~DeepChessAlphaBeta.simulate_observation
       ~DeepChessAlphaBeta.state_dict
       ~DeepChessAlphaBeta.terminal_test
       ~DeepChessAlphaBeta.to
       ~DeepChessAlphaBeta.to_empty
       ~DeepChessAlphaBeta.train
       ~DeepChessAlphaBeta.type
+      ~DeepChessAlphaBeta.update_curr_player
+      ~DeepChessAlphaBeta.update_values
       ~DeepChessAlphaBeta.utility
+      ~DeepChessAlphaBeta.val_act_update
       ~DeepChessAlphaBeta.xpu
       ~DeepChessAlphaBeta.zero_grad
    
@@ -83,7 +84,9 @@
 
    .. autosummary::
    
+      ~DeepChessAlphaBeta.BLACK
       ~DeepChessAlphaBeta.T_destination
+      ~DeepChessAlphaBeta.WHITE
       ~DeepChessAlphaBeta.dump_patches
       ~DeepChessAlphaBeta.training
    

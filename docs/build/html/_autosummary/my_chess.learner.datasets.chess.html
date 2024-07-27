@@ -2,19 +2,18 @@
 
 <!doctype html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>my_chess.learner.datasets.chess &#8212; ChessBot 0.0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/bizstyle.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=649a27d8" />
+    <link rel="stylesheet" type="text/css" href="../_static/bizstyle.css?v=13b2ab6e" />
     
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/doctools.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=f6245a2f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -54,13 +53,9 @@
           <div class="body" role="main">
             
   <section id="module-my_chess.learner.datasets.chess">
-<span id="my-chess-learner-datasets-chess"></span><h1>my_chess.learner.datasets.chess<a class="headerlink" href="#module-my_chess.learner.datasets.chess" title="Permalink to this headline">¶</a></h1>
+<span id="my-chess-learner-datasets-chess"></span><h1>my_chess.learner.datasets.chess<a class="headerlink" href="#module-my_chess.learner.datasets.chess" title="Permalink to this heading">¶</a></h1>
 <p class="rubric">Functions</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
+<table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="my_chess.learner.datasets.chess.env.html#my_chess.learner.datasets.chess.env" title="my_chess.learner.datasets.chess.env"><code class="xref py py-obj docutils literal notranslate"><span class="pre">env</span></code></a>(**kwargs)</p></td>
 <td><p></p></td>
@@ -68,22 +63,21 @@
 </tbody>
 </table>
 <p class="rubric">Classes</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
+<table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="my_chess.learner.datasets.chess.ChessData.html#my_chess.learner.datasets.chess.ChessData" title="my_chess.learner.datasets.chess.ChessData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ChessData</span></code></a>(dataset_dir[, seed, ...])</p></td>
-<td><p></p></td>
+<td><p>A database of chess board observations separated by labels and data.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="my_chess.learner.datasets.chess.ChessDataWinLossPairs.html#my_chess.learner.datasets.chess.ChessDataWinLossPairs" title="my_chess.learner.datasets.chess.ChessDataWinLossPairs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ChessDataWinLossPairs</span></code></a>(dataset_dir[, seed, ...])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="my_chess.learner.datasets.chess.SystemSemaphore.html#my_chess.learner.datasets.chess.SystemSemaphore" title="my_chess.learner.datasets.chess.SystemSemaphore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SystemSemaphore</span></code></a>([name, limit])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="my_chess.learner.datasets.chess.PGNGamesItr.html#my_chess.learner.datasets.chess.PGNGamesItr" title="my_chess.learner.datasets.chess.PGNGamesItr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PGNGamesItr</span></code></a>(directory[, subset, drop_draws, ...])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="my_chess.learner.datasets.chess.raw_env.html#my_chess.learner.datasets.chess.raw_env" title="my_chess.learner.datasets.chess.raw_env"><code class="xref py py-obj docutils literal notranslate"><span class="pre">raw_env</span></code></a>([render_mode, screen_height])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="my_chess.learner.datasets.chess.SystemSemaphore.html#my_chess.learner.datasets.chess.SystemSemaphore" title="my_chess.learner.datasets.chess.SystemSemaphore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SystemSemaphore</span></code></a>([name, limit])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="my_chess.learner.datasets.chess.raw_env.html#my_chess.learner.datasets.chess.raw_env" title="my_chess.learner.datasets.chess.raw_env"><code class="xref py py-obj docutils literal notranslate"><span class="pre">raw_env</span></code></a>([render_mode, screen_height])</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -97,12 +91,16 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="my_chess.learner.datasets.html"
-                        title="previous chapter">my_chess.learner.datasets</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="my_chess.learner.datasets.chess.env.html"
-                        title="next chapter">my_chess.learner.datasets.chess.env</a></p>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="my_chess.learner.datasets.html"
+                          title="previous chapter">my_chess.learner.datasets</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="my_chess.learner.datasets.chess.env.html"
+                          title="next chapter">my_chess.learner.datasets.chess.env</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -119,7 +117,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -147,8 +145,8 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2024, Mark Zimmerman.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+    &#169; Copyright 2024, Mark Zimmerman.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
     </div>
   </body>
 </html>

@@ -1,0 +1,581 @@
+
+
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>my_chess.learner.callbacks.callbacks.SelfPlayCallback &#8212; ChessBot 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=649a27d8" />
+    <link rel="stylesheet" type="text/css" href="../_static/bizstyle.css?v=13b2ab6e" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=f6245a2f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="my_chess.learner.datasets" href="my_chess.learner.datasets.html" />
+    <link rel="prev" title="my_chess.learner.callbacks.callbacks" href="my_chess.learner.callbacks.callbacks.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="my_chess.learner.datasets.html" title="my_chess.learner.datasets"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="my_chess.learner.callbacks.callbacks.html" title="my_chess.learner.callbacks.callbacks"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ChessBot 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="my_chess.html" >my_chess</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="my_chess.learner.html" >my_chess.learner</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="my_chess.learner.callbacks.html" >my_chess.learner.callbacks</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="my_chess.learner.callbacks.callbacks.html" accesskey="U">my_chess.learner.callbacks.callbacks</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">my_chess.learner.callbacks.callbacks.SelfPlayCallback</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="my-chess-learner-callbacks-callbacks-selfplaycallback">
+<h1>my_chess.learner.callbacks.callbacks.SelfPlayCallback<a class="headerlink" href="#my-chess-learner-callbacks-callbacks-selfplaycallback" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="my_chess.learner.callbacks.callbacks.SelfPlayCallback">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">my_chess.learner.callbacks.callbacks.</span></span><span class="sig-name descname"><span class="pre">SelfPlayCallback</span></span><a class="headerlink" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">DefaultCallbacks</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.callbacks.callbacks.SelfPlayCallback.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.__init__" title="my_chess.learner.callbacks.callbacks.SelfPlayCallback.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_algorithm_init" title="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_algorithm_init"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_algorithm_init</span></code></a>(*, algorithm, **kwargs)</p></td>
+<td><p>Callback run when a new Algorithm instance has finished setup.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_checkpoint_loaded" title="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_checkpoint_loaded"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_checkpoint_loaded</span></code></a>(*, algorithm, **kwargs)</p></td>
+<td><p>Callback run when an Algorithm has loaded a new state from a checkpoint.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_create_policy" title="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_create_policy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_create_policy</span></code></a>(*, policy_id, policy)</p></td>
+<td><p>Callback run whenever a new policy is added to an algorithm.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_episode_created" title="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_episode_created"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_episode_created</span></code></a>(*, worker, base_env, ...)</p></td>
+<td><p>Callback run when a new episode is created (but has not started yet!).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_episode_end" title="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_episode_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_episode_end</span></code></a>(*, worker, base_env, ...)</p></td>
+<td><p>Runs when an episode is done.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_episode_start" title="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_episode_start"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_episode_start</span></code></a>(*, worker, base_env, ...)</p></td>
+<td><p>Callback run right after an Episode has started.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_episode_step" title="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_episode_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_episode_step</span></code></a>(*, worker, base_env[, ...])</p></td>
+<td><p>Runs on each episode step.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_evaluate_end" title="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_evaluate_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_evaluate_end</span></code></a>(*, algorithm, ...)</p></td>
+<td><p>Runs when the evaluation is done.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_evaluate_start" title="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_evaluate_start"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_evaluate_start</span></code></a>(*, algorithm, **kwargs)</p></td>
+<td><p>Callback before evaluation starts.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_learn_on_batch" title="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_learn_on_batch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_learn_on_batch</span></code></a>(*, policy, train_batch, ...)</p></td>
+<td><p>Called at the beginning of Policy.learn_on_batch().</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_postprocess_trajectory" title="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_postprocess_trajectory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_postprocess_trajectory</span></code></a>(*, worker, ...)</p></td>
+<td><p>Called immediately after a policy's postprocess_fn is called.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_sample_end" title="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_sample_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_sample_end</span></code></a>(*, worker, samples, **kwargs)</p></td>
+<td><p>Called at the end of RolloutWorker.sample().</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_sub_environment_created" title="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_sub_environment_created"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_sub_environment_created</span></code></a>(*, worker, ...[, ...])</p></td>
+<td><p>Callback run when a new sub-environment has been created.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_train_result" title="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_train_result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_train_result</span></code></a>(*, algorithm, result, **kwargs)</p></td>
+<td><p>Called at the end of Algorithm.train().</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_workers_recreated" title="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_workers_recreated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_workers_recreated</span></code></a>(*, algorithm, ...)</p></td>
+<td><p>Callback run after one or more workers have been recreated.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_next_opp</span></code>(next_opp)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_algorithm_init">
+<span class="sig-name descname"><span class="pre">on_algorithm_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="my_chess.learner.algorithms.algorithm.Algorithm.html#my_chess.learner.algorithms.algorithm.Algorithm" title="my_chess.learner.algorithms.algorithm.Algorithm"><span class="pre">Algorithm</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_algorithm_init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback run when a new Algorithm instance has finished setup.</p>
+<p>This method gets called at the end of Algorithm.setup() after all
+the initialization is done, and before actually training starts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>algorithm</strong> – Reference to the Algorithm instance.</p></li>
+<li><p><strong>kwargs</strong> – Forward compatibility placeholder.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_checkpoint_loaded">
+<span class="sig-name descname"><span class="pre">on_checkpoint_loaded</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="my_chess.learner.algorithms.algorithm.Algorithm.html#my_chess.learner.algorithms.algorithm.Algorithm" title="my_chess.learner.algorithms.algorithm.Algorithm"><span class="pre">Algorithm</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_checkpoint_loaded" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback run when an Algorithm has loaded a new state from a checkpoint.</p>
+<p>This method gets called at the end of <cite>Algorithm.load_checkpoint()</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>algorithm</strong> – Reference to the Algorithm instance.</p></li>
+<li><p><strong>kwargs</strong> – Forward compatibility placeholder.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_create_policy">
+<span class="sig-name descname"><span class="pre">on_create_policy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policy_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Policy</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_create_policy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback run whenever a new policy is added to an algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>policy_id</strong> – ID of the newly created policy.</p></li>
+<li><p><strong>policy</strong> – The policy just created.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_episode_created">
+<span class="sig-name descname"><span class="pre">on_episode_created</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worker</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">RolloutWorker</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BaseEnv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policies</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Policy</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">episode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Episode</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">EpisodeV2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_episode_created" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback run when a new episode is created (but has not started yet!).</p>
+<p>This method gets called after a new Episode(V2) instance is created to
+start a new episode. This happens before the respective sub-environment’s
+(usually a gym.Env) <cite>reset()</cite> is called by RLlib.</p>
+<ol class="arabic simple">
+<li><p>Episode(V2) created: This callback fires.</p></li>
+<li><p>Respective sub-environment (gym.Env) is <cite>reset()</cite>.</p></li>
+<li><p>Callback <cite>on_episode_start</cite> is fired.</p></li>
+<li><p>Stepping through sub-environment/episode commences.</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>worker</strong> – Reference to the current rollout worker.</p></li>
+<li><p><strong>base_env</strong> – BaseEnv running the episode. The underlying
+sub environment objects can be retrieved by calling
+<cite>base_env.get_sub_environments()</cite>.</p></li>
+<li><p><strong>policies</strong> – Mapping of policy id to policy objects. In single
+agent mode there will only be a single “default” policy.</p></li>
+<li><p><strong>env_index</strong> – The index of the sub-environment that is about to be reset
+(within the vector of sub-environments of the BaseEnv).</p></li>
+<li><p><strong>episode</strong> – The newly created episode. This is the one that will be started
+with the upcoming reset. Only after the reset call, the
+<cite>on_episode_start</cite> event will be triggered.</p></li>
+<li><p><strong>kwargs</strong> – Forward compatibility placeholder.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_episode_end">
+<span class="sig-name descname"><span class="pre">on_episode_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worker</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">episode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_episode_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs when an episode is done.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>worker</strong> – Reference to the current rollout worker.</p></li>
+<li><p><strong>base_env</strong> – BaseEnv running the episode. The underlying
+sub environment objects can be retrieved by calling
+<cite>base_env.get_sub_environments()</cite>.</p></li>
+<li><p><strong>policies</strong> – Mapping of policy id to policy
+objects. In single agent mode there will only be a single
+“default_policy”.</p></li>
+<li><p><strong>episode</strong> – Episode object which contains episode
+state. You can use the <cite>episode.user_data</cite> dict to store
+temporary data, and <cite>episode.custom_metrics</cite> to store custom
+metrics for the episode.
+In case of environment failures, episode may also be an Exception
+that gets thrown from the environment before the episode finishes.
+Users of this callback may then handle these error cases properly
+with their custom logics.</p></li>
+<li><p><strong>env_index</strong> – The index of the sub-environment that ended the episode
+(within the vector of sub-environments of the BaseEnv).</p></li>
+<li><p><strong>kwargs</strong> – Forward compatibility placeholder.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_episode_start">
+<span class="sig-name descname"><span class="pre">on_episode_start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worker</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">episode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_episode_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback run right after an Episode has started.</p>
+<p>This method gets called after the Episode(V2)’s respective sub-environment’s
+(usually a gym.Env) <cite>reset()</cite> is called by RLlib.</p>
+<ol class="arabic simple">
+<li><p>Episode(V2) created: Triggers callback <cite>on_episode_created</cite>.</p></li>
+<li><p>Respective sub-environment (gym.Env) is <cite>reset()</cite>.</p></li>
+<li><p>Episode(V2) starts: This callback fires.</p></li>
+<li><p>Stepping through sub-environment/episode commences.</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>worker</strong> – Reference to the current rollout worker.</p></li>
+<li><p><strong>base_env</strong> – BaseEnv running the episode. The underlying
+sub environment objects can be retrieved by calling
+<cite>base_env.get_sub_environments()</cite>.</p></li>
+<li><p><strong>policies</strong> – Mapping of policy id to policy objects. In single
+agent mode there will only be a single “default” policy.</p></li>
+<li><p><strong>episode</strong> – Episode object which contains the episode’s
+state. You can use the <cite>episode.user_data</cite> dict to store
+temporary data, and <cite>episode.custom_metrics</cite> to store custom
+metrics for the episode.</p></li>
+<li><p><strong>env_index</strong> – The index of the sub-environment that started the episode
+(within the vector of sub-environments of the BaseEnv).</p></li>
+<li><p><strong>kwargs</strong> – Forward compatibility placeholder.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_episode_step">
+<span class="sig-name descname"><span class="pre">on_episode_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worker</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">RolloutWorker</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BaseEnv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policies</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Policy</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">episode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Episode</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">EpisodeV2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_episode_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs on each episode step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>worker</strong> – Reference to the current rollout worker.</p></li>
+<li><p><strong>base_env</strong> – BaseEnv running the episode. The underlying
+sub environment objects can be retrieved by calling
+<cite>base_env.get_sub_environments()</cite>.</p></li>
+<li><p><strong>policies</strong> – Mapping of policy id to policy objects.
+In single agent mode there will only be a single
+“default_policy”.</p></li>
+<li><p><strong>episode</strong> – Episode object which contains episode
+state. You can use the <cite>episode.user_data</cite> dict to store
+temporary data, and <cite>episode.custom_metrics</cite> to store custom
+metrics for the episode.</p></li>
+<li><p><strong>env_index</strong> – The index of the sub-environment that stepped the episode
+(within the vector of sub-environments of the BaseEnv).</p></li>
+<li><p><strong>kwargs</strong> – Forward compatibility placeholder.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_evaluate_end">
+<span class="sig-name descname"><span class="pre">on_evaluate_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="my_chess.learner.algorithms.algorithm.Algorithm.html#my_chess.learner.algorithms.algorithm.Algorithm" title="my_chess.learner.algorithms.algorithm.Algorithm"><span class="pre">Algorithm</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluation_metrics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_evaluate_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs when the evaluation is done.</p>
+<p>Runs at the end of Algorithm.evaluate().</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>algorithm</strong> – Reference to the algorithm instance.</p></li>
+<li><p><strong>evaluation_metrics</strong> – Results dict to be returned from algorithm.evaluate().
+You can mutate this object to add additional metrics.</p></li>
+<li><p><strong>kwargs</strong> – Forward compatibility placeholder.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_evaluate_start">
+<span class="sig-name descname"><span class="pre">on_evaluate_start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="my_chess.learner.algorithms.algorithm.Algorithm.html#my_chess.learner.algorithms.algorithm.Algorithm" title="my_chess.learner.algorithms.algorithm.Algorithm"><span class="pre">Algorithm</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_evaluate_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback before evaluation starts.</p>
+<p>This method gets called at the beginning of Algorithm.evaluate().</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>algorithm</strong> – Reference to the algorithm instance.</p></li>
+<li><p><strong>kwargs</strong> – Forward compatibility placeholder.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_learn_on_batch">
+<span class="sig-name descname"><span class="pre">on_learn_on_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Policy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_batch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SampleBatch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_learn_on_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called at the beginning of Policy.learn_on_batch().</p>
+<p>Note: This is called before 0-padding via
+<cite>pad_batch_to_sequences_of_same_size</cite>.</p>
+<p>Also note, SampleBatch.INFOS column will not be available on
+train_batch within this callback if framework is tf1, due to
+the fact that tf1 static graph would mistake it as part of the
+input dict if present.
+It is available though, for tf2 and torch frameworks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>policy</strong> – Reference to the current Policy object.</p></li>
+<li><p><strong>train_batch</strong> – SampleBatch to be trained on. You can
+mutate this object to modify the samples generated.</p></li>
+<li><p><strong>result</strong> – A results dict to add custom metrics to.</p></li>
+<li><p><strong>kwargs</strong> – Forward compatibility placeholder.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_postprocess_trajectory">
+<span class="sig-name descname"><span class="pre">on_postprocess_trajectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worker</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">RolloutWorker</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">episode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Episode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policy_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policies</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Policy</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postprocessed_batch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SampleBatch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">original_batches</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Policy</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">SampleBatch</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_postprocess_trajectory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called immediately after a policy’s postprocess_fn is called.</p>
+<p>You can use this callback to do additional postprocessing for a policy,
+including looking at the trajectory data of other agents in multi-agent
+settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>worker</strong> – Reference to the current rollout worker.</p></li>
+<li><p><strong>episode</strong> – Episode object.</p></li>
+<li><p><strong>agent_id</strong> – Id of the current agent.</p></li>
+<li><p><strong>policy_id</strong> – Id of the current policy for the agent.</p></li>
+<li><p><strong>policies</strong> – Mapping of policy id to policy objects. In single
+agent mode there will only be a single “default_policy”.</p></li>
+<li><p><strong>postprocessed_batch</strong> – The postprocessed sample batch
+for this agent. You can mutate this object to apply your own
+trajectory postprocessing.</p></li>
+<li><p><strong>original_batches</strong> – Mapping of agents to their unpostprocessed
+trajectory data. You should not mutate this object.</p></li>
+<li><p><strong>kwargs</strong> – Forward compatibility placeholder.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_sample_end">
+<span class="sig-name descname"><span class="pre">on_sample_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worker</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">RolloutWorker</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SampleBatch</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_sample_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called at the end of RolloutWorker.sample().</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>worker</strong> – Reference to the current rollout worker.</p></li>
+<li><p><strong>samples</strong> – Batch to be returned. You can mutate this
+object to modify the samples generated.</p></li>
+<li><p><strong>kwargs</strong> – Forward compatibility placeholder.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_sub_environment_created">
+<span class="sig-name descname"><span class="pre">on_sub_environment_created</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worker</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">RolloutWorker</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sub_environment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_context</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">EnvContext</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_sub_environment_created" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback run when a new sub-environment has been created.</p>
+<p>This method gets called after each sub-environment (usually a
+gym.Env) has been created, validated (RLlib built-in validation
++ possible custom validation function implemented by overriding
+<cite>Algorithm.validate_env()</cite>), wrapped (e.g. video-wrapper), and seeded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>worker</strong> – Reference to the current rollout worker.</p></li>
+<li><p><strong>sub_environment</strong> – The sub-environment instance that has been
+created. This is usually a gym.Env object.</p></li>
+<li><p><strong>env_context</strong> – The <cite>EnvContext</cite> object that has been passed to
+the env’s constructor.</p></li>
+<li><p><strong>kwargs</strong> – Forward compatibility placeholder.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_train_result">
+<span class="sig-name descname"><span class="pre">on_train_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_train_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called at the end of Algorithm.train().</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>algorithm</strong> – Current Algorithm instance.</p></li>
+<li><p><strong>result</strong> – Dict of results returned from Algorithm.train() call.
+You can mutate this object to add additional metrics.</p></li>
+<li><p><strong>kwargs</strong> – Forward compatibility placeholder.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_workers_recreated">
+<span class="sig-name descname"><span class="pre">on_workers_recreated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="my_chess.learner.algorithms.algorithm.Algorithm.html#my_chess.learner.algorithms.algorithm.Algorithm" title="my_chess.learner.algorithms.algorithm.Algorithm"><span class="pre">Algorithm</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">worker_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">WorkerSet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worker_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_evaluation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_workers_recreated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback run after one or more workers have been recreated.</p>
+<p>You can access (and change) the worker(s) in question via the following code
+snippet inside your custom override of this method:</p>
+<p>Note that any “worker” inside the algorithm’s <cite>self.worker</cite> and
+<cite>self.evaluation_workers</cite> WorkerSets are instances of a subclass of EnvRunner.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyCallbacks</span><span class="p">(</span><span class="n">DefaultCallbacks</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">on_workers_recreated</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">algorithm</span><span class="p">,</span>
+        <span class="n">worker_set</span><span class="p">,</span>
+        <span class="n">worker_ids</span><span class="p">,</span>
+        <span class="n">is_evaluation</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># Define what you would like to do on the recreated</span>
+        <span class="c1"># workers:</span>
+        <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+            <span class="c1"># Here, we just set some arbitrary property to 1.</span>
+            <span class="k">if</span> <span class="n">is_evaluation</span><span class="p">:</span>
+                <span class="n">w</span><span class="o">.</span><span class="n">_custom_property_for_evaluation</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">w</span><span class="o">.</span><span class="n">_custom_property_for_training</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="c1"># Use the `foreach_workers` method of the worker set and</span>
+        <span class="c1"># only loop through those worker IDs that have been restarted.</span>
+        <span class="c1"># Note that we set `local_worker=False` to NOT include it (local</span>
+        <span class="c1"># workers are never recreated; if they fail, the entire Algorithm</span>
+        <span class="c1"># fails).</span>
+        <span class="n">worker_set</span><span class="o">.</span><span class="n">foreach_worker</span><span class="p">(</span>
+            <span class="n">func</span><span class="p">,</span>
+            <span class="n">remote_worker_ids</span><span class="o">=</span><span class="n">worker_ids</span><span class="p">,</span>
+            <span class="n">local_worker</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>algorithm</strong> – Reference to the Algorithm instance.</p></li>
+<li><p><strong>worker_set</strong> – The WorkerSet object in which the workers in question reside.
+You can use a <cite>worker_set.foreach_worker(remote_worker_ids=…,
+local_worker=False)</cite> method call to execute custom
+code on the recreated (remote) workers. Note that the local worker is
+never recreated as a failure of this would also crash the Algorithm.</p></li>
+<li><p><strong>worker_ids</strong> – The list of (remote) worker IDs that have been recreated.</p></li>
+<li><p><strong>is_evaluation</strong> – Whether <cite>worker_set</cite> is the evaluation WorkerSet (located
+in <cite>Algorithm.evaluation_workers</cite>) or not.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">my_chess.learner.callbacks.callbacks.SelfPlayCallback</a><ul>
+<li><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback"><code class="docutils literal notranslate"><span class="pre">SelfPlayCallback</span></code></a><ul>
+<li><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.__init__"><code class="docutils literal notranslate"><span class="pre">SelfPlayCallback.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_algorithm_init"><code class="docutils literal notranslate"><span class="pre">SelfPlayCallback.on_algorithm_init()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_checkpoint_loaded"><code class="docutils literal notranslate"><span class="pre">SelfPlayCallback.on_checkpoint_loaded()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_create_policy"><code class="docutils literal notranslate"><span class="pre">SelfPlayCallback.on_create_policy()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_episode_created"><code class="docutils literal notranslate"><span class="pre">SelfPlayCallback.on_episode_created()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_episode_end"><code class="docutils literal notranslate"><span class="pre">SelfPlayCallback.on_episode_end()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_episode_start"><code class="docutils literal notranslate"><span class="pre">SelfPlayCallback.on_episode_start()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_episode_step"><code class="docutils literal notranslate"><span class="pre">SelfPlayCallback.on_episode_step()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_evaluate_end"><code class="docutils literal notranslate"><span class="pre">SelfPlayCallback.on_evaluate_end()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_evaluate_start"><code class="docutils literal notranslate"><span class="pre">SelfPlayCallback.on_evaluate_start()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_learn_on_batch"><code class="docutils literal notranslate"><span class="pre">SelfPlayCallback.on_learn_on_batch()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_postprocess_trajectory"><code class="docutils literal notranslate"><span class="pre">SelfPlayCallback.on_postprocess_trajectory()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_sample_end"><code class="docutils literal notranslate"><span class="pre">SelfPlayCallback.on_sample_end()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_sub_environment_created"><code class="docutils literal notranslate"><span class="pre">SelfPlayCallback.on_sub_environment_created()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_train_result"><code class="docutils literal notranslate"><span class="pre">SelfPlayCallback.on_train_result()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.callbacks.callbacks.SelfPlayCallback.on_workers_recreated"><code class="docutils literal notranslate"><span class="pre">SelfPlayCallback.on_workers_recreated()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="my_chess.learner.callbacks.callbacks.html"
+                          title="previous chapter">my_chess.learner.callbacks.callbacks</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="my_chess.learner.datasets.html"
+                          title="next chapter">my_chess.learner.datasets</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/_autosummary/my_chess.learner.callbacks.callbacks.SelfPlayCallback.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="my_chess.learner.datasets.html" title="my_chess.learner.datasets"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="my_chess.learner.callbacks.callbacks.html" title="my_chess.learner.callbacks.callbacks"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ChessBot 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="my_chess.html" >my_chess</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="my_chess.learner.html" >my_chess.learner</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="my_chess.learner.callbacks.html" >my_chess.learner.callbacks</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="my_chess.learner.callbacks.callbacks.html" >my_chess.learner.callbacks.callbacks</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">my_chess.learner.callbacks.callbacks.SelfPlayCallback</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2024, Mark Zimmerman.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    </div>
+  </body>
+</html>

@@ -2,19 +2,18 @@
 
 <!doctype html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>my_chess.learner.algorithms.chessevaluation.ChessEvaluation &#8212; ChessBot 0.0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/bizstyle.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=649a27d8" />
+    <link rel="stylesheet" type="text/css" href="../_static/bizstyle.css?v=13b2ab6e" />
     
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/doctools.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=f6245a2f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -55,21 +54,21 @@
           <div class="body" role="main">
             
   <section id="my-chess-learner-algorithms-chessevaluation-chessevaluation">
-<h1>my_chess.learner.algorithms.chessevaluation.ChessEvaluation<a class="headerlink" href="#my-chess-learner-algorithms-chessevaluation-chessevaluation" title="Permalink to this headline">¶</a></h1>
+<h1>my_chess.learner.algorithms.chessevaluation.ChessEvaluation<a class="headerlink" href="#my-chess-learner-algorithms-chessevaluation-chessevaluation" title="Permalink to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="my_chess.learner.algorithms.chessevaluation.ChessEvaluation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">my_chess.learner.algorithms.chessevaluation.</span></span><span class="sig-name descname"><span class="pre">ChessEvaluation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_creator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ray.tune.logger.logger.Logger</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">ray.train._internal.storage.StorageContext</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="my_chess.learner.algorithms.trainable.Trainable.html#my_chess.learner.algorithms.trainable.Trainable" title="my_chess.learner.algorithms.trainable.Trainable"><code class="xref py py-class docutils literal notranslate"><span class="pre">my_chess.learner.algorithms.trainable.Trainable</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">my_chess.learner.algorithms.chessevaluation.</span></span><span class="sig-name descname"><span class="pre">ChessEvaluation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_creator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Logger</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">StorageContext</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="my_chess.learner.algorithms.trainable.Trainable.html#my_chess.learner.algorithms.trainable.Trainable" title="my_chess.learner.algorithms.trainable.Trainable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trainable</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.algorithms.chessevaluation.ChessEvaluation.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_creator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ray.tune.logger.logger.Logger</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">ray.train._internal.storage.StorageContext</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.__init__" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_creator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Logger</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">StorageContext</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize a Trainable.</p>
 <p>Sets up logging and points <code class="docutils literal notranslate"><span class="pre">self.logdir</span></code> to a directory in which
 training outputs should be placed.</p>
 <p>Subclasses should prefer defining <code class="docutils literal notranslate"><span class="pre">setup()</span></code> instead of overriding
 <code class="docutils literal notranslate"><span class="pre">__init__()</span></code> directly.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>config</strong> – Trainable-specific configuration data. By default
 will be saved as <code class="docutils literal notranslate"><span class="pre">self.config</span></code>.</p></li>
@@ -82,11 +81,7 @@ object. If unspecified, a default logger is created.</p></li>
 </dd></dl>
 
 <p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
+<table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.__init__" title="my_chess.learner.algorithms.chessevaluation.ChessEvaluation.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([config, logger_creator, storage])</p></td>
 <td><p>Initialize a Trainable.</p></td>
@@ -169,11 +164,7 @@ object. If unspecified, a default logger is created.</p></li>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
+<table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.iteration" title="my_chess.learner.algorithms.chessevaluation.ChessEvaluation.iteration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iteration</span></code></a></p></td>
 <td><p>Current training iteration.</p></td>
@@ -212,30 +203,30 @@ collection</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.algorithms.chessevaluation.ChessEvaluation.default_resource_request">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">default_resource_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">ray.tune.execution.placement_groups.PlacementGroupFactory</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.default_resource_request" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">default_resource_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">PlacementGroupFactory</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.default_resource_request" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provides a static resource requirement for the given configuration.</p>
 <p>This can be overridden by sub-classes to set the correct trial resource
 allocation, so the user does not need to.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@classmethod</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">default_resource_request</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">PlacementGroupFactory</span><span class="p">([{</span><span class="s2">&quot;CPU&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;CPU&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}])</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>config</strong><strong>[</strong><strong>Dict</strong><strong>[</strong><strong>str</strong> – The Trainable’s config dict.</p></li>
 <li><p><strong>Any</strong><strong>]</strong><strong>]</strong> – The Trainable’s config dict.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><dl class="simple">
 <dt>A PlacementGroupFactory consumed by Tune</dt><dd><p>for queueing.</p>
 </dd>
 </dl>
 </p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>PlacementGroupFactory</p>
 </dd>
 </dl>
@@ -243,12 +234,12 @@ allocation, so the user does not need to.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.algorithms.chessevaluation.ChessEvaluation.export_model">
-<span class="sig-name descname"><span class="pre">export_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">export_formats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">export_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.export_model" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">export_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">export_formats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">export_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.export_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Exports model based on export_formats.</p>
 <p>Subclasses should override _export_model() to actually
 export model to local directory.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>export_formats</strong> – Format or list of (str) formats
 that should be exported.</p></li>
@@ -256,7 +247,7 @@ that should be exported.</p></li>
 Defaults to self.logdir.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A dict that maps ExportFormats to successfully exported models.</p>
 </dd>
 </dl>
@@ -264,7 +255,7 @@ Defaults to self.logdir.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.algorithms.chessevaluation.ChessEvaluation.get_auto_filled_metrics">
-<span class="sig-name descname"><span class="pre">get_auto_filled_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">now</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime.datetime</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_this_iter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug_metrics_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.get_auto_filled_metrics" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_auto_filled_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">now</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_this_iter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug_metrics_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.get_auto_filled_metrics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a dict with metrics auto-filled by the trainable.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">debug_metrics_only</span></code> is True, only metrics that don’t
 require at least one iteration will be returned
@@ -332,7 +323,7 @@ the dict data as the argument to this method.</p>
 <p><span class="versionmodified added">New in version 0.8.7.</span></p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>checkpoint</strong> – If dict, the return value is as
 returned by <code class="docutils literal notranslate"><span class="pre">save_checkpoint</span></code>. Otherwise, the directory
 the checkpoint was stored in.</p>
@@ -350,7 +341,7 @@ the driver.</p>
 <p><span class="versionmodified added">New in version 0.8.7.</span></p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>result</strong> – Training result returned by step().</p>
 </dd>
 </dl>
@@ -381,11 +372,11 @@ reset actor behavior for the new config.</p>
 such as PBT, and to allow performance optimizations such as running
 experiments with reuse_actors=True.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_config</strong> – Updated hyperparameter configuration
 for the trainable.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>True if reset was successful else False.</p>
 </dd>
 </dl>
@@ -396,7 +387,7 @@ for the trainable.</p>
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">resource_help</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.resource_help" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a help string for configuring this trainable’s resources.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>config</strong> – The Trainer’s config dict.</p>
 </dd>
 </dl>
@@ -404,7 +395,7 @@ for the trainable.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.algorithms.chessevaluation.ChessEvaluation.restore">
-<span class="sig-name descname"><span class="pre">restore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkpoint_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ray.train.Checkpoint</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ray.train._internal.session._TrainingResult</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.restore" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">restore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkpoint_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Checkpoint</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_TrainingResult</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.restore" title="Permalink to this definition">¶</a></dt>
 <dd><p>Restores training state from a given model checkpoint.</p>
 <p>These checkpoints are returned from calls to save().</p>
 <p>Subclasses should override <code class="docutils literal notranslate"><span class="pre">load_checkpoint()</span></code> instead to
@@ -412,7 +403,7 @@ restore state.
 This method restores additional metadata saved with the checkpoint.</p>
 <p><cite>checkpoint_path</cite> should match with the return from <code class="docutils literal notranslate"><span class="pre">save()</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>checkpoint_path</strong> – Path to restore checkpoint from. If this
 path does not exist on the local node, it will be fetched
@@ -432,14 +423,14 @@ could not be found.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.algorithms.chessevaluation.ChessEvaluation.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkpoint_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ray.train._internal.session._TrainingResult</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.save" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkpoint_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">_TrainingResult</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Saves the current model state to a checkpoint.</p>
 <p>Subclasses should override <code class="docutils literal notranslate"><span class="pre">save_checkpoint()</span></code> instead to save state.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>checkpoint_dir</strong> – Optional dir to place the checkpoint.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The given or created checkpoint directory.</p>
 </dd>
 </dl>
@@ -467,12 +458,12 @@ could not be found.</p></li>
 <p><span class="versionmodified added">New in version 0.8.7.</span></p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>checkpoint_dir</strong> – The directory where the checkpoint
 file must be stored. In a Tune run, if the trial is paused,
 the provided path may be temporary and moved.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A dict or None. If dict, the return value will
 be automatically serialized by Tune. In that case,
 <code class="docutils literal notranslate"><span class="pre">Trainable.load_checkpoint()</span></code> will receive the dict upon restore.</p>
@@ -492,13 +483,13 @@ be automatically serialized by Tune. In that case,
 
 <dl class="py method">
 <dt class="sig sig-object py" id="my_chess.learner.algorithms.chessevaluation.ChessEvaluation.setup">
-<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="my_chess.learner.algorithms.chessevaluation.ChessEvaluationConfig.html#my_chess.learner.algorithms.chessevaluation.ChessEvaluationConfig" title="my_chess.learner.algorithms.chessevaluation.ChessEvaluationConfig"><span class="pre">my_chess.learner.algorithms.chessevaluation.ChessEvaluationConfig</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.setup" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="my_chess.learner.algorithms.chessevaluation.ChessEvaluationConfig.html#my_chess.learner.algorithms.chessevaluation.ChessEvaluationConfig" title="my_chess.learner.algorithms.chessevaluation.ChessEvaluationConfig"><span class="pre">ChessEvaluationConfig</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.setup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Subclasses should override this for custom initialization.</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.8.7.</span></p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>config</strong> – Hyperparameters and other configs given.
 Copy of <cite>self.config</cite>.</p>
 </dd>
@@ -546,7 +537,7 @@ process.</p>
 process.</p>
 </div></blockquote>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A dict that describes training progress.</p>
 </dd>
 </dl>
@@ -563,7 +554,7 @@ reached, 2) the maximum buffer time is reached, or 3) a checkpoint
 was created. Even if the maximum time is reached, it will always
 block until at least one result is received.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>buffer_time_s</strong> – Maximum time to buffer. The next result
 received after this amount of time has passed will return
@@ -587,7 +578,7 @@ and is automatically inserted into the training result dict.</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trial_id</span></span><a class="headerlink" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.trial_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Trial ID for the corresponding trial of this Trainable.</p>
 <p>This is not set if not using Tune.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ray.tune</span> <span class="kn">import</span> <span class="n">Trainable</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ray.tune</span> <span class="kn">import</span> <span class="n">Trainable</span>
 
 <span class="n">trial_id</span> <span class="o">=</span> <span class="n">Trainable</span><span class="p">()</span><span class="o">.</span><span class="n">trial_id</span>
 </pre></div>
@@ -599,7 +590,7 @@ and is automatically inserted into the training result dict.</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trial_name</span></span><a class="headerlink" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.trial_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Trial name for the corresponding trial of this Trainable.</p>
 <p>This is not set if not using Tune.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ray.tune</span> <span class="kn">import</span> <span class="n">Trainable</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ray.tune</span> <span class="kn">import</span> <span class="n">Trainable</span>
 
 <span class="n">name</span> <span class="o">=</span> <span class="n">Trainable</span><span class="p">()</span><span class="o">.</span><span class="n">trial_name</span>
 </pre></div>
@@ -608,10 +599,10 @@ and is automatically inserted into the training result dict.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="my_chess.learner.algorithms.chessevaluation.ChessEvaluation.trial_resources">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trial_resources</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">ray.tune.execution.placement_groups.PlacementGroupFactory</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.trial_resources" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trial_resources</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">PlacementGroupFactory</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.trial_resources" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resources currently assigned to the trial of this Trainable.</p>
 <p>This is not set if not using Tune.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ray.tune</span> <span class="kn">import</span> <span class="n">Trainable</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ray.tune</span> <span class="kn">import</span> <span class="n">Trainable</span>
 
 <span class="n">trial_resources</span> <span class="o">=</span> <span class="n">Trainable</span><span class="p">()</span><span class="o">.</span><span class="n">trial_resources</span>
 </pre></div>
@@ -629,12 +620,53 @@ and is automatically inserted into the training result dict.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="my_chess.learner.algorithms.chessevaluation.html"
-                        title="previous chapter">my_chess.learner.algorithms.chessevaluation</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="my_chess.learner.algorithms.chessevaluation.ChessEvaluationConfig.html"
-                        title="next chapter">my_chess.learner.algorithms.chessevaluation.ChessEvaluationConfig</a></p>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">my_chess.learner.algorithms.chessevaluation.ChessEvaluation</a><ul>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation</span></code></a><ul>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.__init__"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.cleanup"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.cleanup()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.default_resource_request"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.default_resource_request()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.export_model"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.export_model()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.get_auto_filled_metrics"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.get_auto_filled_metrics()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.get_config"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.get_config()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.iteration"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.iteration</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.load_checkpoint"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.load_checkpoint()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.log_result"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.log_result()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.logdir"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.logdir</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.reset"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.reset()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.reset_config"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.reset_config()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.resource_help"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.resource_help()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.restore"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.restore()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.save"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.save()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.save_checkpoint"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.save_checkpoint()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.setup"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.setup()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.step"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.step()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.stop"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.stop()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.train"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.train()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.train_buffered"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.train_buffered()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.training_iteration"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.training_iteration</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.trial_id"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.trial_id</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.trial_name"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.trial_name</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.chessevaluation.ChessEvaluation.trial_resources"><code class="docutils literal notranslate"><span class="pre">ChessEvaluation.trial_resources</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="my_chess.learner.algorithms.chessevaluation.html"
+                          title="previous chapter">my_chess.learner.algorithms.chessevaluation</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="my_chess.learner.algorithms.chessevaluation.ChessEvaluationConfig.html"
+                          title="next chapter">my_chess.learner.algorithms.chessevaluation.ChessEvaluationConfig</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -651,7 +683,7 @@ and is automatically inserted into the training result dict.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -680,8 +712,8 @@ and is automatically inserted into the training result dict.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2024, Mark Zimmerman.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+    &#169; Copyright 2024, Mark Zimmerman.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
     </div>
   </body>
 </html>

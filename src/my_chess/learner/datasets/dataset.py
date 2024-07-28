@@ -13,6 +13,20 @@ from torch.multiprocessing import Manager
 import torch
 
 class Dataset(DatasetTorch):
+    """
+    To prevent memory problems with multiprocessing, class provides the utility 
+    functions:
+      * strings_to_mem_safe_val_and_offset
+      * mem_safe_val_and_offset_to_string
+      * string_to_sequence
+      * sequence_to_string
+      * pack_sequences
+      * unpack_sequence
+    Provided by https://github.com/pytorch/pytorch/issues/13246#issuecomment-617140519
+    See https://github.com/pytorch/pytorch/issues/13246#issuecomment-905703662 
+    for a summary of the issue.
+    """
+
     AUTONAME = "complete_generated_dataset"
     LBL_FILE_COUNT = "total_label_files"
     LBL_COUNT = "total_labels"
@@ -91,9 +105,11 @@ class Dataset(DatasetTorch):
         return self.__class__.__name__
     
     def copy(self, dest_dir:str, subset:Union[int, float]=1., random:bool=True):
-        # Created to create a copy on a faster hard drive, however, if read/write speed is a bottle neck,
-        # this will also be very slow. Likely better to just provide functionality to create a dataset from
-        # a subset of a pgn file, as dataset creation from pgn file provided 68B observations in ~5hours.
+        """
+        Created to create a copy on a faster hard drive, however, if read/write speed is a bottle neck,
+        this will also be very slow. Likely better to just provide functionality to create a dataset from
+        a subset of a pgn file, as dataset creation from pgn file provided 68B observations in ~5hours.
+        """
         has_lock = False
         if hasattr(self, 'main_lock'):
             self.main_lock = None
@@ -199,11 +215,6 @@ class Dataset(DatasetTorch):
 
 
 
-    """
-    To prevent memory problems with multiprocessing.
-    Provided by https://github.com/pytorch/pytorch/issues/13246#issuecomment-617140519
-    See https://github.com/pytorch/pytorch/issues/13246#issuecomment-905703662 for summary
-    """
     # --- UTILITY FUNCTIONS ---
     @staticmethod
     def strings_to_mem_safe_val_and_offset(strings: List[str]) -> Tuple[np.ndarray,np.ndarray]:

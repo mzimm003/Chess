@@ -14,15 +14,22 @@ import torch
 
 class Dataset(DatasetTorch):
     """
+    A basis for database creation and dataset serving.
+
     To prevent memory problems with multiprocessing, class provides the utility 
     functions:
-      * strings_to_mem_safe_val_and_offset
-      * mem_safe_val_and_offset_to_string
-      * string_to_sequence
-      * sequence_to_string
-      * pack_sequences
-      * unpack_sequence
-    Provided by https://github.com/pytorch/pytorch/issues/13246#issuecomment-617140519
+
+    * strings_to_mem_safe_val_and_offset
+    * mem_safe_val_and_offset_to_string
+    * string_to_sequence
+    * sequence_to_string
+    * pack_sequences
+    * unpack_sequence
+
+    Provided by https://github.com/pytorch/pytorch/issues/13246#issuecomment-617140519.
+    These should be used in lieu of lists or dicts in the data retrieval process
+    (e.g. for data labels).
+
     See https://github.com/pytorch/pytorch/issues/13246#issuecomment-905703662 
     for a summary of the issue.
     """
@@ -213,17 +220,20 @@ class Dataset(DatasetTorch):
         if has_lock:
             self.main_lock = Manager().RLock()
 
-
-
     # --- UTILITY FUNCTIONS ---
     @staticmethod
     def strings_to_mem_safe_val_and_offset(strings: List[str]) -> Tuple[np.ndarray,np.ndarray]:
+        """
+        Utility function.
+        """
         seqs = [Dataset.string_to_sequence(s) for s in strings]
         return Dataset.pack_sequences(seqs)
     
     @staticmethod
     def mem_safe_val_and_offset_to_string(v, o, index:int) -> Tuple[np.ndarray,np.ndarray]:
         '''
+        Utility function.
+
         In case labels represented by file_idx are no longer in memory, use arbitrary index from existing file.
         Either the current idx, or 0 if current index is beyond existing labels. This will be rare, and impact a
         small fraction of a percent of data points, and otherwise still supplies a valid data point. Bandaid necessary
@@ -235,20 +245,32 @@ class Dataset(DatasetTorch):
     
     @staticmethod
     def string_to_sequence(s: str, dtype=np.int32) -> np.ndarray:
+        """
+        Utility function.
+        """
         return np.array([ord(c) for c in s], dtype=dtype)
 
     @staticmethod
     def sequence_to_string(seq: np.ndarray) -> str:
+        """
+        Utility function.
+        """
         return ''.join([chr(c) for c in seq])
 
     @staticmethod
     def pack_sequences(seqs: Union[np.ndarray, list]) -> Tuple[np.ndarray, np.ndarray]:
+        """
+        Utility function.
+        """
         values = np.concatenate(seqs, axis=0)
         offsets = np.cumsum([len(s) for s in seqs])
         return values, offsets
 
     @staticmethod
     def unpack_sequence(values: np.ndarray, offsets: np.ndarray, index: int) -> np.ndarray:
+        """
+        Utility function.
+        """
         off1 = offsets[index]
         if index > 0:
             off0 = offsets[index - 1]

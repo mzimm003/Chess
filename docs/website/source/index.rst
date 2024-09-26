@@ -7,6 +7,7 @@ Chess Bot
 =====================================
 
 .. toctree::
+   :name: mastertoc
    :maxdepth: 1
    :titlesonly:
 

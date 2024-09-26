@@ -1,0 +1,30 @@
+.toctree-wrapper ul li {
+    list-style-type: none;
+    display: inline-block;
+    padding: 10px;
+    margin: 0;
+    overflow: hidden;
+    background-color: #DDDDDD;
+}
+.toctree-wrapper ul {
+    padding: 0;
+    margin: 0;
+}
+
+.toctree-wrapper a {
+    padding: 10px;
+}
+
+.twocol {
+    display: flex;
+    align-items: center;
+}
+
+div.leftside {
+    width: 200%;
+}
+
+div.rightside {
+    padding-left: 30px;
+    padding-top: 20px;
+}

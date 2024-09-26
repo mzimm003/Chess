@@ -7,5 +7,5 @@ Data/
 _valid
 scratch*
 huggingface/
-build/
+/build/
 *.egg*

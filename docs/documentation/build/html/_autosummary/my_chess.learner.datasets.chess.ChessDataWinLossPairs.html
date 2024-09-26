@@ -1,0 +1,357 @@
+
+
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>my_chess.learner.datasets.chess.ChessDataWinLossPairs &#8212; ChessBot 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=649a27d8" />
+    <link rel="stylesheet" type="text/css" href="../_static/bizstyle.css?v=13b2ab6e" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=f6245a2f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="my_chess.learner.datasets.chess.PGNGamesItr" href="my_chess.learner.datasets.chess.PGNGamesItr.html" />
+    <link rel="prev" title="my_chess.learner.datasets.chess.ChessData" href="my_chess.learner.datasets.chess.ChessData.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="my_chess.learner.datasets.chess.PGNGamesItr.html" title="my_chess.learner.datasets.chess.PGNGamesItr"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="my_chess.learner.datasets.chess.ChessData.html" title="my_chess.learner.datasets.chess.ChessData"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ChessBot 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="my_chess.html" >my_chess</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="my_chess.learner.html" >my_chess.learner</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="my_chess.learner.datasets.html" >my_chess.learner.datasets</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="my_chess.learner.datasets.chess.html" accesskey="U">my_chess.learner.datasets.chess</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">my_chess.learner.datasets.chess.ChessDataWinLossPairs</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="my-chess-learner-datasets-chess-chessdatawinlosspairs">
+<h1>my_chess.learner.datasets.chess.ChessDataWinLossPairs<a class="headerlink" href="#my-chess-learner-datasets-chess-chessdatawinlosspairs" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="my_chess.learner.datasets.chess.ChessDataWinLossPairs">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">my_chess.learner.datasets.chess.</span></span><span class="sig-name descname"><span class="pre">ChessDataWinLossPairs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_deepchess_rules</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">render_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_games_per_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">14000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">static_partners</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="my_chess.learner.datasets.chess.ChessData.html#my_chess.learner.datasets.chess.ChessData" title="my_chess.learner.datasets.chess.ChessData"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChessData</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.datasets.chess.ChessDataWinLossPairs.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_deepchess_rules</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">render_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_games_per_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">14000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">static_partners</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset_dir</strong> – The directory of an existing chess database, or where
+one should be created based on the PGN files therein contained.</p></li>
+<li><p><strong>seed</strong> – Seed for reproducibility in randomizing components.</p></li>
+<li><p><strong>apply_deepchess_rules</strong> – Whether to create a database which includes
+all positions in the PGN files, or to exclude games which drew,
+exclude positions before the first 5 moves, exclude positions
+immediately after a piece capture, and limit observations to 10
+positions per game, as done in the research paper DeepChess.</p></li>
+<li><p><strong>render_mode</strong> – Whether to render the game boards as the database is
+created (slow).</p></li>
+<li><p><strong>reset</strong> – Whether to overwrite an existing database by reprocessing
+PGNs in the directory.</p></li>
+<li><p><strong>max_games_per_file</strong> – Controls how the data labels will be broken up
+determining how much will be loaded into RAM at once.</p></li>
+<li><p><strong>states_per_game</strong> – The number of board positions for which
+observations will be saved, per game. Only applicable if
+<cite>apply_deepchess_rules</cite> is True.</p></li>
+<li><p><strong>subset</strong> – The number of games to randomly select as some subset of
+those in the PGN file. To help control the size of the database as
+it will be several orders of magnitude larger than the PGN.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.__init__" title="my_chess.learner.datasets.chess.ChessDataWinLossPairs.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(dataset_dir[, seed, ...])</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">param dataset_dir<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The directory of an existing chess database, or where</p>
+</dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.copy" title="my_chess.learner.datasets.chess.ChessDataWinLossPairs.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>(dest_dir[, subset, random])</p></td>
+<td><p>Created to create a copy on a faster hard drive, however, if read/write speed is a bottle neck, this will also be very slow.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.create_database" title="my_chess.learner.datasets.chess.ChessDataWinLossPairs.create_database"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_database</span></code></a>()</p></td>
+<td><p>Custom parser for files from <a class="reference external" href="http://computerchess.org.uk/ccrl/404/games.html">http://computerchess.org.uk/ccrl/404/games.html</a>, provided in pgn DeepChess suggests draw games are not useful, and will be excluded if apply_deepchess_rules=True.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_structure</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getName</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_agent_perspective</span></code>(file_idx, idx)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_curr_file_idx</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.get_dynamic_random_idx_partners" title="my_chess.learner.datasets.chess.ChessDataWinLossPairs.get_dynamic_random_idx_partners"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_dynamic_random_idx_partners</span></code></a>(idx)</p></td>
+<td><p>Will provide a random index to be paired with data loader index Created to be consistent with dataset ordering indexes to avoid excessive reloading of labels (which exists in batches)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_file_count</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_file_name</span></code>(file_idx, idx)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_label_bins</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_label_count</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_label_count_by_file</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_result</span></code>(file_idx, idx)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.get_static_random_idx_partners" title="my_chess.learner.datasets.chess.ChessDataWinLossPairs.get_static_random_idx_partners"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_static_random_idx_partners</span></code></a>()</p></td>
+<td><p>Will provide a random index to be paired with data loader index Created to be consistent with dataset ordering indexes to avoid excessive reloading of labels (which exists in batches)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.mem_safe_val_and_offset_to_string" title="my_chess.learner.datasets.chess.ChessDataWinLossPairs.mem_safe_val_and_offset_to_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mem_safe_val_and_offset_to_string</span></code></a>(v, o, index)</p></td>
+<td><p>Utility function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">necessary_file</span></code>(idx)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.pack_sequences" title="my_chess.learner.datasets.chess.ChessDataWinLossPairs.pack_sequences"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pack_sequences</span></code></a>(seqs)</p></td>
+<td><p>Utility function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.sequence_to_string" title="my_chess.learner.datasets.chess.ChessDataWinLossPairs.sequence_to_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sequence_to_string</span></code></a>(seq)</p></td>
+<td><p>Utility function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.string_to_sequence" title="my_chess.learner.datasets.chess.ChessDataWinLossPairs.string_to_sequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">string_to_sequence</span></code></a>(s[, dtype])</p></td>
+<td><p>Utility function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.strings_to_mem_safe_val_and_offset" title="my_chess.learner.datasets.chess.ChessDataWinLossPairs.strings_to_mem_safe_val_and_offset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">strings_to_mem_safe_val_and_offset</span></code></a>(strings)</p></td>
+<td><p>Utility function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.unpack_sequence" title="my_chess.learner.datasets.chess.ChessDataWinLossPairs.unpack_sequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unpack_sequence</span></code></a>(values, offsets, index)</p></td>
+<td><p>Utility function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_labels</span></code>(file_idx)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">AUTONAME</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">CURR_FILE_IDX</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">LBL_BINS</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">LBL_COUNT</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">LBL_COUNT_BY_FILE</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">LBL_FILE_COUNT</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.datasets.chess.ChessDataWinLossPairs.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dest_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Created to create a copy on a faster hard drive, however, if read/write speed is a bottle neck,
+this will also be very slow. Likely better to just provide functionality to create a dataset from
+a subset of a pgn file, as dataset creation from pgn file provided 68B observations in ~5hours.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.datasets.chess.ChessDataWinLossPairs.create_database">
+<span class="sig-name descname"><span class="pre">create_database</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.create_database" title="Permalink to this definition">¶</a></dt>
+<dd><p>Custom parser for files from <a class="reference external" href="http://computerchess.org.uk/ccrl/404/games.html">http://computerchess.org.uk/ccrl/404/games.html</a>, provided in pgn
+DeepChess suggests draw games are not useful, and will be excluded if apply_deepchess_rules=True.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.datasets.chess.ChessDataWinLossPairs.get_dynamic_random_idx_partners">
+<span class="sig-name descname"><span class="pre">get_dynamic_random_idx_partners</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.get_dynamic_random_idx_partners" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will provide a random index to be paired with data loader index
+Created to be consistent with dataset ordering indexes to avoid excessive reloading of labels (which exists in batches)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.datasets.chess.ChessDataWinLossPairs.get_static_random_idx_partners">
+<span class="sig-name descname"><span class="pre">get_static_random_idx_partners</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.get_static_random_idx_partners" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will provide a random index to be paired with data loader index
+Created to be consistent with dataset ordering indexes to avoid excessive reloading of labels (which exists in batches)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.datasets.chess.ChessDataWinLossPairs.mem_safe_val_and_offset_to_string">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mem_safe_val_and_offset_to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">o</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.mem_safe_val_and_offset_to_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function.</p>
+<p>In case labels represented by file_idx are no longer in memory, use arbitrary index from existing file.
+Either the current idx, or 0 if current index is beyond existing labels. This will be rare, and impact a
+small fraction of a percent of data points, and otherwise still supplies a valid data point. Bandaid necessary
+to allow multiprocessing of a partitioned dataset.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.datasets.chess.ChessDataWinLossPairs.pack_sequences">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pack_sequences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seqs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.pack_sequences" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.datasets.chess.ChessDataWinLossPairs.sequence_to_string">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sequence_to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.sequence_to_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.datasets.chess.ChessDataWinLossPairs.string_to_sequence">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">string_to_sequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=&lt;class</span> <span class="pre">'numpy.int32'&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.string_to_sequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.datasets.chess.ChessDataWinLossPairs.strings_to_mem_safe_val_and_offset">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">strings_to_mem_safe_val_and_offset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.strings_to_mem_safe_val_and_offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.datasets.chess.ChessDataWinLossPairs.unpack_sequence">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unpack_sequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.unpack_sequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">my_chess.learner.datasets.chess.ChessDataWinLossPairs</a><ul>
+<li><a class="reference internal" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs"><code class="docutils literal notranslate"><span class="pre">ChessDataWinLossPairs</span></code></a><ul>
+<li><a class="reference internal" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.__init__"><code class="docutils literal notranslate"><span class="pre">ChessDataWinLossPairs.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.copy"><code class="docutils literal notranslate"><span class="pre">ChessDataWinLossPairs.copy()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.create_database"><code class="docutils literal notranslate"><span class="pre">ChessDataWinLossPairs.create_database()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.get_dynamic_random_idx_partners"><code class="docutils literal notranslate"><span class="pre">ChessDataWinLossPairs.get_dynamic_random_idx_partners()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.get_static_random_idx_partners"><code class="docutils literal notranslate"><span class="pre">ChessDataWinLossPairs.get_static_random_idx_partners()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.mem_safe_val_and_offset_to_string"><code class="docutils literal notranslate"><span class="pre">ChessDataWinLossPairs.mem_safe_val_and_offset_to_string()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.pack_sequences"><code class="docutils literal notranslate"><span class="pre">ChessDataWinLossPairs.pack_sequences()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.sequence_to_string"><code class="docutils literal notranslate"><span class="pre">ChessDataWinLossPairs.sequence_to_string()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.string_to_sequence"><code class="docutils literal notranslate"><span class="pre">ChessDataWinLossPairs.string_to_sequence()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.strings_to_mem_safe_val_and_offset"><code class="docutils literal notranslate"><span class="pre">ChessDataWinLossPairs.strings_to_mem_safe_val_and_offset()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.datasets.chess.ChessDataWinLossPairs.unpack_sequence"><code class="docutils literal notranslate"><span class="pre">ChessDataWinLossPairs.unpack_sequence()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="my_chess.learner.datasets.chess.ChessData.html"
+                          title="previous chapter">my_chess.learner.datasets.chess.ChessData</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="my_chess.learner.datasets.chess.PGNGamesItr.html"
+                          title="next chapter">my_chess.learner.datasets.chess.PGNGamesItr</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/_autosummary/my_chess.learner.datasets.chess.ChessDataWinLossPairs.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="my_chess.learner.datasets.chess.PGNGamesItr.html" title="my_chess.learner.datasets.chess.PGNGamesItr"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="my_chess.learner.datasets.chess.ChessData.html" title="my_chess.learner.datasets.chess.ChessData"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ChessBot 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="my_chess.html" >my_chess</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="my_chess.learner.html" >my_chess.learner</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="my_chess.learner.datasets.html" >my_chess.learner.datasets</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="my_chess.learner.datasets.chess.html" >my_chess.learner.datasets.chess</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">my_chess.learner.datasets.chess.ChessDataWinLossPairs</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2024, Mark Zimmerman.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Algorithm &#8212; Chess Bot  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=9ddc41a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=cf12ce29" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Hyperparameter tuning" href="../hyperparametertuning/hyperparametertuning.html" />
+    <link rel="prev" title="Chess Dataset" href="../dataloading/dataloading.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Chess Bot</a></h1>
+
+
+
+<p class="blurb">Machine Learning applied to chess so that I don't have to play anymore.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=mzimm003&repo=Chess&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../plan/plan.html">Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data/data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../models/models.html">Models</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../notes.html">Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://mzimm003.github.io/Chess/documentation/build/html/index.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://mzimm003.github.io">Mark Zimmerman's Portfolio</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../notes.html">Notes</a><ul>
+      <li>Previous: <a href="../dataloading/dataloading.html" title="previous chapter">Chess Dataset</a></li>
+      <li>Next: <a href="../hyperparametertuning/hyperparametertuning.html" title="next chapter">Hyperparameter tuning</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="algorithm">
+<span id="trainingsetup"></span><h1>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this heading">¶</a></h1>
+<p>To train a feature extractor for the observation space provided by Petting Zoo’s
+chess environment I try to emulate the process provided by
+DeepChess <span id="id1">[<a class="reference internal" href="../../references.html#id2" title="Omid E. David, Nathan S. Netanyahu, and Lior Wolf. DeepChess: End-to-End Deep Neural Network for Automatic Learning in Chess, pages 88–96. Springer International Publishing, 2016. URL: http://dx.doi.org/10.1007/978-3-319-44781-0_11, doi:10.1007/978-3-319-44781-0_11.">DNW16</a>]</span>. To that end, my model is mirrored, layer by layer, to
+create a decoder version, such that the model and its decoder can be coupled as
+an auto encoder. The goal is to have a training set of board observations, which
+the model takes as input, abstracts to some smaller feature set, passes to the
+decoder then to reproduce the original observation. The more representative the
+feature set is of the board, the better the reproduction. This autoencoding then
+should produce a model which has developed a sense of what it is to be a chess
+position.</p>
+<section id="data">
+<h2>Data<a class="headerlink" href="#data" title="Permalink to this heading">¶</a></h2>
+<p>With 68 million observations, the chess board observations are plentiful. As
+DeepChess <span id="id2">[<a class="reference internal" href="../../references.html#id2" title="Omid E. David, Nathan S. Netanyahu, and Lior Wolf. DeepChess: End-to-End Deep Neural Network for Automatic Learning in Chess, pages 88–96. Springer International Publishing, 2016. URL: http://dx.doi.org/10.1007/978-3-319-44781-0_11, doi:10.1007/978-3-319-44781-0_11.">DNW16</a>]</span> cites using around 2 million, I start there. I
+split the dataset randomly using 2.5% (1.7M) as training data, 0.05%(0.34M) as
+validation data, reserving the rest as test data. Unfortunately, even with this
+small fraction, 2M data points has proven substantial to iterate over, despite
+use of a batching of multiprocessing. Through research and profiling (see below)
+along with noting under utilization of bother the CPU and GPU, it is suspected
+the hard disk drive containing the data set is creating a bottleneck to the
+training process. Unfortunately, the available solid state drive is limited in
+size, and cannot fit the entire dataset. Therefor an attempt to copy only that
+data used in the training and validation set will be made to confirm these
+suspicions and advance the training process.</p>
+<p>This profile of a script simply iterating a dataloader shows the top items which
+are costing time per call all surround input output, to the extent the total
+time of the relatively limited number of calls dwarfs the time taken for calls
+made millions of times. Improved input output speeds should lead to faster
+training.</p>
+<figure class="align-default" id="id5">
+<img alt="../../_images/0216-profile.png" src="../../_images/0216-profile.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Dataloader Profile.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>To provide data samples on the solid state drive, the pgn file provided by
+<a class="reference external" href="http://computerchess.org.uk/ccrl/404/">http://computerchess.org.uk/ccrl/404/</a> are first parsed by game, and then a
+subsample of those games are processed. This limits the dataset randomness when
+creating the training, validation, and test sets as there are fewer games to
+choose from. The observations covered then will be less comprehensive. Hopefully
+with a large enough subset, this impact is limited. Ultimately a dataset of 11M
+observations was created for the solid state drive. For training times, this has
+been a huge improvement. CPU and GPU utilization is now near 100% for much of
+the training, and trainings take hours instead of days/weeks, indicating a
+successful identification and solution of this bottleneck.</p>
+</section>
+<section id="model">
+<h2>Model<a class="headerlink" href="#model" title="Permalink to this heading">¶</a></h2>
+<p>To begin, the model will be similar to that provided by DeepChess
+<span id="id3">[<a class="reference internal" href="../../references.html#id2" title="Omid E. David, Nathan S. Netanyahu, and Lior Wolf. DeepChess: End-to-End Deep Neural Network for Automatic Learning in Chess, pages 88–96. Springer International Publishing, 2016. URL: http://dx.doi.org/10.1007/978-3-319-44781-0_11, doi:10.1007/978-3-319-44781-0_11.">DNW16</a>]</span>. The observation provided by the environment will be
+flattened, then used as input for a feedforward neural network. The network is
+straightforward in that it is fully connected, and is alternating linear and
+activation layers. The observation size is 8x8x111, or 7,104 when flattened.
+Then the layers of the feature extractor model should be smaller than this, but
+there is variability to the exact width and depth, a hyperparameter to be tuned.
+The logits of each layer will represent features extracted from the observation
+space. The features become increasingly abstract deeper in the model, as the
+layers become smaller. The goal then is to find a model which can condense the
+information on the board in the most meaningful way, initially measured by
+reconstruction error, described further in the next section. An example model is
+provided below.</p>
+<figure class="align-default" id="id6">
+<img alt="../../_images/0216-model.png" src="../../_images/0216-model.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Model.</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="auto-encoder-training">
+<h2>Auto Encoder Training<a class="headerlink" href="#auto-encoder-training" title="Permalink to this heading">¶</a></h2>
+<p>To train the feature extractor I will provide an auto encoding algorithm, where
+features are encoded by the model, then decoded by a mirror model. The aim then
+is an output between the two models of the input. By creating abstract features,
+information has been compressed. Depending on the effectiveness of the features,
+information is either preserved or destroyed in that compression. Then the
+effectiveness of the feature extraction can be measured by the reconstruction
+error between the output of the auto encoder (model and mirror model together).
+Specifically, using mean squared error, i.e. the difference between the output
+float values and input float values which both are meant to represent the board
+observation, I have a differentiable loss on which to train the auto encoder
+which contains my feature extracting model. Further, to aid in the propagation
+of information through the model, as provided by DeepChess <span id="id4">[<a class="reference internal" href="../../references.html#id2" title="Omid E. David, Nathan S. Netanyahu, and Lior Wolf. DeepChess: End-to-End Deep Neural Network for Automatic Learning in Chess, pages 88–96. Springer International Publishing, 2016. URL: http://dx.doi.org/10.1007/978-3-319-44781-0_11, doi:10.1007/978-3-319-44781-0_11.">DNW16</a>]</span>,
+the auto encoder is trained in parts. First, including only the first layer,
+then including the first two, and so on. The process is exampled below.</p>
+<figure class="align-default" id="id7">
+<img alt="../../_images/0216-autoencoder.png" src="../../_images/0216-autoencoder.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Autoencoder.</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2024, Mark Zimmerman.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../../_sources/notes/trainingsetup/trainingsetup.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Environment Setup &#8212; Chess Bot  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=9ddc41a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=cf12ce29" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Chess Dataset" href="../dataloading/dataloading.html" />
+    <link rel="prev" title="Notes" href="../notes.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Chess Bot</a></h1>
+
+
+
+<p class="blurb">Machine Learning applied to chess so that I don't have to play anymore.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=mzimm003&repo=Chess&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../plan/plan.html">Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data/data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../models/models.html">Models</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../notes.html">Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://mzimm003.github.io/Chess/documentation/build/html/index.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="https://mzimm003.github.io">Mark Zimmerman's Portfolio</a></li>
+    
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../notes.html">Notes</a><ul>
+      <li>Previous: <a href="../notes.html" title="previous chapter">Notes</a></li>
+      <li>Next: <a href="../dataloading/dataloading.html" title="next chapter">Chess Dataset</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="environment-setup">
+<h1>Environment Setup<a class="headerlink" href="#environment-setup" title="Permalink to this heading">¶</a></h1>
+<p>To ensure the reinforcement learning system setup is fully functional I start by
+attempting to train an agent on TicTacToe. Environments, policies, and
+algorithms have all been wrapped, but otherwise remain unchanged. As such, it is
+expected a policy can be learned quickly given the relatively small state space
+that exists for the game of tic-tac-toe. The environment is provided by the
+Gymnasium Petting Zoo library. The observation is used, but the action mask is
+not.</p>
+<p>As of February 1, multiple training runs have been initiated, with varied
+learning rates and for varied lengths, all to roughly the same effect. The win
+rate of the policy would indicate no learning is taking place, as, after the
+first iteration, the win rate is completely unchanged. With a stocastic sampling
+exploration method, as provided by the PPO algorithm, this should be impossible.
+Otherwise, loss would indicate the policy is in fact training, as it smoothly
+falls to zero. Below are charts to demonstrate these findings. Why does policy
+seem to update from iteration 1 to 2, but then never again? Notably, mean reward
+quickly reaches -1 (absolute minimum). Two equally poor policies should be
+committing illegal moves as they trade first move, reaping -1 reward themselves
+leaving the other with 0, provides the expectation mean reward should be about
+-0.5, and improve from their until a new opponent is generated.</p>
+<p>Charts as of 02/01/2024:</p>
+<figure class="align-default" id="id1">
+<img alt="../../_images/0201.png" src="../../_images/0201.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Not working results.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Eureaka moment strikes as of 02/02/2024! Every episode run provides an “Illegal
+move” warning on the second step. Utilizing the IDE’s debugger, I find Petting
+Zoo’s wrapper environments do not update the selected agent after the step,
+despite the base environment prompting as much. This means, player_1 takes the
+first action, and the second action, hence the second step always resulting in
+an illegal move. To remedy this, I’ve attempted to modify the code base of
+Petting Zoo’s BaseWrapper class to include the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">agent_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">unwrapped</span><span class="o">.</span><span class="n">agent_selection</span>
+
+<span class="nd">@agent_selection</span><span class="o">.</span><span class="n">setter</span>
+<span class="k">def</span> <span class="nf">agent_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">unwrapped</span><span class="o">.</span><span class="n">agent_selection</span> <span class="o">=</span> <span class="n">new_val</span>
+</pre></div>
+</div>
+<p>This has allowed the environment to appropriately pass the action back and forth
+between players. While illegal moves are still being made, far fewer are being
+reported, and training metrics are more stocastic as expected. The initial run
+after this fix looks promising, and perhaps true training can finally commence.
+Below are the results of the inital training after the fix (yellow) compared to
+a couple runs done prior to the fix which demonstrate the peculiarities
+described on 02/01/24:</p>
+<figure class="align-default" id="id2">
+<img alt="../../_images/0202.png" src="../../_images/0202.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">New results.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>With this I can confidently work with new models and hyperparameter tuning
+sessions in pursuit of various improvements in size and speed. Exciting times!</p>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2024, Mark Zimmerman.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../../_sources/notes/environmentsetup/environmentsetup.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

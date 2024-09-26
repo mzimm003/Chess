@@ -1,0 +1,717 @@
+
+
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>my_chess.learner.algorithms.distill.ModelDistill &#8212; ChessBot 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=649a27d8" />
+    <link rel="stylesheet" type="text/css" href="../_static/bizstyle.css?v=13b2ab6e" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=f6245a2f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="my_chess.learner.algorithms.distill.ModelDistillConfig" href="my_chess.learner.algorithms.distill.ModelDistillConfig.html" />
+    <link rel="prev" title="my_chess.learner.algorithms.distill" href="my_chess.learner.algorithms.distill.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="my_chess.learner.algorithms.distill.ModelDistillConfig.html" title="my_chess.learner.algorithms.distill.ModelDistillConfig"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="my_chess.learner.algorithms.distill.html" title="my_chess.learner.algorithms.distill"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ChessBot 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="my_chess.html" >my_chess</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="my_chess.learner.html" >my_chess.learner</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="my_chess.learner.algorithms.html" >my_chess.learner.algorithms</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="my_chess.learner.algorithms.distill.html" accesskey="U">my_chess.learner.algorithms.distill</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">my_chess.learner.algorithms.distill.ModelDistill</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="my-chess-learner-algorithms-distill-modeldistill">
+<h1>my_chess.learner.algorithms.distill.ModelDistill<a class="headerlink" href="#my-chess-learner-algorithms-distill-modeldistill" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">my_chess.learner.algorithms.distill.</span></span><span class="sig-name descname"><span class="pre">ModelDistill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_creator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Logger</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">StorageContext</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="my_chess.learner.algorithms.trainable.Trainable.html#my_chess.learner.algorithms.trainable.Trainable" title="my_chess.learner.algorithms.trainable.Trainable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trainable</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_creator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Logger</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">StorageContext</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a Trainable.</p>
+<p>Sets up logging and points <code class="docutils literal notranslate"><span class="pre">self.logdir</span></code> to a directory in which
+training outputs should be placed.</p>
+<p>Subclasses should prefer defining <code class="docutils literal notranslate"><span class="pre">setup()</span></code> instead of overriding
+<code class="docutils literal notranslate"><span class="pre">__init__()</span></code> directly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> – Trainable-specific configuration data. By default
+will be saved as <code class="docutils literal notranslate"><span class="pre">self.config</span></code>.</p></li>
+<li><p><strong>logger_creator</strong> – (Deprecated) Function that creates a ray.tune.Logger
+object. If unspecified, a default logger is created.</p></li>
+<li><p><strong>storage</strong> – StorageContext object that contains persistent storage paths</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.__init__" title="my_chess.learner.algorithms.distill.ModelDistill.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([config, logger_creator, storage])</p></td>
+<td><p>Initialize a Trainable.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.cleanup" title="my_chess.learner.algorithms.distill.ModelDistill.cleanup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cleanup</span></code></a>()</p></td>
+<td><p>Subclasses should override this for any cleanup on stop.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.default_resource_request" title="my_chess.learner.algorithms.distill.ModelDistill.default_resource_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_resource_request</span></code></a>(config)</p></td>
+<td><p>Provides a static resource requirement for the given configuration.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.export_model" title="my_chess.learner.algorithms.distill.ModelDistill.export_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_model</span></code></a>(export_formats[, export_dir])</p></td>
+<td><p>Exports model based on export_formats.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getName</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.get_auto_filled_metrics" title="my_chess.learner.algorithms.distill.ModelDistill.get_auto_filled_metrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_auto_filled_metrics</span></code></a>([now, ...])</p></td>
+<td><p>Return a dict with metrics auto-filled by the trainable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.get_config" title="my_chess.learner.algorithms.distill.ModelDistill.get_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_config</span></code></a>()</p></td>
+<td><p>Returns configuration passed in by Tune.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_current_ip_pid</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_state</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">infer_itr</span></code>(inp, target[, return_acc, ...])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_actor</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.load_checkpoint" title="my_chess.learner.algorithms.distill.ModelDistill.load_checkpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_checkpoint</span></code></a>(checkpoint_dir)</p></td>
+<td><p>Subclasses should override this to implement restore().</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.log_result" title="my_chess.learner.algorithms.distill.ModelDistill.log_result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_result</span></code></a>(result)</p></td>
+<td><p>Subclasses can optionally override this to customize logging.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_data</span></code>(data)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_output</span></code>(output)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.reset" title="my_chess.learner.algorithms.distill.ModelDistill.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>(new_config[, logger_creator, storage])</p></td>
+<td><p>Resets trial for use with new config.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.reset_config" title="my_chess.learner.algorithms.distill.ModelDistill.reset_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_config</span></code></a>(new_config)</p></td>
+<td><p>Resets configuration without restarting the trial.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.resource_help" title="my_chess.learner.algorithms.distill.ModelDistill.resource_help"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resource_help</span></code></a>(config)</p></td>
+<td><p>Returns a help string for configuring this trainable's resources.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.restore" title="my_chess.learner.algorithms.distill.ModelDistill.restore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">restore</span></code></a>(checkpoint_path)</p></td>
+<td><p>Restores training state from a given model checkpoint.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.save" title="my_chess.learner.algorithms.distill.ModelDistill.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>([checkpoint_dir])</p></td>
+<td><p>Saves the current model state to a checkpoint.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.save_checkpoint" title="my_chess.learner.algorithms.distill.ModelDistill.save_checkpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_checkpoint</span></code></a>(checkpoint_dir)</p></td>
+<td><p>Subclasses should override this to implement <code class="docutils literal notranslate"><span class="pre">save()</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.setup" title="my_chess.learner.algorithms.distill.ModelDistill.setup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup</span></code></a>(config)</p></td>
+<td><p>Subclasses should override this for custom initialization.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.step" title="my_chess.learner.algorithms.distill.ModelDistill.step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step</span></code></a>()</p></td>
+<td><p>override</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.stop" title="my_chess.learner.algorithms.distill.ModelDistill.stop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stop</span></code></a>()</p></td>
+<td><p>Releases all resources used by this trainable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.train" title="my_chess.learner.algorithms.distill.ModelDistill.train"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code></a>()</p></td>
+<td><p>Runs one logical iteration of training.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.train_buffered" title="my_chess.learner.algorithms.distill.ModelDistill.train_buffered"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train_buffered</span></code></a>(buffer_time_s[, ...])</p></td>
+<td><p>Runs multiple iterations of training.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.iteration" title="my_chess.learner.algorithms.distill.ModelDistill.iteration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iteration</span></code></a></p></td>
+<td><p>Current training iteration.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.logdir" title="my_chess.learner.algorithms.distill.ModelDistill.logdir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logdir</span></code></a></p></td>
+<td><p>Directory of the results and checkpoints for this Trainable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.training_iteration" title="my_chess.learner.algorithms.distill.ModelDistill.training_iteration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">training_iteration</span></code></a></p></td>
+<td><p>Current training iteration (same as <cite>self.iteration</cite>).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.trial_id" title="my_chess.learner.algorithms.distill.ModelDistill.trial_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trial_id</span></code></a></p></td>
+<td><p>Trial ID for the corresponding trial of this Trainable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.trial_name" title="my_chess.learner.algorithms.distill.ModelDistill.trial_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trial_name</span></code></a></p></td>
+<td><p>Trial name for the corresponding trial of this Trainable.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.trial_resources" title="my_chess.learner.algorithms.distill.ModelDistill.trial_resources"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trial_resources</span></code></a></p></td>
+<td><p>Resources currently assigned to the trial of this Trainable.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.cleanup">
+<span class="sig-name descname"><span class="pre">cleanup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.cleanup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subclasses should override this for any cleanup on stop.</p>
+<p>If any Ray actors are launched in the Trainable (i.e., with a RLlib
+trainer), be sure to kill the Ray actor process here.</p>
+<p>This process should be lightweight. Per default,</p>
+<p>You can kill a Ray actor by calling <cite>ray.kill(actor)</cite>
+on the actor or removing all references to it and waiting for garbage
+collection</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.8.7.</span></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.default_resource_request">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">default_resource_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">PlacementGroupFactory</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.default_resource_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a static resource requirement for the given configuration.</p>
+<p>This can be overridden by sub-classes to set the correct trial resource
+allocation, so the user does not need to.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">default_resource_request</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">PlacementGroupFactory</span><span class="p">([{</span><span class="s2">&quot;CPU&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;CPU&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}])</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong><strong>[</strong><strong>Dict</strong><strong>[</strong><strong>str</strong> – The Trainable’s config dict.</p></li>
+<li><p><strong>Any</strong><strong>]</strong><strong>]</strong> – The Trainable’s config dict.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A PlacementGroupFactory consumed by Tune</dt><dd><p>for queueing.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PlacementGroupFactory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.export_model">
+<span class="sig-name descname"><span class="pre">export_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">export_formats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">export_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.export_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exports model based on export_formats.</p>
+<p>Subclasses should override _export_model() to actually
+export model to local directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>export_formats</strong> – Format or list of (str) formats
+that should be exported.</p></li>
+<li><p><strong>export_dir</strong> – Optional dir to place the exported model.
+Defaults to self.logdir.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dict that maps ExportFormats to successfully exported models.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.get_auto_filled_metrics">
+<span class="sig-name descname"><span class="pre">get_auto_filled_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">now</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_this_iter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug_metrics_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.get_auto_filled_metrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dict with metrics auto-filled by the trainable.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">debug_metrics_only</span></code> is True, only metrics that don’t
+require at least one iteration will be returned
+(<code class="docutils literal notranslate"><span class="pre">ray.tune.result.DEBUG_METRICS</span></code>).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.get_config">
+<span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.get_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns configuration passed in by Tune.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.iteration">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">iteration</span></span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.iteration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current training iteration.</p>
+<p>This value is automatically incremented every time <cite>train()</cite> is called
+and is automatically inserted into the training result dict.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.load_checkpoint">
+<span class="sig-name descname"><span class="pre">load_checkpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkpoint_dir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.load_checkpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subclasses should override this to implement restore().</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>In this method, do not rely on absolute paths. The absolute
+path of the checkpoint_dir used in <code class="docutils literal notranslate"><span class="pre">Trainable.save_checkpoint</span></code>
+may be changed.</p>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">Trainable.save_checkpoint</span></code> returned a prefixed string, the
+prefix of the checkpoint string returned by
+<code class="docutils literal notranslate"><span class="pre">Trainable.save_checkpoint</span></code> may be changed.
+This is because trial pausing depends on temporary directories.</p>
+<p>The directory structure under the checkpoint_dir provided to
+<code class="docutils literal notranslate"><span class="pre">Trainable.save_checkpoint</span></code> is preserved.</p>
+<p>See the examples below.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ray.tune.trainable</span> <span class="kn">import</span> <span class="n">Trainable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="n">Trainable</span><span class="p">):</span>
+<span class="gp">... </span>   <span class="k">def</span> <span class="nf">save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint_path</span><span class="p">):</span>
+<span class="gp">... </span>       <span class="n">my_checkpoint_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">checkpoint_path</span><span class="p">,</span> <span class="s2">&quot;my/path&quot;</span><span class="p">)</span>
+<span class="gp">... </span>       <span class="k">return</span> <span class="n">my_checkpoint_path</span>
+<span class="gp">... </span>   <span class="k">def</span> <span class="nf">load_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">my_checkpoint_path</span><span class="p">):</span>
+<span class="gp">... </span>       <span class="nb">print</span><span class="p">(</span><span class="n">my_checkpoint_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">trainer</span> <span class="o">=</span> <span class="n">Example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># This is used when PAUSED.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">checkpoint_result</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="n">trainer</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="n">checkpoint_result</span><span class="p">)</span> 
+</pre></div>
+</div>
+<p>If <cite>Trainable.save_checkpoint</cite> returned a dict, then Tune will directly pass
+the dict data as the argument to this method.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ray.tune.trainable</span> <span class="kn">import</span> <span class="n">Trainable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Example</span><span class="p">(</span><span class="n">Trainable</span><span class="p">):</span>
+<span class="gp">... </span>   <span class="k">def</span> <span class="nf">save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint_path</span><span class="p">):</span>
+<span class="gp">... </span>       <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;my_data&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="gp">... </span>   <span class="k">def</span> <span class="nf">load_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint_dict</span><span class="p">):</span>
+<span class="gp">... </span>       <span class="nb">print</span><span class="p">(</span><span class="n">checkpoint_dict</span><span class="p">[</span><span class="s2">&quot;my_data&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.8.7.</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>checkpoint</strong> – If dict, the return value is as
+returned by <code class="docutils literal notranslate"><span class="pre">save_checkpoint</span></code>. Otherwise, the directory
+the checkpoint was stored in.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.log_result">
+<span class="sig-name descname"><span class="pre">log_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.log_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subclasses can optionally override this to customize logging.</p>
+<p>The logging here is done on the worker process rather than
+the driver.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.8.7.</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>result</strong> – Training result returned by step().</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.logdir">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">logdir</span></span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.logdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Directory of the results and checkpoints for this Trainable.</p>
+<p>Note that the current working directory will also be changed to this.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_creator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets trial for use with new config.</p>
+<p>Subclasses should override reset_config() to actually
+reset actor behavior for the new config.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.reset_config">
+<span class="sig-name descname"><span class="pre">reset_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.reset_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets configuration without restarting the trial.</p>
+<p>This method is optional, but can be implemented to speed up algorithms
+such as PBT, and to allow performance optimizations such as running
+experiments with reuse_actors=True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_config</strong> – Updated hyperparameter configuration
+for the trainable.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if reset was successful else False.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.resource_help">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">resource_help</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.resource_help" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a help string for configuring this trainable’s resources.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – The Trainer’s config dict.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.restore">
+<span class="sig-name descname"><span class="pre">restore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkpoint_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Checkpoint</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_TrainingResult</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.restore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restores training state from a given model checkpoint.</p>
+<p>These checkpoints are returned from calls to save().</p>
+<p>Subclasses should override <code class="docutils literal notranslate"><span class="pre">load_checkpoint()</span></code> instead to
+restore state.
+This method restores additional metadata saved with the checkpoint.</p>
+<p><cite>checkpoint_path</cite> should match with the return from <code class="docutils literal notranslate"><span class="pre">save()</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>checkpoint_path</strong> – Path to restore checkpoint from. If this
+path does not exist on the local node, it will be fetched
+from external (cloud) storage if available, or restored
+from a remote node.</p></li>
+<li><p><strong>checkpoint_node_ip</strong> – If given, try to restore
+checkpoint from this node if it doesn’t exist locally or
+on cloud storage.</p></li>
+<li><p><strong>fallback_to_latest</strong> – If True, will try to recover the
+latest available checkpoint if the given <code class="docutils literal notranslate"><span class="pre">checkpoint_path</span></code>
+could not be found.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>DeveloperAPI:</strong> This API may change across minor Ray releases.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkpoint_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">_TrainingResult</span></span></span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the current model state to a checkpoint.</p>
+<p>Subclasses should override <code class="docutils literal notranslate"><span class="pre">save_checkpoint()</span></code> instead to save state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>checkpoint_dir</strong> – Optional dir to place the checkpoint.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The given or created checkpoint directory.</p>
+</dd>
+</dl>
+<p>Note the return value matches up with what is expected of <cite>restore()</cite>.</p>
+<p><strong>DeveloperAPI:</strong> This API may change across minor Ray releases.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.save_checkpoint">
+<span class="sig-name descname"><span class="pre">save_checkpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkpoint_dir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.save_checkpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subclasses should override this to implement <code class="docutils literal notranslate"><span class="pre">save()</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Do not rely on absolute paths in the implementation of
+<code class="docutils literal notranslate"><span class="pre">Trainable.save_checkpoint</span></code> and <code class="docutils literal notranslate"><span class="pre">Trainable.load_checkpoint</span></code>.</p>
+</div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">validate_save_restore</span></code> to catch <code class="docutils literal notranslate"><span class="pre">Trainable.save_checkpoint</span></code>/
+<code class="docutils literal notranslate"><span class="pre">Trainable.load_checkpoint</span></code> errors before execution.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ray.tune.utils</span> <span class="kn">import</span> <span class="n">validate_save_restore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">MyTrainableClass</span> <span class="o">=</span> <span class="o">...</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_save_restore</span><span class="p">(</span><span class="n">MyTrainableClass</span><span class="p">)</span> 
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.8.7.</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>checkpoint_dir</strong> – The directory where the checkpoint
+file must be stored. In a Tune run, if the trial is paused,
+the provided path may be temporary and moved.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dict or None. If dict, the return value will
+be automatically serialized by Tune. In that case,
+<code class="docutils literal notranslate"><span class="pre">Trainable.load_checkpoint()</span></code> will receive the dict upon restore.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">trainable</span><span class="p">,</span> <span class="n">trainable1</span><span class="p">,</span> <span class="n">trainable2</span> <span class="o">=</span> <span class="o">...</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">trainable1</span><span class="o">.</span><span class="n">save_checkpoint</span><span class="p">(</span><span class="s2">&quot;/tmp/checkpoint_1&quot;</span><span class="p">))</span> 
+<span class="go">&quot;/tmp/checkpoint_1&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">trainable2</span><span class="o">.</span><span class="n">save_checkpoint</span><span class="p">(</span><span class="s2">&quot;/tmp/checkpoint_2&quot;</span><span class="p">))</span> 
+<span class="go">{&quot;some&quot;: &quot;data&quot;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">trainable</span><span class="o">.</span><span class="n">save_checkpoint</span><span class="p">(</span><span class="s2">&quot;/tmp/bad_example&quot;</span><span class="p">)</span> 
+<span class="go">&quot;/tmp/NEW_CHECKPOINT_PATH/my_checkpoint_file&quot; # This will error.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="my_chess.learner.algorithms.distill.ModelDistillConfig.html#my_chess.learner.algorithms.distill.ModelDistillConfig" title="my_chess.learner.algorithms.distill.ModelDistillConfig"><span class="pre">ModelDistillConfig</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subclasses should override this for custom initialization.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.8.7.</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – Hyperparameters and other configs given.
+Copy of <cite>self.config</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>override</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Releases all resources used by this trainable.</p>
+<p>Calls <code class="docutils literal notranslate"><span class="pre">Trainable.cleanup</span></code> internally. Subclasses should override
+<code class="docutils literal notranslate"><span class="pre">Trainable.cleanup</span></code> for custom cleanup procedures.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.train">
+<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs one logical iteration of training.</p>
+<p>Calls <code class="docutils literal notranslate"><span class="pre">step()</span></code> internally. Subclasses should override <code class="docutils literal notranslate"><span class="pre">step()</span></code>
+instead to return results.
+This method automatically fills the following fields in the result:</p>
+<blockquote>
+<div><p><cite>done</cite> (bool): training is terminated. Filled only if not provided.</p>
+<p><cite>time_this_iter_s</cite> (float): Time in seconds this iteration
+took to run. This may be overridden in order to override the
+system-computed time difference.</p>
+<p><cite>time_total_s</cite> (float): Accumulated time in seconds for this
+entire experiment.</p>
+<p><cite>training_iteration</cite> (int): The index of this
+training iteration, e.g. call to train(). This is incremented
+after <cite>step()</cite> is called.</p>
+<p><cite>pid</cite> (str): The pid of the training process.</p>
+<p><cite>date</cite> (str): A formatted date of when the result was processed.</p>
+<p><cite>timestamp</cite> (str): A UNIX timestamp of when the result
+was processed. This may be overridden.</p>
+<p><cite>hostname</cite> (str): Hostname of the machine hosting the training
+process.</p>
+<p><cite>node_ip</cite> (str): Node ip of the machine hosting the training
+process.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dict that describes training progress.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.train_buffered">
+<span class="sig-name descname"><span class="pre">train_buffered</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffer_time_s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_buffer_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.train_buffered" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs multiple iterations of training.</p>
+<p>Calls <code class="docutils literal notranslate"><span class="pre">train()</span></code> internally. Collects and combines multiple results.
+This function will run <code class="docutils literal notranslate"><span class="pre">self.train()</span></code> repeatedly until one of
+the following conditions is met: 1) the maximum buffer length is
+reached, 2) the maximum buffer time is reached, or 3) a checkpoint
+was created. Even if the maximum time is reached, it will always
+block until at least one result is received.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>buffer_time_s</strong> – Maximum time to buffer. The next result
+received after this amount of time has passed will return
+the whole buffer.</p></li>
+<li><p><strong>max_buffer_length</strong> – Maximum number of results to buffer.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.training_iteration">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">training_iteration</span></span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.training_iteration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current training iteration (same as <cite>self.iteration</cite>).</p>
+<p>This value is automatically incremented every time <cite>train()</cite> is called
+and is automatically inserted into the training result dict.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.trial_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trial_id</span></span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.trial_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trial ID for the corresponding trial of this Trainable.</p>
+<p>This is not set if not using Tune.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ray.tune</span> <span class="kn">import</span> <span class="n">Trainable</span>
+
+<span class="n">trial_id</span> <span class="o">=</span> <span class="n">Trainable</span><span class="p">()</span><span class="o">.</span><span class="n">trial_id</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.trial_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trial_name</span></span><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.trial_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trial name for the corresponding trial of this Trainable.</p>
+<p>This is not set if not using Tune.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ray.tune</span> <span class="kn">import</span> <span class="n">Trainable</span>
+
+<span class="n">name</span> <span class="o">=</span> <span class="n">Trainable</span><span class="p">()</span><span class="o">.</span><span class="n">trial_name</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="my_chess.learner.algorithms.distill.ModelDistill.trial_resources">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trial_resources</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">PlacementGroupFactory</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#my_chess.learner.algorithms.distill.ModelDistill.trial_resources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resources currently assigned to the trial of this Trainable.</p>
+<p>This is not set if not using Tune.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ray.tune</span> <span class="kn">import</span> <span class="n">Trainable</span>
+
+<span class="n">trial_resources</span> <span class="o">=</span> <span class="n">Trainable</span><span class="p">()</span><span class="o">.</span><span class="n">trial_resources</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">my_chess.learner.algorithms.distill.ModelDistill</a><ul>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill"><code class="docutils literal notranslate"><span class="pre">ModelDistill</span></code></a><ul>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.__init__"><code class="docutils literal notranslate"><span class="pre">ModelDistill.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.cleanup"><code class="docutils literal notranslate"><span class="pre">ModelDistill.cleanup()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.default_resource_request"><code class="docutils literal notranslate"><span class="pre">ModelDistill.default_resource_request()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.export_model"><code class="docutils literal notranslate"><span class="pre">ModelDistill.export_model()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.get_auto_filled_metrics"><code class="docutils literal notranslate"><span class="pre">ModelDistill.get_auto_filled_metrics()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.get_config"><code class="docutils literal notranslate"><span class="pre">ModelDistill.get_config()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.iteration"><code class="docutils literal notranslate"><span class="pre">ModelDistill.iteration</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.load_checkpoint"><code class="docutils literal notranslate"><span class="pre">ModelDistill.load_checkpoint()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.log_result"><code class="docutils literal notranslate"><span class="pre">ModelDistill.log_result()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.logdir"><code class="docutils literal notranslate"><span class="pre">ModelDistill.logdir</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.reset"><code class="docutils literal notranslate"><span class="pre">ModelDistill.reset()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.reset_config"><code class="docutils literal notranslate"><span class="pre">ModelDistill.reset_config()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.resource_help"><code class="docutils literal notranslate"><span class="pre">ModelDistill.resource_help()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.restore"><code class="docutils literal notranslate"><span class="pre">ModelDistill.restore()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.save"><code class="docutils literal notranslate"><span class="pre">ModelDistill.save()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.save_checkpoint"><code class="docutils literal notranslate"><span class="pre">ModelDistill.save_checkpoint()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.setup"><code class="docutils literal notranslate"><span class="pre">ModelDistill.setup()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.step"><code class="docutils literal notranslate"><span class="pre">ModelDistill.step()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.stop"><code class="docutils literal notranslate"><span class="pre">ModelDistill.stop()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.train"><code class="docutils literal notranslate"><span class="pre">ModelDistill.train()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.train_buffered"><code class="docutils literal notranslate"><span class="pre">ModelDistill.train_buffered()</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.training_iteration"><code class="docutils literal notranslate"><span class="pre">ModelDistill.training_iteration</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.trial_id"><code class="docutils literal notranslate"><span class="pre">ModelDistill.trial_id</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.trial_name"><code class="docutils literal notranslate"><span class="pre">ModelDistill.trial_name</span></code></a></li>
+<li><a class="reference internal" href="#my_chess.learner.algorithms.distill.ModelDistill.trial_resources"><code class="docutils literal notranslate"><span class="pre">ModelDistill.trial_resources</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="my_chess.learner.algorithms.distill.html"
+                          title="previous chapter">my_chess.learner.algorithms.distill</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="my_chess.learner.algorithms.distill.ModelDistillConfig.html"
+                          title="next chapter">my_chess.learner.algorithms.distill.ModelDistillConfig</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/_autosummary/my_chess.learner.algorithms.distill.ModelDistill.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="my_chess.learner.algorithms.distill.ModelDistillConfig.html" title="my_chess.learner.algorithms.distill.ModelDistillConfig"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="my_chess.learner.algorithms.distill.html" title="my_chess.learner.algorithms.distill"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ChessBot 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="my_chess.html" >my_chess</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="my_chess.learner.html" >my_chess.learner</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="my_chess.learner.algorithms.html" >my_chess.learner.algorithms</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="my_chess.learner.algorithms.distill.html" >my_chess.learner.algorithms.distill</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">my_chess.learner.algorithms.distill.ModelDistill</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2024, Mark Zimmerman.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    </div>
+  </body>
+</html>

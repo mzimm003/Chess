@@ -15,6 +15,7 @@ def main(kwargs=None):
         x = pickle.load(f)
         best_model_class = x['model']
         best_model_config = x['model_config']
+        # best_model_config.feature_extractor_param_dir = Path(str(best_model_config.feature_extractor_param_dir).replace("/opt","/home/mark"))
 
     latest_checkpoint = sorted(best_model_dir.glob('checkpoint*'), reverse=True)[0]/'model.pt'
     play = HumanVsBot(

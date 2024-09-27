@@ -336,7 +336,6 @@ class NextPositionsGenerator:
             move_sort = self.move_sort,
             evaluator = self.evaluator,)
 
-
 class DeepChessAlphaBetaConfig(ModelConfig):
     def __init__(
             self,
@@ -382,24 +381,21 @@ class DeepChessAlphaBeta(Model):
         # self.be = lambda x: torch.ones(x.shape[0])[:,None]*torch.tensor([1,0])
         self.max_depth = self.config.max_depth
         self.iter_depths = self.config.iterate_depths
-        self.curr_depth = 1
         self.heur_obs = {}
-        self.curr_player = None
         self.positions_analyzed = 0
         self.move_sort = self.config.move_sort
         self.next_pos_gen = NextPositionsGenerator(
             move_sort=self.move_sort,
             evaluator=self.be)
 
-    def max_player(self):
-        return int(self.curr_player == DeepChessAlphaBeta.BLACK)
+    def max_player(self, board:Board):
+        curr_player = board.turn == DeepChessAlphaBeta.WHITE
+        return int(curr_player == DeepChessAlphaBeta.BLACK)
     
-    def min_player(self):
-        return int(self.curr_player == DeepChessAlphaBeta.WHITE)
-    
-    def update_curr_player(self, board:Board):
-        self.curr_player = board.turn == DeepChessAlphaBeta.WHITE
-    
+    def min_player(self, board:Board):
+        curr_player = board.turn == DeepChessAlphaBeta.WHITE
+        return int(curr_player == DeepChessAlphaBeta.WHITE)
+        
     def compare_boards(self, obs1, obs2):
         comp = self.be(torch.stack([obs1, obs2],dim=-4))
         return comp[0] - comp[1]
@@ -416,27 +412,39 @@ class DeepChessAlphaBeta(Model):
                 input[k] = torch.tensor(input[k].copy())
         else:
             input = torch.tensor(input.copy())
-        self.update_curr_player(board)
         act = None
         if self.iter_depths:
             act = self.iterate_depths(board, input)
         else:
-            self.curr_depth = self.max_depth
-            act, val = self.max_value(board, input, alpha=None, beta=None)
+            act, val = self.max_value(
+                board,
+                input,
+                alpha=None,
+                beta=None,
+                depth=self.max_depth,
+                max_player=self.max_player(board=board),
+                min_player=self.min_player(board=board))
         end_time = time.clock_gettime(time.CLOCK_MONOTONIC)
         print("Total move time:{:.4f}\nPositions analyzed:{}".format(end_time - start_time, self.positions_analyzed))
         return act
 
     def iterate_depths(self, board:Board, input):
         act = None
-        self.curr_depth = 1
+        curr_depth = 1
         self.heur_obs = {}
-        while self.curr_depth <= self.max_depth:
+        while curr_depth <= self.max_depth:
             dep_start_time = time.clock_gettime(time.CLOCK_MONOTONIC)
-            act, val = self.max_value(board, input, alpha=None, beta=None)
+            act, val = self.max_value(
+                board,
+                input,
+                alpha=None,
+                beta=None,
+                depth=curr_depth,
+                max_player=self.max_player(board=board),
+                min_player=self.min_player(board=board))
             dep_end_time = time.clock_gettime(time.CLOCK_MONOTONIC)
-            print("Depth {} time:{:.4f}".format(self.curr_depth, dep_end_time - dep_start_time))
-            self.curr_depth += 1
+            print("Depth {} time:{:.4f}".format(curr_depth, dep_end_time - dep_start_time))
+            curr_depth += 1
         return act
 
     def val_act_update(
@@ -543,14 +551,23 @@ class DeepChessAlphaBeta(Model):
 
         return False, ret_val, ret_act, alpha, beta
 
-    def max_value(self, board:Board, input, alpha, beta, depth=1) -> Tuple[int, Tuple[float, TensorType]]:
+    def max_value(
+            self,
+            board:Board,
+            input,
+            alpha,
+            beta,
+            depth=0,
+            max_player=0,
+            min_player=1,
+            ) -> Tuple[int, Tuple[float, TensorType]]:
         '''
         returns: action integer, (terminal value, observation tensor)
         '''
         if self.terminal_test(board):
             self.positions_analyzed += 1
-            return None, (self.utility(board), input['observation'])
-        if depth > self.curr_depth:
+            return None, (self.utility(board, max_player=max_player), input['observation'])
+        if depth <= 0:
             self.positions_analyzed += 1
             return None, (None, input['observation'])
 
@@ -559,11 +576,18 @@ class DeepChessAlphaBeta(Model):
         next_positions = self.next_pos_gen.generate_next_positions(
             board=board,
             latest_observation=input,
-            turn_player=self.max_player(),
-            perspective_player=self.min_player())
+            turn_player=max_player,
+            perspective_player=min_player)
         
         for a, b, obs in next_positions:
-            result = self.min_value(b, obs, alpha, beta, depth=depth+1)
+            result = self.min_value(
+                b,
+                obs,
+                alpha,
+                beta,
+                depth=depth-1,
+                max_player=max_player,
+                min_player=min_player)
             #TODO add heuristic obs to next_pos_gen?
             # self.heur_obs[board_key][a] = v[1]
             ret_early, val, act, alpha, beta = self.update_values(
@@ -579,14 +603,22 @@ class DeepChessAlphaBeta(Model):
                 break
         return act, (None, val)
     
-    def min_value(self, board:Board, input, alpha, beta, depth=1) -> Tuple[int, Tuple[float, TensorType]]:
+    def min_value(
+            self,
+            board:Board,
+            input,
+            alpha,
+            beta,
+            depth=0,
+            max_player=0,
+            min_player=1) -> Tuple[int, Tuple[float, TensorType]]:
         '''
         returns: action integer, (terminal value, observation tensor)
         '''
         if self.terminal_test(board):
             self.positions_analyzed += 1
-            return None, (self.utility(board), input['observation'])
-        if depth > self.curr_depth:
+            return None, (self.utility(board, max_player=max_player), input['observation'])
+        if depth <= 0:
             self.positions_analyzed += 1
             return None, (None, input['observation'])
 
@@ -595,11 +627,18 @@ class DeepChessAlphaBeta(Model):
         next_positions = self.next_pos_gen.generate_next_positions(
             board=board,
             latest_observation=input,
-            turn_player=self.min_player(),
-            perspective_player=self.max_player())
+            turn_player=min_player,
+            perspective_player=max_player)
         
         for a, b, obs in next_positions:
-            result = self.max_value(b, obs, alpha, beta, depth=depth+1)
+            result = self.max_value(
+                b,
+                obs,
+                alpha,
+                beta,
+                depth=depth-1,
+                max_player=max_player,
+                min_player=min_player)
             #TODO add heuristic obs to next_pos_gen?
             # self.heur_obs[board_key][a] = v[1]
             ret_early, val, act, alpha, beta = self.update_values(
@@ -618,8 +657,8 @@ class DeepChessAlphaBeta(Model):
     def terminal_test(self, board:Board):
         return board.is_game_over(claim_draw=True)
     
-    def utility(self, board:Board):
-        black_modifier = -1 if self.curr_player == DeepChessAlphaBeta.BLACK else 1
+    def utility(self, board:Board, max_player=0):
+        black_modifier = -1 if max_player == DeepChessAlphaBeta.BLACK else 1
         return chess_utils.result_to_int(board.result(claim_draw=True)) * black_modifier
     
     # def simulate_move(self, board:Board, action, player):

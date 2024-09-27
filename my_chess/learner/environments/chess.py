@@ -1,4 +1,9 @@
-from my_chess.learner.environments import Environment
+from my_chess.learner.environments import (
+    Environment,
+    TerminateIllegalWrapper,
+    AssertOutOfBoundsWrapper,
+    OrderEnforcingWrapper,
+)
 
 from typing import Literal, Dict
 from chess import Board, BLACK, WHITE
@@ -8,7 +13,12 @@ from pettingzoo.classic.chess import chess_utils
 
 import torch
 
-
+def chess_env(**kwargs):
+    env = chess_v6.raw_env(**kwargs)
+    env = TerminateIllegalWrapper(env, illegal_reward=-1)
+    env = AssertOutOfBoundsWrapper(env)
+    env = OrderEnforcingWrapper(env)
+    return env
 
 class Chess(Environment):
     def __init__(
@@ -16,7 +26,7 @@ class Chess(Environment):
             env=None,
             render_mode:Literal[None, "human", "ansi", "rgb_array"] = None) -> None:
         assert render_mode in {None, "human", "ansi", "rgb_array"}
-        env = chess_v6 if env is None else env
+        env = chess_env if env is None else env
         super().__init__(env, render_mode=render_mode)
 
     @staticmethod

@@ -41,22 +41,32 @@ class TestDeepChessAlphaBeta:
         torch.ones(8,8,7)*torch.nan,
         torch.arange(8).repeat_interleave(13).repeat(8,8,1)], dim=-1)}
     
-    def test_max_player_1(self):
-        self.model.update_curr_player(self.environment.env.board)
+    @classmethod
+    def gen_chess_env(cls):
+        environment = Chess()
+        input_sample, _ = environment.reset()
+        return environment
+
+    def test_env_max_player_1(self):
+        environment = TestDeepChessAlphaBeta.gen_chess_env()
+        self.model.update_curr_player(environment.env.board)
         assert self.model.max_player() == 0
 
-    def test_max_player_2(self):
-        self.environment.step({'player_0':77})
-        self.model.update_curr_player(self.environment.env.board)
+    def test_env_max_player_2(self):
+        environment = TestDeepChessAlphaBeta.gen_chess_env()
+        environment.step({'player_0':77})
+        self.model.update_curr_player(environment.env.board)
         assert self.model.max_player() == 1
 
-    def test_min_player_1(self):
-        self.model.update_curr_player(self.environment.env.board)
+    def test_env_min_player_1(self):
+        environment = TestDeepChessAlphaBeta.gen_chess_env()
+        self.model.update_curr_player(environment.env.board)
         assert self.model.min_player() == 1
 
-    def test_min_player_2(self):
-        self.environment.step({'player_0':77})
-        self.model.update_curr_player(self.environment.env.board)
+    def test_env_min_player_2(self):
+        environment = TestDeepChessAlphaBeta.gen_chess_env()
+        environment.step({'player_0':77})
+        self.model.update_curr_player(environment.env.board)
         assert self.model.min_player() == 0
 
     def test_simulate_move_1(self):
@@ -237,23 +247,24 @@ class TestDeepChessAlphaBeta:
         observations.
         """
         # First with white's play and black's observation
-        observation, *_ = self.environment.step({"player_0":77})
-        self.model.update_curr_player(self.environment.env.board)
+        environment = TestDeepChessAlphaBeta.gen_chess_env()
+        observation, *_ = environment.step({"player_0":77})
+        self.model.update_curr_player(environment.env.board)
         observation = observation["player_1"]
         for r in observation:
             observation[r] = torch.from_numpy(observation[r].copy())
-        result = self.__create_observation_from_board(self.environment.env.board)
+        result = self.__create_observation_from_board(environment.env.board)
         observation["observation"] = observation["observation"][:,:,:20]
         result["observation"] = result["observation"][:,:,:20]
         self.__compare_obs(result, observation)
 
         # Then black's play and white's observation
-        observation, *_ = self.environment.step({"player_1":661})
-        self.model.update_curr_player(self.environment.env.board)
+        observation, *_ = environment.step({"player_1":661})
+        self.model.update_curr_player(environment.env.board)
         observation = observation["player_0"]
         for r in observation:
             observation[r] = torch.from_numpy(observation[r].copy())
-        result = self.__create_observation_from_board(self.environment.env.board)
+        result = self.__create_observation_from_board(environment.env.board)
         observation["observation"] = observation["observation"][:,:,:20]
         result["observation"] = result["observation"][:,:,:20]
         self.__compare_obs(result, observation)
@@ -331,6 +342,7 @@ class TestDeepChessAlphaBeta:
         assert self.model.utility(end_board) == 0
 
     def test_min_max_observations1(self, short_game_data):
+        environment = TestDeepChessAlphaBeta.gen_chess_env()
         board = Board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
         self.model.update_curr_player(board)
         game = [Board('rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1'),
@@ -358,9 +370,9 @@ class TestDeepChessAlphaBeta:
                 if b == state:
                     board = b
                     lat_observ = obs
-                    curr_observation, *_ = self.environment.step({self.environment.env.agent_selection:a})
+                    curr_observation, *_ = environment.step({environment.env.agent_selection:a})
                     curr_observation = {k:torch.tensor(v.copy()) for k,v in list(curr_observation.values())[0].items()}
-                    next_observation, *_ = self.environment.env.last()
+                    next_observation, *_ = environment.env.last()
                     next_observation = {k:torch.tensor(v.copy()) for k,v in next_observation.items()}
                     for k in lat_observ:
                         assert (lat_observ[k] == curr_observation[k]).all()

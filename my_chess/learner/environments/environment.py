@@ -3,16 +3,46 @@ from typing import (
     Union
 )
 
-from pettingzoo.classic import chess_v6, tictactoe_v3
 from pettingzoo import AECEnv
 from ray.tune.registry import register_env
 from ray.rllib.env import PettingZooEnv as PZE
 from ray.rllib.env.multi_agent_env import MultiAgentEnv
 from ray.rllib.utils.typing import MultiAgentDict
 
-import torch
+from pettingzoo.utils.wrappers import BaseWrapper as PZBaseWrapper
+from pettingzoo.utils.wrappers import (
+    OrderEnforcingWrapper as PZOrderEnforcingWrapper,
+    TerminateIllegalWrapper as PZTerminateIllegalWrapper,
+    AssertOutOfBoundsWrapper as PZAssertOutOfBoundsWrapper,
+    ClipOutOfBoundsWrapper as PZClipOutOfBoundsWrapper,
+)
 
-import gymnasium as gym
+class BaseWrapper(PZBaseWrapper):
+    """
+    To correct for bug in pettingzoo as of version 1.24.3. Issue is described
+    here, https://github.com/Farama-Foundation/PettingZoo/issues/1176. Fix has
+    been merged but not released. Until then, this patch suffices to ensure
+    the agent selection actually transitions between players in the environment.
+    """
+    @property
+    def agent_selection(self) -> str:
+        return self.env.unwrapped.agent_selection
+
+    @agent_selection.setter
+    def agent_selection(self, new_val: str):
+        self.env.unwrapped.agent_selection = new_val
+
+class OrderEnforcingWrapper(BaseWrapper, PZOrderEnforcingWrapper):
+    pass
+
+class TerminateIllegalWrapper(BaseWrapper, PZTerminateIllegalWrapper):
+    pass
+
+class AssertOutOfBoundsWrapper(BaseWrapper, PZAssertOutOfBoundsWrapper):
+    pass
+
+class ClipOutOfBoundsWrapper(BaseWrapper, PZClipOutOfBoundsWrapper):
+    pass
 
 class PettingZooEnv(PZE):
     def __init__(self, env:AECEnv):
@@ -50,7 +80,7 @@ class PettingZooEnv(PZE):
 #Necessary to avoid instantiating environment outside of worker, causing shared parameters
 #between what should be independent environments.
 def env_creator(env, render_mode=None):
-    env = env.env(render_mode=render_mode)
+    env = env(render_mode=render_mode)
     return env
 
 class Environment(PettingZooEnv):

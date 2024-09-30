@@ -299,7 +299,7 @@ class HumanVsBot(Test):
             window_size = self.window_size()
             square_width = window_size[0] // 8
             square_height = window_size[1] // 8
-            return x // square_width, (window_size[1] - y) // square_height
+            return int(x // square_width), int((window_size[1] - y) // square_height)
         
         def square_to_coord(self, x, y):
             return ''.join((
@@ -311,10 +311,6 @@ class HumanVsBot(Test):
             return self.square_to_coord(*f) + self.square_to_coord(*t)
 
         def get(self, observation, env, **kwargs):
-            #RANDOM PLAYER
-            # options = torch.arange(observation['action_mask'].size)[observation['action_mask'].astype(bool)]
-            # choice = torch.randint(options.numel(), (1,))
-            # return options[choice].item()
             action = None
             from_coord = None
             legal_actions = chess_utils.legal_moves(env.board)

@@ -9,6 +9,13 @@ my\_chess.learner.environments.chess
 
    
    
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      chess_env
+   
    
 
    

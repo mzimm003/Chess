@@ -69,7 +69,6 @@ my\_chess.learner.models.deepchess.DeepChessAlphaBeta
       ~DeepChessAlphaBeta.to_empty
       ~DeepChessAlphaBeta.train
       ~DeepChessAlphaBeta.type
-      ~DeepChessAlphaBeta.update_curr_player
       ~DeepChessAlphaBeta.update_values
       ~DeepChessAlphaBeta.utility
       ~DeepChessAlphaBeta.val_act_update

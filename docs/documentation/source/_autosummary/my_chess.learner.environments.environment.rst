@@ -26,8 +26,13 @@ my\_chess.learner.environments.environment
       :toctree:
       :template: custom-class-template.rst
    
+      AssertOutOfBoundsWrapper
+      BaseWrapper
+      ClipOutOfBoundsWrapper
       Environment
+      OrderEnforcingWrapper
       PettingZooEnv
+      TerminateIllegalWrapper
    
    
 

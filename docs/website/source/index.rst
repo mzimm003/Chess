@@ -30,9 +30,8 @@ Select a bot to play. Learn more about their construction in the Models section.
 
    <p>
    <iframe
+   id="app"
    src="https://mzimm003-playchessvsai.hf.space"
    frameborder="0"
-   width="1200"
-   height="1100"
    ></iframe>
    </p>

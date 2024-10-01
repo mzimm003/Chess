@@ -43,7 +43,7 @@ class ModelDistillConfig(TrainableConfig):
             dataset = dataset if dataset else ChessDataWinLossPairs,
             dataset_config = dataset_config if dataset_config else {"dataset_dir":"/opt/datasets/Chess-CCRL-404"},
             optimizer = optimizer if optimizer else Adam,
-            optimizer_config = optimizer_config if optimizer_config else {"lr":learning_rate},
+            optimizer_config = optimizer_config,
             criterion = criterion if criterion else nn.CrossEntropyLoss,
             criterion_config = criterion_config if criterion_config else {},
             model = model,

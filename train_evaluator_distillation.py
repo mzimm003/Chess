@@ -11,7 +11,7 @@ from pathlib import Path
 import pickle
 
 def main(kwargs=None):
-    teacher_model_dir = Path("/opt/ray/results/DeepChessEvaluator/ChessEvaluation_777e5_00000_0_batch_size=256,learning_rate_scheduler_config=step_size_1_gamma_0_95,model_config=ref_ph_a52f5213,lr_2024-03-27_20-58-42").resolve()
+    teacher_model_dir = Path("/opt/ray/results/DeepChessEvaluator/ChessEvaluation_9866d_00000_0_learning_rate_scheduler_config=step_size_200_gamma_0_9,model_config=ref_ph_a52f5213,lr=0.1000_2024-07-13_09-18-52").resolve()
     teacher_model_class = None
     teacher_model_config = None
     x = None

@@ -97,7 +97,7 @@ class TrainableConfig(_Config):
         self.dataset  = dataset
         self.dataset_config  = dataset_config
         self.optimizer  = optimizer
-        self.optimizer_config  = optimizer_config
+        self.optimizer_config  = optimizer_config if optimizer_config else {"lr":learning_rate}
         self.criterion  = criterion
         self.criterion_config  = criterion_config
         self.model  = model
@@ -107,7 +107,6 @@ class TrainableConfig(_Config):
         self.seed  = seed
         self.data_split  = data_split
         self.pin_memory  = pin_memory
-        self.learning_rate  = learning_rate
         self.learning_rate_scheduler  = learning_rate_scheduler
         self.learning_rate_scheduler_config  = learning_rate_scheduler_config
 

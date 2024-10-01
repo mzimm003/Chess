@@ -471,6 +471,8 @@ class Train(Script):
             restore:str='',
             num_cpus:int=1,
             num_gpus:float=0.,
+            system_cpus:int=1,
+            system_gpus:int=0,
             local_mode:bool=False,
             training_on:Union[Environment, str]=None,
             algorithm:Union[Trainable, Algorithm, str]=None,
@@ -492,6 +494,8 @@ class Train(Script):
             restore: Tuner checkpoint path from which to continue.
             num_cpus: Number of cpus to allocate to session.
             num_gpus: Number of gpus to allocate to session (including fractional amounts).
+            system_cpus: Number of cpus available for sessions.
+            system_gpus: Number of gpus available for sessions.
             local_mode: Boolean limiting session to be run locally.
             training_on: Name of training set, either an environment or dataset.
             algorithm: Name of training algorithm.
@@ -512,10 +516,14 @@ class Train(Script):
             if self.debug:
                 self.num_cpus = 1
                 self.num_gpus = 0
+                self.system_cpus = 1
+                self.system_gpus = 0
                 self.local_mode = True
             else:
                 self.num_cpus = os.cpu_count() if num_cpus == -1 else num_cpus
                 self.num_gpus = num_gpus
+                self.system_cpus = os.cpu_count() if system_cpus == -1 else system_cpus
+                self.system_gpus = system_gpus
                 self.local_mode = local_mode
             
             self.restore = restore
@@ -581,8 +589,8 @@ class Train(Script):
         Args:
         """
         ray.init(
-            num_cpus=self.num_cpus,
-            num_gpus=math.ceil(self.num_gpus),
+            num_cpus=self.system_cpus,
+            num_gpus=self.system_gpus,
             local_mode=self.local_mode,
             # storage="/home/mark/Machine_Learning/Reinforcement_Learning/Chess/results")
             storage="/opt/ray/results")

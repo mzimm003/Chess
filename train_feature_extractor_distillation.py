@@ -11,7 +11,7 @@ from pathlib import Path
 import pickle
 
 def main(kwargs=None):
-    best_model_dir = Path("/opt/ray/results/DeepChessEvaluator/ChessEvaluation_777e5_00000_0_batch_size=256,learning_rate_scheduler_config=step_size_1_gamma_0_95,model_config=ref_ph_a52f5213,lr_2024-03-27_20-58-42").resolve()
+    best_model_dir = Path("/opt/ray/results/DeepChessEvaluator/ChessEvaluation_9866d_00000_0_learning_rate_scheduler_config=step_size_200_gamma_0_9,model_config=ref_ph_a52f5213,lr=0.1000_2024-07-13_09-18-52").resolve()
     best_model_class = None
     best_model_config = None
     x = None
@@ -32,22 +32,25 @@ def main(kwargs=None):
 
     train_script = Train(
         # debug=True,
-        num_cpus=16,
-        num_gpus=0.85,
+        num_cpus=8,
+        num_gpus=0.45,
+        system_cpus=16,
+        system_gpus=1,
         training_on="ChessData",
         algorithm="ModelDistill",
         algorithm_config=ModelDistillConfig(
-            dataset_config=dict(dataset_dir='/opt/datasets/Chess-CCRL-404'),
+            dataset_config=dict(dataset_dir='/home/user/ssd_datasets/Chess-CCRL-404'),
             batch_size = tune.grid_search([256]),
-            optimizer=torch.optim.SGD,
-            # optimizer=torch.optim.Adam,
-            learning_rate = tune.grid_search([0.01]),
+            # optimizer=torch.optim.SGD,
+            optimizer=torch.optim.Adam,
+            learning_rate = tune.grid_search([0.001, 0.0005]),
+            # learning_rate = 0.001,
             # learning_rate = tune.grid_search([0.0001, 0.00005]),
             learning_rate_scheduler=torch.optim.lr_scheduler.StepLR,
             learning_rate_scheduler_config=tune.grid_search([
-                # dict(step_size=200, gamma=0.9),
+                dict(step_size=200, gamma=0.9),
                 # dict(step_size=1, gamma=0.99),
-                dict(step_size=1, gamma=0.95),
+                # dict(step_size=1, gamma=0.95),
                 # dict(step_size=1, gamma=0.9),
                 # dict(step_size=1, gamma=0.85),
                 # dict(step_size=1, gamma=0.8),
@@ -59,7 +62,7 @@ def main(kwargs=None):
             parent_model=teacher_model,
             parent_model_config=teacher_model_config,
             parent_model_param_dir=temp_teacher_model_param_path,
-            train_on_teacher_only=True
+            train_on_teacher_only=tune.grid_search([True])
         ),
         model="DeepChessFE",
         model_config=tune.grid_search([
@@ -69,8 +72,9 @@ def main(kwargs=None):
             ]),
         run_config=air.RunConfig(
                             name="ChessFeatureExtractor",
-                            checkpoint_config=air.CheckpointConfig(checkpoint_frequency=10),
-                            stop={"training_iteration": 100},
+                            checkpoint_config=air.CheckpointConfig(checkpoint_frequency=5),
+                            stop={"training_iteration": 20},
+                            storage_path="/opt/ray/results"
                             ),
     )
     train_script.run()

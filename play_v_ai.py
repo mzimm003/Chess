@@ -24,8 +24,9 @@ def main(kwargs=None):
             board_evaluator=best_model_class,
             board_evaluator_config=best_model_config,
             board_evaluator_param_dir=latest_checkpoint,
-            max_depth=3,
-            move_sort='evaluation'
+            max_depth=8,
+            move_sort='evaluation',
+            iterate_depths=True
         ),
         environment=Chess(render_mode="human"),
         extra_model_environment_context=lambda env: {"board":env.board}

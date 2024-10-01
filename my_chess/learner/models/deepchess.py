@@ -240,19 +240,23 @@ class NextPositions:
     def __init__(
             self,
             board:Board,
-            latest_observation:torch.tensor,
+            heuristic_observations:Dict[int,torch.Tensor],
+            latest_observation:torch.Tensor,
             turn_player:int,
             perspective_player:int,
             maximizing:bool=True,
             move_sort:Literal['none', 'random', 'evaluation'] = 'evaluation',
-            evaluator:Callable = None) -> None:
+            evaluator:Callable = None
+            ) -> None:
         self.move_sort = move_sort
         self.evaluator = evaluator
         self.maximizing = maximizing
-        self.moves = chess_utils.legal_moves(board)
+        self.heuristic_observations = heuristic_observations
+        self.moves = (chess_utils.legal_moves(board) if
+                      self.heuristic_observations is None else
+                      list(self.heuristic_observations.keys()))
         self.next_boards = []
         self.next_observations = []
-        self.heuristic_observations = []
         for move in self.moves:
             next_board = Chess.simulate_move(
                 board,
@@ -264,7 +268,6 @@ class NextPositions:
                 latest_observation,
                 perspective_player)
             self.next_observations.append(next_obs)
-            self.heuristic_observations.append(next_obs['observation'])
         self.sorted_idxs = self.get_move_argsort(self.maximizing)
         self.current_idx = -1
 
@@ -285,13 +288,13 @@ class NextPositions:
     def get_move_argsort(self, best_to_worst=True):
         idxs = [0]
         if len(self.moves) > 1:
-            if self.move_sort == 'none':
+            if self.move_sort == 'none' or self.heuristic_observations is None:
                 idxs = torch.arange(len(self.moves))
             elif self.move_sort == 'random':
                 idxs = torch.randperm(len(self.moves))
             elif self.move_sort == 'evaluation':
                 combinations = torch.combinations(torch.arange(len(self.heuristic_observations)))
-                obs = torch.stack(self.heuristic_observations)[combinations]
+                obs = torch.stack(list(self.heuristic_observations.values()))[combinations]
                 heurs = torch.nn.Softmax(dim=-1)(self.evaluator(obs))
                 heurs_resolved = heurs[...,0]-heurs[...,1]
 
@@ -312,12 +315,14 @@ class NextPositionsGenerator:
 
     This includes how they will be sorted and making use of a hash table.
     """
+    DEPTH_KEY = "depths"
     def __init__(
             self,
             move_sort:Literal['none', 'random', 'evaluation'] = 'evaluation',
             evaluator:Callable = None):
         self.move_sort = move_sort
         self.evaluator = evaluator
+        self.heuristic_observations = {}
         if self.evaluator is None:
             assert self.move_sort != 'evaluation'
     
@@ -327,14 +332,37 @@ class NextPositionsGenerator:
             turn_player:int,
             perspective_player:int,
             maximizing:bool=True) -> None:
+        heur_obs = None
+        key = self.__board_key(board)
+        if key in self.heuristic_observations:
+            heur_obs = self.heuristic_observations[key].copy()
+            del heur_obs[self.DEPTH_KEY]
         return NextPositions(
             board = board,
+            heuristic_observations=heur_obs,
             latest_observation = latest_observation,
             turn_player = turn_player,
             perspective_player = perspective_player,
             maximizing = maximizing,
             move_sort = self.move_sort,
             evaluator = self.evaluator,)
+    
+    def __board_key(self, board:Board):
+        return " ".join(board.fen().split(" ")[:-2])
+
+    def update_heuristic_observation(
+            self,
+            board,
+            act,
+            heur_obs,
+            depth):
+        key = self.__board_key(board)
+        if not key in self.heuristic_observations:
+            self.heuristic_observations[key] = {self.DEPTH_KEY:{}}
+        if (not act in self.heuristic_observations[key][self.DEPTH_KEY] or
+            depth > self.heuristic_observations[key][self.DEPTH_KEY][act]):
+            self.heuristic_observations[key][self.DEPTH_KEY][act] = depth
+            self.heuristic_observations[key][act] = heur_obs
 
 class DeepChessAlphaBetaConfig(ModelConfig):
     def __init__(
@@ -512,7 +540,7 @@ class DeepChessAlphaBeta(Model):
         self,
         result:Tuple[int, torch.Tensor],
         act:int,
-        ret_val:Tuple[int, torch.Tensor],
+        ret_val:torch.Tensor,
         ret_act:int,
         beta:torch.Tensor,
         alpha:torch.Tensor,
@@ -559,7 +587,7 @@ class DeepChessAlphaBeta(Model):
             beta,
             depth=0,
             max_player=0,
-            min_player=1,
+            min_player=1
             ) -> Tuple[int, Tuple[float, TensorType]]:
         '''
         returns: action integer, (terminal value, observation tensor)
@@ -581,15 +609,13 @@ class DeepChessAlphaBeta(Model):
         
         for a, b, obs in next_positions:
             result = self.min_value(
-                b,
-                obs,
-                alpha,
-                beta,
+                board=b,
+                input=obs,
+                alpha=alpha,
+                beta=beta,
                 depth=depth-1,
                 max_player=max_player,
                 min_player=min_player)
-            #TODO add heuristic obs to next_pos_gen?
-            # self.heur_obs[board_key][a] = v[1]
             ret_early, val, act, alpha, beta = self.update_values(
                 result=result,
                 act=a,
@@ -597,8 +623,12 @@ class DeepChessAlphaBeta(Model):
                 ret_act=act,
                 beta=beta,
                 alpha=alpha,
-                minimize=False
-            )
+                minimize=False)
+            self.next_pos_gen.update_heuristic_observation(
+                board=board,
+                act=a,
+                heur_obs=val,
+                depth=depth)
             if ret_early:
                 break
         return act, (None, val)
@@ -628,19 +658,18 @@ class DeepChessAlphaBeta(Model):
             board=board,
             latest_observation=input,
             turn_player=min_player,
-            perspective_player=max_player)
+            perspective_player=max_player,
+            maximizing=False)
         
         for a, b, obs in next_positions:
             result = self.max_value(
-                b,
-                obs,
-                alpha,
-                beta,
+                board=b,
+                input=obs,
+                alpha=alpha,
+                beta=beta,
                 depth=depth-1,
                 max_player=max_player,
                 min_player=min_player)
-            #TODO add heuristic obs to next_pos_gen?
-            # self.heur_obs[board_key][a] = v[1]
             ret_early, val, act, alpha, beta = self.update_values(
                 result=result,
                 act=a,
@@ -648,8 +677,12 @@ class DeepChessAlphaBeta(Model):
                 ret_act=act,
                 beta=beta,
                 alpha=alpha,
-                minimize=True
-            )
+                minimize=True)
+            self.next_pos_gen.update_heuristic_observation(
+                board=board,
+                act=a,
+                heur_obs=val,
+                depth=depth)
             if ret_early:
                 break
         return act, (None, val)

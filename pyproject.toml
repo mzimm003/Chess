@@ -26,6 +26,7 @@ sphinx_design = {version = "*", optional = true}
 sphinxcontrib-bibtex = {version = "*", optional = true}
 pytest = {version = "8.2.1", optional = true}
 streamlit = {version = "1.37.0", optional = true}
+ml_training_suite = {git = "https://github.com/mzimm003/ML_training_suite"}
 
 [tool.poetry.extras]
 documentation = ["sphinx", "sphinx_design", "sphinxcontrib-bibtex"]

@@ -1,0 +1,1542 @@
+{
+    "machine_info": {
+        "node": "BAM",
+        "processor": "",
+        "machine": "x86_64",
+        "python_compiler": "GCC 10.2.1 20210110",
+        "python_implementation": "CPython",
+        "python_implementation_version": "3.8.12",
+        "python_version": "3.8.12",
+        "python_build": [
+            "default",
+            "Mar  2 2022 04:56:27"
+        ],
+        "release": "6.8.0-45-generic",
+        "system": "Linux",
+        "cpu": {
+            "python_version": "3.8.12.final.0 (64 bit)",
+            "cpuinfo_version": [
+                9,
+                0,
+                0
+            ],
+            "cpuinfo_version_string": "9.0.0",
+            "arch": "X86_64",
+            "bits": 64,
+            "count": 16,
+            "arch_string_raw": "x86_64",
+            "vendor_id_raw": "GenuineIntel",
+            "brand_raw": "Intel(R) Core(TM) i7-5960X CPU @ 3.00GHz",
+            "hz_advertised_friendly": "3.0000 GHz",
+            "hz_actual_friendly": "1.1989 GHz",
+            "hz_advertised": [
+                3000000000,
+                0
+            ],
+            "hz_actual": [
+                1198898000,
+                0
+            ],
+            "stepping": 2,
+            "model": 63,
+            "family": 6,
+            "flags": [
+                "abm",
+                "acpi",
+                "aes",
+                "aperfmperf",
+                "apic",
+                "arat",
+                "arch_perfmon",
+                "avx",
+                "avx2",
+                "bmi1",
+                "bmi2",
+                "bts",
+                "clflush",
+                "cmov",
+                "constant_tsc",
+                "cpuid",
+                "cpuid_fault",
+                "cqm",
+                "cqm_llc",
+                "cqm_occup_llc",
+                "cx16",
+                "cx8",
+                "dca",
+                "de",
+                "ds_cpl",
+                "dtes64",
+                "dtherm",
+                "dts",
+                "epb",
+                "ept",
+                "ept_ad",
+                "erms",
+                "est",
+                "f16c",
+                "flexpriority",
+                "flush_l1d",
+                "fma",
+                "fpu",
+                "fsgsbase",
+                "fxsr",
+                "ht",
+                "ibpb",
+                "ibrs",
+                "ida",
+                "intel_ppin",
+                "invpcid",
+                "lahf_lm",
+                "lm",
+                "mca",
+                "mce",
+                "md_clear",
+                "mmx",
+                "monitor",
+                "movbe",
+                "msr",
+                "mtrr",
+                "nonstop_tsc",
+                "nopl",
+                "nx",
+                "osxsave",
+                "pae",
+                "pat",
+                "pbe",
+                "pcid",
+                "pclmulqdq",
+                "pdcm",
+                "pdpe1gb",
+                "pebs",
+                "pge",
+                "pln",
+                "pni",
+                "popcnt",
+                "pqm",
+                "pse",
+                "pse36",
+                "pti",
+                "pts",
+                "rdrand",
+                "rdrnd",
+                "rdtscp",
+                "rep_good",
+                "sdbg",
+                "sep",
+                "smep",
+                "ss",
+                "ssbd",
+                "sse",
+                "sse2",
+                "sse4_1",
+                "sse4_2",
+                "ssse3",
+                "stibp",
+                "syscall",
+                "tm",
+                "tm2",
+                "tpr_shadow",
+                "tsc",
+                "tsc_adjust",
+                "tsc_deadline_timer",
+                "tscdeadline",
+                "vme",
+                "vmx",
+                "vnmi",
+                "vpid",
+                "x2apic",
+                "xsave",
+                "xsaveopt",
+                "xtopology",
+                "xtpr"
+            ],
+            "l3_cache_size": 20971520,
+            "l2_cache_size": 2097152,
+            "l1_data_cache_size": 262144,
+            "l1_instruction_cache_size": 262144,
+            "l2_cache_line_size": 256,
+            "l2_cache_associativity": 6
+        }
+    },
+    "commit_info": {
+        "id": "bf8ea79be3e233bf4cade27715a30dc47a54524c",
+        "time": "2024-10-01T23:38:26+00:00",
+        "author_time": "2024-10-01T23:38:26+00:00",
+        "dirty": true,
+        "project": "Chess",
+        "branch": "v2.0"
+    },
+    "benchmarks": [
+        {
+            "group": null,
+            "name": "test_chunking_write_hdd[64-1]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_write_hdd[64-1]",
+            "params": {
+                "gen_batch_size": 64,
+                "chunk_size": 1
+            },
+            "param": "64-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 29.92436862559989,
+                "max": 29.929009090783076,
+                "mean": 29.927068225201218,
+                "stddev": 0.002411480305397538,
+                "rounds": 3,
+                "median": 29.927826959220692,
+                "iqr": 0.0034803488873933475,
+                "q1": 29.92523320900509,
+                "q3": 29.928713557892483,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 29.92436862559989,
+                "hd15iqr": 29.929009090783076,
+                "ops": 0.03341456612037635,
+                "total": 89.78120467560365,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_write_hdd[64-64]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_write_hdd[64-64]",
+            "params": {
+                "gen_batch_size": 64,
+                "chunk_size": 64
+            },
+            "param": "64-64",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 29.37358618779108,
+                "max": 29.588500716816633,
+                "mean": 29.44652051834079,
+                "stddev": 0.12297382894267851,
+                "rounds": 3,
+                "median": 29.377474650414662,
+                "iqr": 0.16118589676916173,
+                "q1": 29.374558303446975,
+                "q3": 29.535744200216136,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 29.37358618779108,
+                "hd15iqr": 29.588500716816633,
+                "ops": 0.033959869702675026,
+                "total": 88.33956155502237,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_write_hdd[64-512]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_write_hdd[64-512]",
+            "params": {
+                "gen_batch_size": 64,
+                "chunk_size": 512
+            },
+            "param": "64-512",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 33.192347125802186,
+                "max": 33.46262295101769,
+                "mean": 33.29536005387393,
+                "stddev": 0.14614478888519153,
+                "rounds": 3,
+                "median": 33.23111008480191,
+                "iqr": 0.20270686891163336,
+                "q1": 33.202037865552114,
+                "q3": 33.40474473446375,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 33.192347125802186,
+                "hd15iqr": 33.46262295101769,
+                "ops": 0.0300342149291054,
+                "total": 99.88608016162179,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_write_hdd[512-1]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_write_hdd[512-1]",
+            "params": {
+                "gen_batch_size": 512,
+                "chunk_size": 1
+            },
+            "param": "512-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 29.202961606206372,
+                "max": 29.40664850482717,
+                "mean": 29.30034336326644,
+                "stddev": 0.10213622403755646,
+                "rounds": 3,
+                "median": 29.29141997876577,
+                "iqr": 0.15276517396559797,
+                "q1": 29.225076199346223,
+                "q3": 29.37784137331182,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 29.202961606206372,
+                "hd15iqr": 29.40664850482717,
+                "ops": 0.03412929287558078,
+                "total": 87.90103008979932,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_write_hdd[512-64]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_write_hdd[512-64]",
+            "params": {
+                "gen_batch_size": 512,
+                "chunk_size": 64
+            },
+            "param": "512-64",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 28.676698762411252,
+                "max": 28.68763230764307,
+                "mean": 28.683924940616514,
+                "stddev": 0.006258764008778884,
+                "rounds": 3,
+                "median": 28.687443751795218,
+                "iqr": 0.008200158923862944,
+                "q1": 28.679385009757244,
+                "q3": 28.687585168681107,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 28.676698762411252,
+                "hd15iqr": 28.68763230764307,
+                "ops": 0.0348627324213918,
+                "total": 86.05177482184953,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_write_hdd[512-512]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_write_hdd[512-512]",
+            "params": {
+                "gen_batch_size": 512,
+                "chunk_size": 512
+            },
+            "param": "512-512",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 32.534161273017524,
+                "max": 32.91780630541034,
+                "mean": 32.68912758780643,
+                "stddev": 0.20216581428740882,
+                "rounds": 3,
+                "median": 32.615415184991434,
+                "iqr": 0.2877337742946082,
+                "q1": 32.554474751011,
+                "q3": 32.84220852530561,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 32.534161273017524,
+                "hd15iqr": 32.91780630541034,
+                "ops": 0.030591211016993185,
+                "total": 98.0673827634193,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_write_hdd[4096-1]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_write_hdd[4096-1]",
+            "params": {
+                "gen_batch_size": 4096,
+                "chunk_size": 1
+            },
+            "param": "4096-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 29.330188993224873,
+                "max": 29.64251570738852,
+                "mean": 29.533634942863134,
+                "stddev": 0.17633469531444987,
+                "rounds": 3,
+                "median": 29.628200127976015,
+                "iqr": 0.23424503562273458,
+                "q1": 29.404691776912657,
+                "q3": 29.63893681253539,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 29.330188993224873,
+                "hd15iqr": 29.64251570738852,
+                "ops": 0.03385969935413088,
+                "total": 88.6009048285894,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_write_hdd[4096-64]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_write_hdd[4096-64]",
+            "params": {
+                "gen_batch_size": 4096,
+                "chunk_size": 64
+            },
+            "param": "4096-64",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 28.783606717782096,
+                "max": 28.960056713828816,
+                "mean": 28.843376079791536,
+                "stddev": 0.10105849760951328,
+                "rounds": 3,
+                "median": 28.786464807763696,
+                "iqr": 0.1323374970350386,
+                "q1": 28.784321240277496,
+                "q3": 28.916658737312535,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 28.783606717782096,
+                "hd15iqr": 28.960056713828816,
+                "ops": 0.03467000524604426,
+                "total": 86.5301282393746,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_write_hdd[4096-512]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_write_hdd[4096-512]",
+            "params": {
+                "gen_batch_size": 4096,
+                "chunk_size": 512
+            },
+            "param": "4096-512",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 32.637608575215566,
+                "max": 32.75126190218143,
+                "mean": 32.682458654666945,
+                "stddev": 0.060494507005160354,
+                "rounds": 3,
+                "median": 32.65850548660383,
+                "iqr": 0.08523999522439851,
+                "q1": 32.64283280306263,
+                "q3": 32.72807279828703,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 32.637608575215566,
+                "hd15iqr": 32.75126190218143,
+                "ops": 0.03059745322609636,
+                "total": 98.04737596400084,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_read_hdd[64-1]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_read_hdd[64-1]",
+            "params": {
+                "gen_batch_size": 64,
+                "chunk_size": 1
+            },
+            "param": "64-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.4951308572199196,
+                "max": 1.6105867521837354,
+                "mean": 1.5443417301401496,
+                "stddev": 0.05958303112247194,
+                "rounds": 3,
+                "median": 1.5273075810167938,
+                "iqr": 0.08659192122286186,
+                "q1": 1.5031750381691382,
+                "q3": 1.589766959392,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 1.4951308572199196,
+                "hd15iqr": 1.6105867521837354,
+                "ops": 0.6475250784742115,
+                "total": 4.633025190420449,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_read_hdd[64-64]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_read_hdd[64-64]",
+            "params": {
+                "gen_batch_size": 64,
+                "chunk_size": 64
+            },
+            "param": "64-64",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.162408217974007,
+                "max": 2.2182639424223454,
+                "mean": 2.184024392332261,
+                "stddev": 0.029991293729387702,
+                "rounds": 3,
+                "median": 2.17140101660043,
+                "iqr": 0.041891793336254146,
+                "q1": 2.1646564176306127,
+                "q3": 2.206548210966867,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 2.162408217974007,
+                "hd15iqr": 2.2182639424223454,
+                "ops": 0.4578703440817009,
+                "total": 6.552073176996783,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_read_hdd[64-512]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_read_hdd[64-512]",
+            "params": {
+                "gen_batch_size": 64,
+                "chunk_size": 512
+            },
+            "param": "64-512",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 6.6665135029703375,
+                "max": 6.701609657425434,
+                "mean": 6.680339729739353,
+                "stddev": 0.018694692479177714,
+                "rounds": 3,
+                "median": 6.672896028822288,
+                "iqr": 0.026322115841322713,
+                "q1": 6.668109134433324,
+                "q3": 6.694431250274647,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 6.6665135029703375,
+                "hd15iqr": 6.701609657425434,
+                "ops": 0.1496929857546357,
+                "total": 20.041019189218062,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_read_hdd[512-1]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_read_hdd[512-1]",
+            "params": {
+                "gen_batch_size": 512,
+                "chunk_size": 1
+            },
+            "param": "512-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.5005314317997545,
+                "max": 1.5119739368092269,
+                "mean": 1.5078893328706424,
+                "stddev": 0.0063850282544566225,
+                "rounds": 3,
+                "median": 1.5111626300029457,
+                "iqr": 0.008581878757104366,
+                "q1": 1.5031892313505522,
+                "q3": 1.5117711101076565,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 1.5005314317997545,
+                "hd15iqr": 1.5119739368092269,
+                "ops": 0.6631786419605816,
+                "total": 4.523667998611927,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_read_hdd[512-64]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_read_hdd[512-64]",
+            "params": {
+                "gen_batch_size": 512,
+                "chunk_size": 64
+            },
+            "param": "512-64",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.137720719631761,
+                "max": 2.170125868404284,
+                "mean": 2.1542963706112155,
+                "stddev": 0.016215454824811498,
+                "rounds": 3,
+                "median": 2.1550425237976016,
+                "iqr": 0.024303861579392017,
+                "q1": 2.1420511706732213,
+                "q3": 2.1663550322526133,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 2.137720719631761,
+                "hd15iqr": 2.170125868404284,
+                "ops": 0.4641886852904462,
+                "total": 6.462889111833647,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_read_hdd[512-512]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_read_hdd[512-512]",
+            "params": {
+                "gen_batch_size": 512,
+                "chunk_size": 512
+            },
+            "param": "512-512",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 6.898479757970199,
+                "max": 6.917837364180014,
+                "mean": 6.9050369433903445,
+                "stddev": 0.011086600942264454,
+                "rounds": 3,
+                "median": 6.898793708020821,
+                "iqr": 0.014518204657361977,
+                "q1": 6.898558245482854,
+                "q3": 6.913076450140216,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 6.898479757970199,
+                "hd15iqr": 6.917837364180014,
+                "ops": 0.1448218174932753,
+                "total": 20.715110830171035,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_read_hdd[4096-1]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_read_hdd[4096-1]",
+            "params": {
+                "gen_batch_size": 4096,
+                "chunk_size": 1
+            },
+            "param": "4096-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.5020422284025698,
+                "max": 1.5282982697710394,
+                "mean": 1.516580423526466,
+                "stddev": 0.013353303072143543,
+                "rounds": 3,
+                "median": 1.5194007724057883,
+                "iqr": 0.019692031026352197,
+                "q1": 1.5063818644033744,
+                "q3": 1.5260738954297266,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 1.5020422284025698,
+                "hd15iqr": 1.5282982697710394,
+                "ops": 0.659378153962139,
+                "total": 4.549741270579398,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_read_hdd[4096-64]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_read_hdd[4096-64]",
+            "params": {
+                "gen_batch_size": 4096,
+                "chunk_size": 64
+            },
+            "param": "4096-64",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.169300704821944,
+                "max": 2.1857423364184796,
+                "mean": 2.179160739093398,
+                "stddev": 0.008697294061807524,
+                "rounds": 3,
+                "median": 2.1824391760397703,
+                "iqr": 0.012331223697401583,
+                "q1": 2.1725853226264005,
+                "q3": 2.184916546323802,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 2.169300704821944,
+                "hd15iqr": 2.1857423364184796,
+                "ops": 0.45889226162179875,
+                "total": 6.5374822172801945,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_read_hdd[4096-512]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_read_hdd[4096-512]",
+            "params": {
+                "gen_batch_size": 4096,
+                "chunk_size": 512
+            },
+            "param": "4096-512",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 6.89202268961817,
+                "max": 6.923930346593261,
+                "mean": 6.904287005867809,
+                "stddev": 0.017186103254403028,
+                "rounds": 3,
+                "median": 6.896907981391996,
+                "iqr": 0.023930742731318233,
+                "q1": 6.893244012561627,
+                "q3": 6.917174755292946,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 6.89202268961817,
+                "hd15iqr": 6.923930346593261,
+                "ops": 0.14483754791046793,
+                "total": 20.712861017603426,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_write_ssd[64-1]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_write_ssd[64-1]",
+            "params": {
+                "gen_batch_size": 64,
+                "chunk_size": 1
+            },
+            "param": "64-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 30.049810692993923,
+                "max": 30.432671333802865,
+                "mean": 30.30444012613346,
+                "stddev": 0.22051746216945722,
+                "rounds": 3,
+                "median": 30.430838351603597,
+                "iqr": 0.28714548060671063,
+                "q1": 30.14506760764634,
+                "q3": 30.43221308825305,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 30.049810692993923,
+                "hd15iqr": 30.432671333802865,
+                "ops": 0.03299846477406576,
+                "total": 90.91332037840039,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_write_ssd[64-64]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_write_ssd[64-64]",
+            "params": {
+                "gen_batch_size": 64,
+                "chunk_size": 64
+            },
+            "param": "64-64",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 29.679530712170525,
+                "max": 29.84120951136574,
+                "mean": 29.74377707618599,
+                "stddev": 0.08579624127426808,
+                "rounds": 3,
+                "median": 29.710591005021705,
+                "iqr": 0.12125909939641133,
+                "q1": 29.68729578538332,
+                "q3": 29.80855488477973,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 29.679530712170525,
+                "hd15iqr": 29.84120951136574,
+                "ops": 0.033620477904961116,
+                "total": 89.23133122855796,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_write_ssd[64-512]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_write_ssd[64-512]",
+            "params": {
+                "gen_batch_size": 64,
+                "chunk_size": 512
+            },
+            "param": "64-512",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 33.55909662782214,
+                "max": 33.67566653159447,
+                "mean": 33.631768030005816,
+                "stddev": 0.06338805465433338,
+                "rounds": 3,
+                "median": 33.66054093060084,
+                "iqr": 0.0874274278292475,
+                "q1": 33.58445770351682,
+                "q3": 33.671885131346066,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 33.55909662782214,
+                "hd15iqr": 33.67566653159447,
+                "ops": 0.029733792142827974,
+                "total": 100.89530409001745,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_write_ssd[512-1]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_write_ssd[512-1]",
+            "params": {
+                "gen_batch_size": 512,
+                "chunk_size": 1
+            },
+            "param": "512-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 29.460006278799845,
+                "max": 29.882221355428918,
+                "mean": 29.64319104341169,
+                "stddev": 0.2165766298726119,
+                "rounds": 3,
+                "median": 29.58734549600631,
+                "iqr": 0.3166613074718043,
+                "q1": 29.49184108310146,
+                "q3": 29.808502390573263,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 29.460006278799845,
+                "hd15iqr": 29.882221355428918,
+                "ops": 0.03373455976907229,
+                "total": 88.92957313023507,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_write_ssd[512-64]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_write_ssd[512-64]",
+            "params": {
+                "gen_batch_size": 512,
+                "chunk_size": 64
+            },
+            "param": "512-64",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 29.07404889818281,
+                "max": 29.320556873781605,
+                "mean": 29.212979689380152,
+                "stddev": 0.12620947667583313,
+                "rounds": 3,
+                "median": 29.244333296176045,
+                "iqr": 0.18488098169909506,
+                "q1": 29.11661999768112,
+                "q3": 29.301500979380215,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 29.07404889818281,
+                "hd15iqr": 29.320556873781605,
+                "ops": 0.03423135916407499,
+                "total": 87.63893906814046,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_write_ssd[512-512]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_write_ssd[512-512]",
+            "params": {
+                "gen_batch_size": 512,
+                "chunk_size": 512
+            },
+            "param": "512-512",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 32.927071468811484,
+                "max": 33.23813837901689,
+                "mean": 33.038630534739546,
+                "stddev": 0.173181686000665,
+                "rounds": 3,
+                "median": 32.95068175639026,
+                "iqr": 0.23330018265405528,
+                "q1": 32.93297404070618,
+                "q3": 33.16627422336023,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 32.927071468811484,
+                "hd15iqr": 33.23813837901689,
+                "ops": 0.030267598378465398,
+                "total": 99.11589160421863,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_write_ssd[4096-1]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_write_ssd[4096-1]",
+            "params": {
+                "gen_batch_size": 4096,
+                "chunk_size": 1
+            },
+            "param": "4096-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 29.657383847236634,
+                "max": 29.897913093212992,
+                "mean": 29.763182636878142,
+                "stddev": 0.12284689880387585,
+                "rounds": 3,
+                "median": 29.734250970184803,
+                "iqr": 0.18039693448226757,
+                "q1": 29.676600627973677,
+                "q3": 29.856997562455945,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 29.657383847236634,
+                "hd15iqr": 29.897913093212992,
+                "ops": 0.03359855739221072,
+                "total": 89.28954791063443,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_write_ssd[4096-64]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_write_ssd[4096-64]",
+            "params": {
+                "gen_batch_size": 4096,
+                "chunk_size": 64
+            },
+            "param": "4096-64",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 29.088436728995294,
+                "max": 29.211204744223505,
+                "mean": 29.159047028810406,
+                "stddev": 0.06343003857876528,
+                "rounds": 3,
+                "median": 29.177499613212422,
+                "iqr": 0.09207601142115607,
+                "q1": 29.110702450049576,
+                "q3": 29.202778461470732,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 29.088436728995294,
+                "hd15iqr": 29.211204744223505,
+                "ops": 0.03429467358833629,
+                "total": 87.47714108643122,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_write_ssd[4096-512]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_write_ssd[4096-512]",
+            "params": {
+                "gen_batch_size": 4096,
+                "chunk_size": 512
+            },
+            "param": "4096-512",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 32.994081425806506,
+                "max": 33.073659412004055,
+                "mean": 33.03258141054151,
+                "stddev": 0.03985158214550497,
+                "rounds": 3,
+                "median": 33.03000339381397,
+                "iqr": 0.05968348964816528,
+                "q1": 33.00306191780837,
+                "q3": 33.06274540745653,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 32.994081425806506,
+                "hd15iqr": 33.073659412004055,
+                "ops": 0.030273141162406255,
+                "total": 99.09774423162455,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_read_ssd[64-1]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_read_ssd[64-1]",
+            "params": {
+                "gen_batch_size": 64,
+                "chunk_size": 1
+            },
+            "param": "64-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.5328356492333115,
+                "max": 1.560166493570432,
+                "mean": 1.5494785386603325,
+                "stddev": 0.014606152705986478,
+                "rounds": 3,
+                "median": 1.5554334731772541,
+                "iqr": 0.020498133252840223,
+                "q1": 1.5384851052192974,
+                "q3": 1.5589832384721376,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 1.5328356492333115,
+                "hd15iqr": 1.560166493570432,
+                "ops": 0.6453784128333862,
+                "total": 4.648435615980998,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_read_ssd[64-64]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_read_ssd[64-64]",
+            "params": {
+                "gen_batch_size": 64,
+                "chunk_size": 64
+            },
+            "param": "64-64",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.1965531503781675,
+                "max": 2.216356161609292,
+                "mean": 2.206030882196501,
+                "stddev": 0.009928673937070559,
+                "rounds": 3,
+                "median": 2.205183334602043,
+                "iqr": 0.014852258423343478,
+                "q1": 2.1987106964341363,
+                "q3": 2.21356295485748,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 2.1965531503781675,
+                "hd15iqr": 2.216356161609292,
+                "ops": 0.453302810976209,
+                "total": 6.618092646589503,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_read_ssd[64-512]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_read_ssd[64-512]",
+            "params": {
+                "gen_batch_size": 64,
+                "chunk_size": 512
+            },
+            "param": "64-512",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 6.957240486005321,
+                "max": 7.000581580633297,
+                "mean": 6.973648425812523,
+                "stddev": 0.02350952432949807,
+                "rounds": 3,
+                "median": 6.963123210798949,
+                "iqr": 0.03250582097098231,
+                "q1": 6.958711167203727,
+                "q3": 6.99121698817471,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 6.957240486005321,
+                "hd15iqr": 7.000581580633297,
+                "ops": 0.1433969622412513,
+                "total": 20.920945277437568,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_read_ssd[512-1]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_read_ssd[512-1]",
+            "params": {
+                "gen_batch_size": 512,
+                "chunk_size": 1
+            },
+            "param": "512-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.5520493105985225,
+                "max": 1.5792077708058059,
+                "mean": 1.5639471396648637,
+                "stddev": 0.013888009884513894,
+                "rounds": 3,
+                "median": 1.5605843375902624,
+                "iqr": 0.020368845155462445,
+                "q1": 1.5541830673464574,
+                "q3": 1.5745519125019198,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 1.5520493105985225,
+                "hd15iqr": 1.5792077708058059,
+                "ops": 0.6394078000707165,
+                "total": 4.69184141899459,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_read_ssd[512-64]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_read_ssd[512-64]",
+            "params": {
+                "gen_batch_size": 512,
+                "chunk_size": 64
+            },
+            "param": "512-64",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.184564601397142,
+                "max": 2.2233773560263215,
+                "mean": 2.200263152473296,
+                "stddev": 0.020441414009787308,
+                "rounds": 3,
+                "median": 2.192847499996424,
+                "iqr": 0.029109565971884965,
+                "q1": 2.186635326046962,
+                "q3": 2.215744892018847,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 2.184564601397142,
+                "hd15iqr": 2.2233773560263215,
+                "ops": 0.45449109070245036,
+                "total": 6.600789457419887,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_read_ssd[512-512]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_read_ssd[512-512]",
+            "params": {
+                "gen_batch_size": 512,
+                "chunk_size": 512
+            },
+            "param": "512-512",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 6.796995456004515,
+                "max": 6.854525465192273,
+                "mean": 6.8202543676054725,
+                "stddev": 0.030304730149367482,
+                "rounds": 3,
+                "median": 6.809242181619629,
+                "iqr": 0.04314750689081848,
+                "q1": 6.800057137408293,
+                "q3": 6.843204644299112,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 6.796995456004515,
+                "hd15iqr": 6.854525465192273,
+                "ops": 0.14662209737363371,
+                "total": 20.460763102816415,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_read_ssd[4096-1]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_read_ssd[4096-1]",
+            "params": {
+                "gen_batch_size": 4096,
+                "chunk_size": 1
+            },
+            "param": "4096-1",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 1.548819694807753,
+                "max": 1.5699339899700135,
+                "mean": 1.5581359617256871,
+                "stddev": 0.010773705003880845,
+                "rounds": 3,
+                "median": 1.5556542003992946,
+                "iqr": 0.01583572137169531,
+                "q1": 1.5505283212056384,
+                "q3": 1.5663640425773337,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 1.548819694807753,
+                "hd15iqr": 1.5699339899700135,
+                "ops": 0.6417925165480854,
+                "total": 4.674407885177061,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_read_ssd[4096-64]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_read_ssd[4096-64]",
+            "params": {
+                "gen_batch_size": 4096,
+                "chunk_size": 64
+            },
+            "param": "4096-64",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 2.2042106423992665,
+                "max": 2.2285823123995216,
+                "mean": 2.2182408991269766,
+                "stddev": 0.012597628712494771,
+                "rounds": 3,
+                "median": 2.2219297425821423,
+                "iqr": 0.018278752500191064,
+                "q1": 2.2086404174449856,
+                "q3": 2.2269191699451767,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 2.2042106423992665,
+                "hd15iqr": 2.2285823123995216,
+                "ops": 0.4508076649355648,
+                "total": 6.6547226973809295,
+                "iterations": 5
+            }
+        },
+        {
+            "group": null,
+            "name": "test_chunking_read_ssd[4096-512]",
+            "fullname": "new_my_chess/benchmarks/test_chunking_benchmark.py::test_chunking_read_ssd[4096-512]",
+            "params": {
+                "gen_batch_size": 4096,
+                "chunk_size": 512
+            },
+            "param": "4096-512",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 6.866672404203564,
+                "max": 6.90731324320659,
+                "mean": 6.884911630597586,
+                "stddev": 0.020637672905864934,
+                "rounds": 3,
+                "median": 6.880749244382605,
+                "iqr": 0.0304806292522688,
+                "q1": 6.870191614248325,
+                "q3": 6.900672243500594,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 6.866672404203564,
+                "hd15iqr": 6.90731324320659,
+                "ops": 0.1452451467286594,
+                "total": 20.654734891792756,
+                "iterations": 5
+            }
+        }
+    ],
+    "datetime": "2024-10-16T00:24:10.243967",
+    "version": "4.0.0"
+}

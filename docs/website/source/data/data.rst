@@ -154,3 +154,112 @@ data to be trained on. To ensure RAM usage is stable:
    avoiding lists and dicts, described in detail in my repository
    `documentation <https://mzimm003.github.io/Chess/documentation/build/html/_autosummary/my_chess.learner.datasets.dataset.Dataset.html>`_.
 
+Database Upgrade
+^^^^^^^^^^^^^^^^^^^
+To expand the abilities of the dataset to include things like an oracle value,
+relevant to bots based on the workings of
+:cite:t:`ruoss2024grandmasterlevelchesssearch`, I pivot the database
+infrastructure to rely on HDF5, opposed to a home crafted solution. As rewarding
+as overcoming obstacles in the home crafted solution was, see
+:ref:`dataloading`, the switch allows for greater control in memory management
+via a more developed chunking method, and features like compression. With finer
+chunking and compression I may be able to better leverage the bigger but slower
+HDD of my system, supporting larger datasets.
+
+An important consideration for read and write speed in the HDF5 system is chunk
+size. Further, since I am processing games in parallel to create observations,
+the database will be written to in batches, where larger batches are expected
+to enhance speed though the effect may be capped as soon as a batch size
+is reached which fully engages the CPU.
+
+To determine the appropriate settings, some benchmarks are run with various
+combinations of chunk size and generation batch size. These will capture timings
+both for read and write speed for the database. Additionally, tests will be run
+on the HDD and the SSD hard drives to determine whether any configuration can
+make the speeds of the HDD comparable to the SSD, particularly when reading
+data. The results are below:
+
+.. _hdf5-benchmark:
+.. figure:: figures/HDF5_benchmark.png
+   :scale: 100%
+   :align: center
+
+   Dataset creation and use timings by [generation batch size - chunk size].
+
+:numref:`hdf5-benchmark` shows the ideal chunk size is 1. Write speed is
+slightly improved with a greater size, but not by much. As the data will be read
+many more times than it will be written, the differences in reading are more
+encouraging. For reading, the generation batch size should have no bearing, as
+it is not a process that exists when reading a created dataset. For writing, it
+still seems to have minimal impact, though 64 does come out slightly worse.
+Then, to perform as well as possible, while being considerate of RAM, a
+generation batch size of 512 is reasonable. Finally, there is very little
+difference in SSD or HDD storage. I am unsure why this would be, and will
+require further research. Possibly, other bottlenecks exist allowing the two to
+perform similarly. For now, it is encouraging I can rely on my higher capacity
+storage solution.
+
+Further investigation reveals the static chunk size leads to memory leak issues.
+The chunk size is setup only to control the dimension separating data points.
+When the data points are 8x8x111 boolean vectors, this can make sense, as a
+single chunk would contain enough data to fall within h5py's recommendation
+that chunk sizes should be "between 10 KiB and 1 MiB, larger for larger
+datasets." However, other datasets capturing aspects like which color won, or 
+filtering mechanisms stored as uint32, being only 4 bytes per item, are much 
+smaller than recommended at a chunk size of 1. Moreover, this small size 
+actually creates a memory leak like issue when attempting to access the entire
+database. So, a more dynamic chunking process can be achieved by specifically
+shooting for the recommended range base on the item size and shape of the data
+point containing those items.
+
+Determining chunk shapes by data size results in the timings found in
+:numref:`hdf5-chunk-as-ratio-benchmark`. Again, generation batch size has
+minimal impact as long as it is big enough (larger than 64), so 512 seems
+appropriate. Then timings largely depend on chunk size, which follows the
+pattern, smaller is faster. Best timings are achieved at an aim of 10 KiB
+the small end of the recommended range.
+
+.. _hdf5-chunk-as-ratio-benchmark:
+.. figure:: figures/HDF5_chunk_as_ratio_benchmark.png
+   :scale: 100%
+   :align: center
+
+   Dataset creation and use timings by [generation batch size - chunk size].
+   Chunk size represents where on the scale of 10-1024 KiB the size is.
+
+The h5py library also recommends larger chunk sizes for larger datasets. Since
+this is a rule of thumb, but not necessarily specific to the chess database
+being created or how its read, this will be reviewed empirically. The PGN
+files being used to benchmark the read and write timings are copied to
+quadruple the amount of data being processed. 
+:numref:`hdf5-chunk-as-ratio-large-benchmark` shows the trend continues,
+smaller is faster, so a generation batch size of 512 and chunk size aiming for
+10 KiB will be used.
+
+.. _hdf5-chunk-as-ratio-large-benchmark:
+.. figure:: figures/HDF5_chunk_as_ratio_Large_benchmark.png
+   :scale: 100%
+   :align: center
+
+   Dataset creation and use timings by [generation batch size - chunk size].
+   Chunk size represents where on the scale of 10-1024 KiB the size is.
+
+As the quadrupled data is still far less than the size of the intended dataset,
+to be more confident the trend will continue as the data grows greater still,
+the variance increase should be considered as well as the absolute shortest
+time. :numref:`HDF5-benchmark-comparison-table` shows the timings between 
+the original dataset and quadrupled. Not only is the smallest chunk size
+fastest, it has the smallest increase in time as the dataset grew. This is still
+no guarantee, but provides some confidence the small chunk size will be optimal.
+Of course, beyond speed, the smallest chunk size also affords the greatest
+ability to manage RAM as the dataset is used for training or trainings. It is
+also confirmed the memory leak issue is resolved with the new dynamic
+batch shape strategy.
+
+.. _HDF5-benchmark-comparison-table:
+.. figure:: figures/HDF5_benchmark_comparison_table.png
+   :scale: 100%
+   :align: center
+
+   Dataset creation and use timings by [generation batch size - chunk size].
+   Chunk size represents where on the scale of 10-1024 KiB the size is.

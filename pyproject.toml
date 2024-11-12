@@ -37,11 +37,6 @@ testing = ["pytest"]
 benchmarking = ["pytest-benchmark"]
 browser = ["streamlit"]
 
-[[tool.poetry.source]]
-name = "onnxruntime-gpu-src"
-url = "https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-12/pypi/simple/"
-priority = "explicit"
-
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

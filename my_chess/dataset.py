@@ -659,6 +659,13 @@ class ChessData(Dataset):
     """
     A database of chess board observations separated by labels and data.
     """
+    UNIQUE_KEY_LABELS = [
+        'Event',
+        'Date',
+        'Round',
+        'White',
+        'Black',
+        ]
     collate_wrapper = chess_data_collate_wrapper
     def __init__(
             self,
@@ -695,6 +702,11 @@ class ChessData(Dataset):
                 else:
                     mask &= ~(filter_flags & (1 << bit)).astype(bool)
             self.valid_indices = self.valid_indices[mask]
+            self.clusters = []
+            for u_k in ChessData.UNIQUE_KEY_LABELS:
+                _, u_k_i = np.unique(f[u_k], return_inverse=True)
+                self.clusters.append(u_k_i)
+            _, self.clusters = np.unique(self.clusters, return_inverse=True, axis=1)
 
     def __getitem__(self, idx):
         real_idx = self.valid_indices[idx]
@@ -724,7 +736,6 @@ class ChessDataSmall(ChessData):
         super().__init__(dataset_dir, seed, filters, debug)
         rng = np.random.default_rng()
         self.valid_indices = rng.choice(self.valid_indices, size=size, replace=False)
-
         
 class ChessDataWinLossPairsTrainer(Trainer):
     @override

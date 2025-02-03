@@ -28,7 +28,6 @@ class CustomSupervisedTrainingCallback(SupervisedTrainingCallback):
             Metric.Recall,
             Metric.LearningRate,
             ]
-        
 
 class SelfPlayCallback(DefaultCallbacks):
     def __init__(self):

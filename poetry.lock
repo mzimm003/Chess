@@ -1103,7 +1103,7 @@ testing = ["pytest (==8.2.1)"]
 type = "git"
 url = "https://github.com/mzimm003/ML_training_suite"
 reference = "HEAD"
-resolved_reference = "91f00703ed9424e0b9cd8d072d69dbe9f75460e5"
+resolved_reference = "18d6bf976d7719e8214d9bac693f5192549ed4b3"
 
 [[package]]
 name = "mpmath"

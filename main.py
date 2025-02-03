@@ -301,11 +301,11 @@ class Premade(Script):
         dbg.create_database()
 
     def playVsAI(self):
-        experiment = "TrainableWrapper_03b7c_00000_0_lr=0.0010_2024-11-11_06-41-43"
+        experiment = "TrainableWrapper_9b560_00000_0_lr=0.1000_2025-01-18_19-51-28"
         model_choice = "<class 'my_chess.models.deepchess.DeepChessEvaluator'>0"
         model_dir = (Path("/opt/ray/results/DeepChessEvaluator")/experiment).resolve()
 
-        latest_checkpoint_dir = sorted(model_dir.glob('checkpoint*'), reverse=True)[0]
+        latest_checkpoint_dir = sorted(model_dir.glob('checkpoint*'), reverse=False)[74]
         model_path = latest_checkpoint_dir/model_choice/'model.pt'
         play = HumanVsBot(
             model=DeepChessAlphaBeta,
@@ -506,18 +506,18 @@ class Premade(Script):
         train_script.run()
 
     def trainEvaluator(self):
-        experiment = "TrainableWrapper_dd230_00000_0_2024-10-25_00-41-25"
+        experiment = "TrainableWrapper_fd855_00000_0_2025-01-11_20-23-59"
         model_choice = "<class 'my_chess.models.deepchess.DeepChessFE'>0"
         model_dir = (Path("/opt/ray/results/ChessFeatureExtractor")/experiment).resolve()
 
         latest_checkpoint_dir = sorted(model_dir.glob('checkpoint*'), reverse=True)[0]
         model_path = latest_checkpoint_dir/model_choice/'model.pt'
 
-        num_trials = 2
+        num_trials = 1
         num_cpus = 1 if self.debug else os.cpu_count()
         num_gpus = 0 if self.debug else torch.cuda.device_count()
         BATCHSIZE=128
-        EPOCHS=20
+        EPOCHS=200
         cpu_per_trial = num_cpus//num_trials
         gpu_per_trial = num_gpus/num_trials
         dataset_file=Path("/home/user/hdd_datasets/Chess-CCRL-404/database.h5").resolve()
@@ -557,7 +557,7 @@ class Premade(Script):
                     )
                 ),
                 optimizers=Optimizer.SGD,
-                optimizers_kwargs=dict(lr=tune.grid_search([0.05, 0.1])),
+                optimizers_kwargs=dict(lr=tune.grid_search([0.1])),
                 lr_schedulers=None,
                 lr_schedulers_kwargs=None,
                 criterion=Criterion.CrossEntropy,

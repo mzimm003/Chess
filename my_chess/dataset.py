@@ -736,7 +736,6 @@ class ChessDataSmall(ChessData):
         super().__init__(dataset_dir, seed, filters, debug)
         rng = np.random.default_rng()
         self.valid_indices = rng.choice(self.valid_indices, size=size, replace=False)
-
         
 class ChessDataWinLossPairsTrainer(Trainer):
     @override
